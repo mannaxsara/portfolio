@@ -61,16 +61,19 @@ export default function Navbar() {
         )}
       </div>
 
-      <button
-        className="md:hidden flex flex-col space-y-1 focus:outline-none"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle menu"
-        aria-expanded={isOpen}
-      >
-        <span className="w-6 h-1 bg-black"></span>
-        <span className="w-6 h-1 bg-black"></span>
-        <span className="w-6 h-1 bg-black"></span>
-      </button>
+      {/* Mobile Hamburger Button — wrapped in md:hidden to bulletproof desktop hiding */}
+      <div className="md:hidden">
+        <button
+          className="flex flex-col space-y-1 focus:outline-none"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={isOpen}
+        >
+          <span className="w-6 h-1 bg-black"></span>
+          <span className="w-6 h-1 bg-black"></span>
+          <span className="w-6 h-1 bg-black"></span>
+        </button>
+      </div>
 
       {mounted && isOpen && (
         <div
