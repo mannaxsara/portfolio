@@ -9,7 +9,7 @@ import Preloader from "./components/Preloader";
 const Home = () => {
   return (
     <main>
-      <Preloader />
+      {/* <Preloader /> */}
       <section id="home">
         <Hero />
       </section>
