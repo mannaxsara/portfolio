@@ -24,7 +24,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-plum-brown/90 backdrop-blur-md border-b-2 border-rosewood text-light-pink p-4 flex justify-between items-center z-50">
+    <nav className="fixed top-0 left-0 w-full bg-plum-brown/90 backdrop-blur-md border-b-2 border-rosewood text-light-pink p-4 flex justify-between items-center z-50 transition-colors duration-300">
       {/* Logo */}
       <Link href="/" className="text-2xl font-bold font-pixelify text-light-pink px-5">
         Manna Sara Bilu
@@ -47,7 +47,7 @@ export default function Navbar() {
         {mounted && (
           <button
             onClick={toggleTheme}
-            className="font-pixelify text-xs border-2 border-rosewood bg-raspberry text-light-pink px-3 py-1 hover:bg-rosewood transition-colors select-none cursor-pointer tracking-wide"
+            className="font-pixelify text-xs border-2 border-rosewood bg-light-pink text-plum-brown px-3 py-1 hover:bg-rosewood hover:text-light-pink transition-colors select-none cursor-pointer shadow-[2px_2px_0px_#412722] active:translate-y-px active:shadow-none"
             aria-label="Toggle light and dark mode"
           >
             [ {theme === "dark" ? "LIGHT" : "DARK"} MODE ]
@@ -105,7 +105,7 @@ export default function Navbar() {
                 toggleTheme();
                 setIsOpen(false);
               }}
-              className="font-pixelify text-xs border-2 border-rosewood bg-raspberry text-light-pink px-3 py-2 text-center hover:bg-rosewood transition-colors mt-4 select-none cursor-pointer"
+              className="font-pixelify text-xs border-2 border-rosewood bg-light-pink text-plum-brown px-3 py-2 text-center hover:bg-rosewood hover:text-light-pink transition-colors mt-4 select-none cursor-pointer shadow-[2px_2px_0px_#412722]"
               aria-label="Toggle light and dark mode"
             >
               [ {theme === "dark" ? "LIGHT" : "DARK"} MODE ]
