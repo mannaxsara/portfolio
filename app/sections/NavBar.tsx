@@ -49,6 +49,7 @@ export default function Navbar() {
           }
         }}
       >
+        <span>Manna</span>
         {/* Lotus Icon Image */}
         <img 
           src="/icons/favicon.png" 
@@ -56,7 +57,6 @@ export default function Navbar() {
           className="w-7 h-7 object-contain group-hover:scale-110 transition-transform duration-200"
           suppressHydrationWarning
         />
-        <span>Manna</span>
       </Link>
 
       {/* Desktop Menu links */}
