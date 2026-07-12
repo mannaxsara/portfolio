@@ -4,7 +4,6 @@ import React from "react";
 import MusicPlayer from "./MusicPlayer";
 import BookBoard from "./BookBoard";
 import GameCard from "./GameCard";
-import AnimeCard from "./AnimeCard";
 import Recommend from "./Recommend";
 import Image from "next/image";
 import FilmBoard from "./FilmBoard";
@@ -201,7 +200,6 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 gap-6 w-full mt-12">
         <BookBoard />
-        <AnimeCard />
         <FilmBoard />
         <MusicPlayer />
         {/* <GameCard /> */}

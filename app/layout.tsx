@@ -41,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${pixelify.variable} ${jersey.variable} antialiased`}>
+    <html lang="en" className={`${pixelify.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
