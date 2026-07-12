@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ProgressBar } from "pixel-retroui";
 
 export default function Preloader() {
   const [progress, setProgress] = useState(0);
@@ -112,13 +111,12 @@ export default function Preloader() {
         
         {/* Progress Bar */}
         <div className="w-full mt-2">
-          <ProgressBar
-            size="md"
-            color="pink"
-            borderColor="black"
-            className="w-full"
-            progress={Math.min(progress, 100)}
-          />
+          <div className="w-full h-5 border-4 border-rosewood dark:border-[#8b5c6e] bg-[#fdf0f4] dark:bg-[#120a0d] p-0.5 relative overflow-hidden">
+            <div 
+              className="h-full bg-raspberry dark:bg-[#af7491] transition-all duration-100 ease-out" 
+              style={{ width: `${Math.min(progress, 100)}%` }}
+            />
+          </div>
           <div className="flex justify-between items-center mt-2 text-[9px] text-mauve-brown dark:text-[#c49db0] tracking-widest font-bold">
             <span>{statusMsg}</span>
             <span>{Math.min(progress, 100)}%</span>

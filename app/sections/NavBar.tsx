@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import ScrollLink from "../components/ScrollLink";
 import NavButton from "../components/NavButton";
 import Link from "next/link";
@@ -90,17 +89,17 @@ export default function Navbar() {
         )}
       </div>
 
-      {/* Mobile Hamburger Button — wrapped in md:hidden to bulletproof desktop hiding */}
-      <div className="md:hidden">
+      {/* Mobile Hamburger Button */}
+      <div className="md:hidden flex items-center pr-2">
         <button
-          className="flex flex-col space-y-1 focus:outline-none"
+          className="w-10 h-10 border-2 border-border-accent bg-bg-alt flex flex-col items-center justify-center gap-1.5 focus:outline-none shadow-[2px_2px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-100"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
           aria-expanded={isOpen}
         >
-          <span className="w-6 h-1 bg-text-base"></span>
-          <span className="w-6 h-1 bg-text-base"></span>
-          <span className="w-6 h-1 bg-text-base"></span>
+          <span className={`w-5 h-[3px] bg-text-base transition-transform duration-200 ${isOpen ? "rotate-45 translate-y-[6px]" : ""}`}></span>
+          <span className={`w-5 h-[3px] bg-text-base transition-opacity duration-200 ${isOpen ? "opacity-0" : ""}`}></span>
+          <span className={`w-5 h-[3px] bg-text-base transition-transform duration-200 ${isOpen ? "-rotate-45 -translate-y-[6px]" : ""}`}></span>
         </button>
       </div>
 
@@ -111,64 +110,89 @@ export default function Navbar() {
         />
       )}
 
-      {/* Mobile Sidebar */}
+      {/* Mobile Sidebar/Drawer */}
       {mounted && (
         <div
-          className={`fixed top-0 right-0 h-full w-64 bg-bg-alt shadow-lg transform transition-transform duration-300 ease-in-out md:hidden z-50 ${
+          className={`fixed top-0 right-0 h-full w-64 bg-bg-alt border-l-4 border-border-accent shadow-[-6px_0px_0px_rgba(0,0,0,0.15)] transform transition-transform duration-300 ease-in-out md:hidden z-50 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <Sidebar backgroundColor="var(--bg-alt)" className="h-full border-l-2 border-border-accent">
-            {/* Close button */}
-            <button
-              className="absolute top-4 left-4 text-text-base text-xl font-bold"
-              onClick={() => setIsOpen(false)}
-              aria-label="Close menu"
+          {/* Close button */}
+          <button
+            className="absolute top-4 right-4 text-text-base text-2xl font-bold hover:text-highlight-color transition-colors focus:outline-none p-2"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
+
+          {/* Mobile Menu Links */}
+          <div className="mt-20 px-6 flex flex-col gap-6 font-pixelify text-lg text-text-base">
+            <ScrollLink 
+              as="span" 
+              href="#about" 
+              onClick={() => setIsOpen(false)} 
+              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
             >
-              ✕
+              About
+            </ScrollLink>
+            
+            <Link 
+              href="/dashboard" 
+              onClick={() => setIsOpen(false)} 
+              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+            >
+              Dashboard
+            </Link>
+            
+            <ScrollLink 
+              as="span" 
+              href="#projects" 
+              onClick={() => setIsOpen(false)} 
+              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+            >
+              Projects
+            </ScrollLink>
+            
+            <ScrollLink 
+              as="span" 
+              href="#gallery" 
+              onClick={() => setIsOpen(false)} 
+              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+            >
+              Certifications
+            </ScrollLink>
+            
+            <ScrollLink 
+              as="span" 
+              href="#experience" 
+              onClick={() => setIsOpen(false)} 
+              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+            >
+              Experience
+            </ScrollLink>
+            
+            <ScrollLink 
+              as="span" 
+              href="#contact" 
+              onClick={() => setIsOpen(false)} 
+              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+            >
+              Contact
+            </ScrollLink>
+
+            {/* Mobile Theme Toggle */}
+            <button
+              onClick={() => {
+                toggleTheme();
+                setIsOpen(false);
+              }}
+              className="flex items-center justify-between w-full py-2 hover:text-highlight-color transition-colors text-left font-pixelify"
+            >
+              <span>Theme: {theme === "dark" ? "Dark" : "Light"}</span>
+              <span className="text-xl">{theme === "dark" ? "🌙" : "☀️"}</span>
             </button>
-
-            <Menu className="mt-16 font-pixelify text-text-base">
-              <MenuItem>
-                <ScrollLink as="span" href="#about" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">About</ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="/dashboard" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">
-                  Dashboard
-                </ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="#projects" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">Projects</ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="#gallery" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">Certifications</ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="#experience" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">Experience</ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="#contact" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">Contact</ScrollLink>
-              </MenuItem>
-
-              {/* Mobile Sidebar Theme slider toggle */}
-              <MenuItem
-                onClick={() => {
-                  toggleTheme();
-                  setIsOpen(false);
-                }}
-                className="hover:text-highlight-color transition"
-              >
-                <div className="flex items-center justify-between w-full pr-4">
-                  <span>Theme: {theme === "dark" ? "Dark" : "Light"}</span>
-                  {theme === "dark" ? (
-                    <span className="text-xl">🌙</span>
-                  ) : (
-                    <span className="text-xl">☀️</span>
-                  )}
-                </div>
-              </MenuItem>
-            </Menu>
-          </Sidebar>
+          </div>
         </div>
       )}
     </nav>
