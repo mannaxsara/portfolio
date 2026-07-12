@@ -38,7 +38,6 @@ export default function FloatingCompanion() {
   const [bubbleText, setBubbleText] = useState("");
   const [videoSrc, setVideoSrc] = useState(IDLE_VIDEO);
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [isMinimized, setIsMinimized] = useState(false);
   const bubbleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastSectionRef = useRef<string | null>(null);
 
@@ -96,7 +95,7 @@ export default function FloatingCompanion() {
 
   // React to section changes
   useEffect(() => {
-    if (!currentSection || isMinimized) return;
+    if (!currentSection) return;
 
     const msg = SECTION_MESSAGES[currentSection];
     if (!msg) return;
@@ -118,23 +117,11 @@ export default function FloatingCompanion() {
     return () => {
       if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
     };
-  }, [currentSection, isMinimized]);
+  }, [currentSection]);
 
   const bubbleBg = theme === "light" ? "#f4e2ea" : "#121626";
   const bubbleText_ = theme === "light" ? "#634A45" : "#e4ecf5";
   const bubbleBorder = theme === "light" ? "#773957" : "#af7491";
-
-  if (isMinimized) {
-    return (
-      <button
-        onClick={() => setIsMinimized(false)}
-        className="fixed bottom-4 right-4 z-[100] w-12 h-12 rounded-full bg-bg-alt border-2 border-border-accent shadow-[3px_3px_0px_var(--shadow-color)] flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
-        aria-label="Show companion"
-      >
-        <span className="text-lg">✦</span>
-      </button>
-    );
-  }
 
   return (
     <div className="fixed bottom-4 right-4 z-[100] flex flex-col items-end pointer-events-auto">
@@ -158,20 +145,11 @@ export default function FloatingCompanion() {
 
       {/* Avatar container */}
       <div className="relative group">
-        {/* Minimize button */}
-        <button
-          onClick={() => {
-            setIsMinimized(true);
-            setShowBubble(false);
-          }}
-          className="absolute -top-2 -left-2 w-5 h-5 bg-border-accent text-bg-base text-[8px] font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10 border border-border-accent"
-          aria-label="Minimize companion"
-        >
-          ✕
-        </button>
-
         {/* Video avatar with cross-fade opacity */}
-        <div className="w-20 h-20 md:w-24 md:h-24 animate-pixel-float relative overflow-hidden">
+        <div 
+          onClick={() => setShowBubble((prev) => !prev)}
+          className="w-20 h-20 md:w-24 md:h-24 animate-pixel-float relative overflow-hidden cursor-pointer"
+        >
           {/* Idle video */}
           <video
             autoPlay
