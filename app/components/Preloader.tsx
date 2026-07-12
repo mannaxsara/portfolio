@@ -98,6 +98,7 @@ export default function Preloader() {
             loop
             muted
             playsInline
+            suppressHydrationWarning
             className="w-full h-full object-contain"
           >
             <source src="/avatar-videos/peacesign.webm" type="video/webm" />

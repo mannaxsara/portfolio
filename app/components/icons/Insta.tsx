@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const Insta = () => {
     return (  
         <a
@@ -8,12 +6,13 @@ const Insta = () => {
             rel="noopener noreferrer" 
             className="w-8 h-8 flex items-center justify-center hover:opacity-30 transition"
         >
-            <Image 
+            <img 
                 src="/icons/ig-icon.png"
                 alt="instagram"
                 width={32}
                 height={32}
                 className="object-contain dark:invert dark:brightness-125"
+                suppressHydrationWarning
             />
         </a>
     );

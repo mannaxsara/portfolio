@@ -178,6 +178,7 @@ export default function FloatingCompanion() {
             loop
             muted
             playsInline
+            suppressHydrationWarning
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
               videoSrc === "/avatar-videos/idlemanna.webm" ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
@@ -191,6 +192,7 @@ export default function FloatingCompanion() {
             loop
             muted
             playsInline
+            suppressHydrationWarning
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
               videoSrc === "/avatar-videos/thinking.webm" ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
@@ -204,6 +206,7 @@ export default function FloatingCompanion() {
             loop
             muted
             playsInline
+            suppressHydrationWarning
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
               videoSrc === "/avatar-videos/peacesign.webm" ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
