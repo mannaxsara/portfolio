@@ -1,4 +1,5 @@
 import "./globals.css";
+import "pixel-retroui/dist/index.css";
 import NavBar from "./sections/NavBar";
 import Footer from "./sections/Footer";
 
