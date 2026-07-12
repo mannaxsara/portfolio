@@ -59,7 +59,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-bg-base text-text-base flex flex-col min-h-screen">
+      <body className="bg-bg-base text-text-base flex flex-col min-h-screen" suppressHydrationWarning>
         <a href="#main-content" className="skip-nav">
           Skip to main content
         </a>

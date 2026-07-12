@@ -5,9 +5,14 @@ import { ProgressBar } from "pixel-retroui";
 
 export default function Preloader() {
   const [progress, setProgress] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // start false so server renders nothing
+  const [year, setYear] = useState("");
 
   useEffect(() => {
+    // Only show preloader on client — avoids all hydration mismatches
+    setLoading(true);
+    setYear(String(new Date().getFullYear()));
+
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -61,9 +66,10 @@ export default function Preloader() {
         </p>
 
         <span className="text-[8px] text-rosewood mt-4 opacity-70">
-          MANNA SARA BILU © {new Date().getFullYear()}
+          MANNA SARA BILU © {year}
         </span>
       </div>
     </div>
   );
 }
+

@@ -9,7 +9,7 @@ interface ScrollLinkProps {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
-  as?: "a" | "span"; // <-- NEW
+  as?: "a" | "span";
 }
 
 const ScrollLink = ({ href, children, className, onClick, as = "a" }: ScrollLinkProps) => {
@@ -39,23 +39,36 @@ const ScrollLink = ({ href, children, className, onClick, as = "a" }: ScrollLink
     e.preventDefault();
     if (onClick) onClick();
 
-    if (pathname === targetPath || (!targetPath && pathname === "/")) {
-      // Same page — scroll directly
-      scrollWithOffset(hash);
+    // Determine if we're on the homepage
+    const isHomePage = pathname === "/" || pathname === "";
+    const needsNavigation = targetPath && targetPath !== "/" && pathname !== targetPath;
+
+    if (isHomePage && !targetPath) {
+      // On homepage, href is like "#about" — scroll directly
+      if (hash) scrollWithOffset(hash);
+    } else if (!isHomePage && (!targetPath || targetPath === "/")) {
+      // On a sub-page, href is like "#about" — navigate home first, then scroll
+      if (hash) sessionStorage.setItem("scrollTo", hash);
+      router.push("/");
+    } else if (needsNavigation) {
+      // Navigate to a different page and scroll
+      if (hash) sessionStorage.setItem("scrollTo", hash);
+      router.push(targetPath);
     } else {
-      // Different page — store target and scroll after navigation
-      sessionStorage.setItem("scrollTo", hash);
-      router.push(targetPath || "/");
+      // Same page — just scroll
+      if (hash) scrollWithOffset(hash);
     }
   };
 
   useEffect(() => {
     const scrollTo = sessionStorage.getItem("scrollTo");
     if (scrollTo) {
-      setTimeout(() => {
+      // Wait for page content to render before scrolling
+      const timer = setTimeout(() => {
         scrollWithOffset(scrollTo);
-      }, 100);
-      sessionStorage.removeItem("scrollTo");
+        sessionStorage.removeItem("scrollTo");
+      }, 300);
+      return () => clearTimeout(timer);
     }
   }, [pathname]);
 
@@ -63,7 +76,7 @@ const ScrollLink = ({ href, children, className, onClick, as = "a" }: ScrollLink
 
   return (
     <Component
-      href={as === "a" ? href : undefined} // only add href for <a>
+      href={as === "a" ? href : undefined}
       role={as === "span" ? "link" : undefined}
       tabIndex={as === "span" ? 0 : undefined}
       onClick={handleClick}
