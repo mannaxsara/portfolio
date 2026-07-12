@@ -24,13 +24,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-light-pink text-white p-4 flex justify-between items-center z-50">
+    <nav className="fixed top-0 left-0 w-full bg-light-pink text-white py-4 px-6 flex justify-between items-center z-50">
       {/* Logo */}
-      <Link href="/" className="text-2xl font-bold font-pixelify text-black px-5">
+      <Link href="/" className="text-2xl font-bold font-pixelify text-black px-4">
         Manna Sara Bilu
       </Link>
 
-      <div className="hidden md:flex space-x-4 items-center">
+      <div className="hidden md:flex space-x-6 items-center pr-2">
         <NavButton href="#about">About</NavButton>
         <NavButton href="#projects">Projects</NavButton>
         <NavButton href="#gallery">Certifications</NavButton>
