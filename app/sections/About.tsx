@@ -20,12 +20,11 @@ const About = () => {
             <ScrollReveal delay={0.2}>
                 <img src="/manna-avatar.png" alt="Manna Sara Bilu" width={200} height={300} className="object-contain mt-6 filter drop-shadow-[4px_4px_0px_#634A45] animate-pixel-float"/>
             </ScrollReveal>
-            <ScrollReveal delay={0.3}>
-                <a href="/dashboard" className="flex justify-center text-center font-jersey text-2xl mt-6">
-                    <Button
-                        text="Dashboard"
-                    />
-                </a>
+            <ScrollReveal delay={0.3} className="flex justify-center text-center font-jersey text-2xl mt-6">
+                <Button
+                    text="Dashboard"
+                    href="/dashboard"
+                />
             </ScrollReveal>
         </div>
     );

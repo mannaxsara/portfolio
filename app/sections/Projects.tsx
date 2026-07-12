@@ -47,10 +47,8 @@ const Projects = () => {
             </div>
           </ScrollReveal>
         </div>
-        <ScrollReveal delay={0.3} className="mt-12">
-            <a href="/projects" className="block">
-              <Button text="See more projects" />
-            </a>
+        <ScrollReveal delay={0.3} className="mt-12 flex justify-center">
+            <Button text="See more projects" href="/projects" />
         </ScrollReveal>
     </div>
   );
