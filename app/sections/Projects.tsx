@@ -47,8 +47,8 @@ const Projects = () => {
             </div>
           </ScrollReveal>
         </div>
-        <ScrollReveal delay={0.3}>
-            <a href="/projects" className="mt-10">
+        <ScrollReveal delay={0.3} className="mt-12">
+            <a href="/projects" className="block">
               <Button text="See more projects" />
             </a>
         </ScrollReveal>

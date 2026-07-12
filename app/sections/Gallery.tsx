@@ -43,8 +43,8 @@ const Gallery = () => {
                     </ScrollReveal>
                 ))}
             </div>  
-            <ScrollReveal delay={0.4}>
-                <a href="/gallery" className="mt-12">
+            <ScrollReveal delay={0.4} className="mt-12">
+                <a href="/gallery" className="block">
                     <Button text="See all credentials" />
                 </a>
             </ScrollReveal>
