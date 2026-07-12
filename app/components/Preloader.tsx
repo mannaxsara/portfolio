@@ -8,26 +8,18 @@ export default function Preloader() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Only run preloader once per session to avoid annoying users on returns
-    const hasLoadedBefore = sessionStorage.getItem("portfolio-loaded");
-    if (hasLoadedBefore) {
-      setLoading(false);
-      return;
-    }
-
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           setTimeout(() => {
             setLoading(false);
-            sessionStorage.setItem("portfolio-loaded", "true");
           }, 800); // brief hold at 100% for a clean reveal transition
           return 100;
         }
-        return prev + Math.floor(Math.random() * 15) + 8; // dynamic loading step
+        return prev + Math.floor(Math.random() * 3) + 1; // slower loading step
       });
-    }, 100);
+    }, 80);
 
     return () => clearInterval(interval);
   }, []);
