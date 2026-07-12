@@ -27,7 +27,16 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full bg-light-pink border-b-2 border-rosewood text-plum-brown p-4 flex justify-between items-center z-50 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
       {/* Logo */}
-      <Link href="/" className="text-2xl font-bold font-pixelify text-plum-brown px-5">
+      <Link 
+        href="/" 
+        className="text-2xl font-bold font-pixelify text-plum-brown px-5"
+        onClick={(e) => {
+          if (typeof window !== 'undefined' && window.location.pathname === "/") {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        }}
+      >
         Manna Sara Bilu
       </Link>
 
