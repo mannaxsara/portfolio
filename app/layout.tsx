@@ -20,21 +20,37 @@ const jersey = Jersey_10({
 });
 
 export const metadata = {
-  title: "Manna Sara Bilu — Portfolio",
-  description: "Manna Sara Bilu — ACM Event Technologist Head & Data Analyst Portfolio. Explore projects, certifications, and technical articles.",
+  title: "Manna Sara Bilu ✦ Portfolio",
+  description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a retro pixelated world.",
   icons: {
     icon: "/icons/favicon.png", 
   },
   openGraph: {
-    title: "Manna Sara Bilu — Portfolio",
-    description: "ACM Event Technologist Head & Data Analyst. Projects, certifications, and technical articles.",
+    title: "Manna Sara Bilu ✦ Portfolio",
+    description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a retro pixelated world.",
+    url: "https://mannaportfolio.vercel.app",
+    siteName: "Manna Sara Bilu Portfolio",
+    images: [
+      {
+        url: "https://mannaportfolio.vercel.app/manna-avatar-heart.png",
+        width: 800,
+        height: 800,
+        alt: "Manna Sara Bilu Illustration",
+      },
+    ],
+    locale: "en_US",
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Manna Sara Bilu — Portfolio",
-    description: "ACM Event Technologist Head & Data Analyst. Projects, certifications, and technical articles.",
+    card: "summary",
+    title: "Manna Sara Bilu ✦ Portfolio",
+    description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a retro pixelated world.",
+    images: ["https://mannaportfolio.vercel.app/manna-avatar-heart.png"],
   },
+};
+
+export const viewport = {
+  themeColor: "#773957",
 };
 
 export default function RootLayout({
