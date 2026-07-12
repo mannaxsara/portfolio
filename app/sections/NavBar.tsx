@@ -61,7 +61,7 @@ export default function Navbar() {
       </div>
 
       <button
-        className="md:hidden flex flex-col space-y-1 focus:outline-none"
+        className="flex md:hidden flex-col space-y-1 focus:outline-none"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
         aria-expanded={isOpen}
