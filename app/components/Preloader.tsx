@@ -6,8 +6,10 @@ import { ProgressBar } from "pixel-retroui";
 export default function Preloader() {
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -24,7 +26,7 @@ export default function Preloader() {
     return () => clearInterval(interval);
   }, []);
 
-  if (!loading) return null;
+  if (!mounted || !loading) return null;
 
   return (
     <div className="fixed inset-0 z-[9999] bg-[#EEC8CF] flex flex-col items-center justify-center p-6 font-pixelify select-none">
