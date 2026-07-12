@@ -5,18 +5,18 @@
    ═══════════════════════════════════════════ */
 
 :root {
-  /* Default: Dark Theme */
-  --bg-base: #0f0c3c;         /* plum-brown */
-  --bg-alt: #1a1535;          /* deep-plum */
-  --text-base: #f4e2ea;       /* light-pink */
-  --text-muted: #8b7a9e;      /* muted-lavender */
-  --border-accent: #af7491;   /* rosewood */
-  --card-bg: #241e4a;         /* card-dark */
-  --card-text: #f4e2ea;       /* light-pink */
-  --nav-bg: rgba(15, 12, 60, 0.9);
-  --input-bg: #241e4a;
-  --input-text: #f4e2ea;
-  --shadow-color: #05041a;
+  /* Default: Dark Theme (Premium Retro Midnight Navy) */
+  --bg-base: #0d0f18;         /* deep space slate-black */
+  --bg-alt: #151926;          /* dark slate navy */
+  --text-base: #e4ecf5;       /* soft frost blue-white */
+  --text-muted: #7a8c9e;      /* slate blue-gray */
+  --border-accent: #af7491;   /* rosewood pink */
+  --card-bg: #1a1f33;         /* slate navy card */
+  --card-text: #e4ecf5;       /* soft frost blue-white */
+  --nav-bg: rgba(13, 15, 24, 0.9);
+  --input-bg: #1a1f33;
+  --input-text: #e4ecf5;
+  --shadow-color: #040509;
   --highlight-color: #773957; /* raspberry */
 }
 
