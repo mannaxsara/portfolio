@@ -10,7 +10,7 @@ const About = () => {
     return (  
         <div className="min-h-screen max-w-2xl mx-auto px-4 flex flex-col items-center pt-10 pb-20 bg-bg-alt/80">
             <ScrollReveal>
-                <h1 className="font-jersey text-7xl md:text-8xl uppercase tracking-[0.12em] text-text-base text-center py-6">
+                <h1 className="font-jersey text-4xl sm:text-6xl md:text-8xl uppercase tracking-[0.12em] text-text-base text-center py-6">
                     ✦ About Me ✦
                 </h1>
             </ScrollReveal>

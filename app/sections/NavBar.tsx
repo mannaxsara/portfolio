@@ -41,7 +41,7 @@ export default function Navbar() {
       {/* Logo */}
       <Link 
         href="/" 
-        className="flex items-center gap-2 text-3xl font-bold font-jersey tracking-wider text-text-base px-5 hover:text-highlight-color transition-colors group"
+        className="flex items-center gap-1.5 sm:gap-2 text-2xl sm:text-3xl font-bold font-jersey tracking-wider text-text-base px-2 sm:px-5 hover:text-highlight-color transition-colors group"
         onClick={(e) => {
           if (typeof window !== 'undefined' && window.location.pathname === "/") {
             e.preventDefault();

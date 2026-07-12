@@ -28,7 +28,7 @@ const Gallery = () => {
     return (  
         <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center pt-10 pb-16 bg-bg-alt/80">
             <ScrollReveal>
-                <h1 className="font-jersey text-7xl md:text-8xl uppercase tracking-[0.12em] text-text-base text-center py-6">
+                <h1 className="font-jersey text-4xl sm:text-6xl md:text-8xl uppercase tracking-[0.12em] text-text-base text-center py-6">
                     ✦ Certifications ✦
                 </h1>
             </ScrollReveal>
