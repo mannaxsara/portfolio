@@ -112,21 +112,18 @@ export default function Navbar() {
                 <ScrollLink as="span" href="#contact" onClick={() => setIsOpen(false)}>Contact</ScrollLink>
               </MenuItem>
               <MenuItem>
-                <Link href="/dashboard" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">
+                <ScrollLink as="span" href="/dashboard" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">
                   Dashboard
-                </Link>
+                </ScrollLink>
               </MenuItem>
-              <MenuItem>
-                <button
-                  onClick={() => {
-                    toggleTheme();
-                    setIsOpen(false);
-                  }}
-                  className="w-full text-left font-pixelify select-none cursor-pointer"
-                  aria-label="Toggle light and dark mode"
-                >
-                  {theme === "dark" ? "Light" : "Dark"} Mode
-                </button>
+              <MenuItem
+                onClick={() => {
+                  toggleTheme();
+                  setIsOpen(false);
+                }}
+                className="hover:text-raspberry transition"
+              >
+                {theme === "dark" ? "Light" : "Dark"} Mode
               </MenuItem>
             </Menu>
           </Sidebar>
