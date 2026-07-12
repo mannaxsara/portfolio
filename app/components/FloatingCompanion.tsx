@@ -37,7 +37,7 @@ export default function FloatingCompanion() {
   const [showBubble, setShowBubble] = useState(false);
   const [bubbleText, setBubbleText] = useState("");
   const [videoSrc, setVideoSrc] = useState(IDLE_VIDEO);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [isMinimized, setIsMinimized] = useState(false);
   const bubbleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastSectionRef = useRef<string | null>(null);

@@ -43,14 +43,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark" className={`${pixelify.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
+    <html lang="en" data-theme="light" className={`${pixelify.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  const savedTheme = localStorage.getItem("theme") || "dark";
+                  const savedTheme = localStorage.getItem("theme") || "light";
                   document.documentElement.setAttribute("data-theme", savedTheme);
                   if (savedTheme === "dark") {
                     document.documentElement.classList.add("dark");
