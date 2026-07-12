@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TextArea, Button } from "pixel-retroui";
+import { TextArea, Button, Input } from "pixel-retroui";
 import Github from "../components/icons/Github";
 import Linkedin from "../components/icons/Linkedin";
 import ScrollReveal from "../components/ScrollReveal";
@@ -44,23 +44,27 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="w-full font-pixelify bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] p-6 mb-12 flex flex-col gap-4 text-plum-brown">
                     <div className="flex flex-col gap-1.5">
                         <label className="text-[11px] text-mauve-brown tracking-widest uppercase font-bold">Name</label>
-                        <input 
+                        <Input 
                             type="text" 
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="your name..." 
-                            className="border-2 border-mauve-brown bg-[#fdf0f4] px-3 py-2 text-xs focus:outline-none focus:border-raspberry"
+                            bg="#fdf0f4"
+                            textColor="#634A45"
+                            borderColor="#634A45"
                             required
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
                         <label className="text-[11px] text-mauve-brown tracking-widest uppercase font-bold">Email</label>
-                        <input 
+                        <Input 
                             type="email" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="your email..." 
-                            className="border-2 border-mauve-brown bg-[#fdf0f4] px-3 py-2 text-xs focus:outline-none focus:border-raspberry"
+                            bg="#fdf0f4"
+                            textColor="#634A45"
+                            borderColor="#634A45"
                             required
                         />
                     </div>
@@ -69,6 +73,10 @@ const Contact = () => {
                         <TextArea 
                             placeholder="write your message here..." 
                             onChange={(e) => setMessage(e.target.value)}
+                            value={message}
+                            bg="#fdf0f4"
+                            textColor="#634A45"
+                            borderColor="#634A45"
                         />
                     </div>
 
