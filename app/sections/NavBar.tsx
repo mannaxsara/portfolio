@@ -24,9 +24,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-light-pink border-b-2 border-rosewood text-plum-brown p-4 flex justify-between items-center z-50 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
+    <nav className="fixed top-0 left-0 w-full bg-plum-brown/90 backdrop-blur-md border-b-2 border-rosewood text-light-pink p-4 flex justify-between items-center z-50">
       {/* Logo */}
-      <Link href="/" className="text-2xl font-bold font-pixelify text-plum-brown px-5">
+      <Link href="/" className="text-2xl font-bold font-pixelify text-light-pink px-5">
         Manna Sara Bilu
       </Link>
 
@@ -47,7 +47,7 @@ export default function Navbar() {
         {mounted && (
           <button
             onClick={toggleTheme}
-            className="font-pixelify text-xs border-2 border-rosewood bg-rosewood text-light-pink px-3 py-1 hover:bg-raspberry transition-colors select-none cursor-pointer"
+            className="font-pixelify text-xs border-2 border-rosewood bg-raspberry text-light-pink px-3 py-1 hover:bg-rosewood transition-colors select-none cursor-pointer tracking-wide"
             aria-label="Toggle light and dark mode"
           >
             [ {theme === "dark" ? "LIGHT" : "DARK"} MODE ]
@@ -61,9 +61,9 @@ export default function Navbar() {
         aria-label="Toggle menu"
         aria-expanded={isOpen}
       >
-        <span className="w-6 h-1 bg-plum-brown"></span>
-        <span className="w-6 h-1 bg-plum-brown"></span>
-        <span className="w-6 h-1 bg-plum-brown"></span>
+        <span className="w-6 h-1 bg-light-pink"></span>
+        <span className="w-6 h-1 bg-light-pink"></span>
+        <span className="w-6 h-1 bg-light-pink"></span>
       </button>
 
       {/* Mobile menu overlay */}
@@ -76,27 +76,26 @@ export default function Navbar() {
 
       {mounted && (
         <div
-          className={`fixed top-0 right-0 h-full w-64 bg-light-pink border-l-2 border-rosewood shadow-lg transform transition-transform duration-300 ease-in-out md:hidden z-50 ${
+          className={`fixed top-0 right-0 h-full w-64 bg-deep-plum border-l-2 border-rosewood shadow-lg transform transition-transform duration-300 ease-in-out md:hidden z-50 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
-          style={{ backgroundColor: "#EEC8CF" }}
         >
           {/* Close button */}
           <button
-            className="absolute top-4 left-4 text-plum-brown text-xl font-bold"
+            className="absolute top-4 left-4 text-light-pink text-xl font-bold"
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
           >
             ✕
           </button>
 
-          <div className="flex flex-col mt-20 px-8 font-pixelify text-plum-brown gap-6 text-lg">
-            <ScrollLink href="#about" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">About</ScrollLink>
-            <ScrollLink href="#projects" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">Projects</ScrollLink>
-            <ScrollLink href="#gallery" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">Certifications</ScrollLink>
-            <ScrollLink href="#experience" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">Experience</ScrollLink>
-            <ScrollLink href="#contact" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">Contact</ScrollLink>
-            <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-raspberry hover:text-rosewood transition">
+          <div className="flex flex-col mt-20 px-8 font-pixelify text-light-pink gap-6 text-lg">
+            <ScrollLink href="#about" onClick={() => setIsOpen(false)} className="hover:text-soft-pink transition">About</ScrollLink>
+            <ScrollLink href="#projects" onClick={() => setIsOpen(false)} className="hover:text-soft-pink transition">Projects</ScrollLink>
+            <ScrollLink href="#gallery" onClick={() => setIsOpen(false)} className="hover:text-soft-pink transition">Certifications</ScrollLink>
+            <ScrollLink href="#experience" onClick={() => setIsOpen(false)} className="hover:text-soft-pink transition">Experience</ScrollLink>
+            <ScrollLink href="#contact" onClick={() => setIsOpen(false)} className="hover:text-soft-pink transition">Contact</ScrollLink>
+            <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-raspberry hover:text-soft-pink transition">
               ✦ Dashboard
             </Link>
             
@@ -106,7 +105,7 @@ export default function Navbar() {
                 toggleTheme();
                 setIsOpen(false);
               }}
-              className="font-pixelify text-xs border-2 border-rosewood bg-rosewood text-light-pink px-3 py-2 text-center hover:bg-raspberry transition-colors mt-4 select-none cursor-pointer"
+              className="font-pixelify text-xs border-2 border-rosewood bg-raspberry text-light-pink px-3 py-2 text-center hover:bg-rosewood transition-colors mt-4 select-none cursor-pointer"
               aria-label="Toggle light and dark mode"
             >
               [ {theme === "dark" ? "LIGHT" : "DARK"} MODE ]
