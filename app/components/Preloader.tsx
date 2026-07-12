@@ -5,11 +5,24 @@ import { ProgressBar } from "pixel-retroui";
 
 export default function Preloader() {
   const [progress, setProgress] = useState(0);
-  const [loading, setLoading] = useState(false); // start false so server renders nothing
+  const [loading, setLoading] = useState(false); // Start as false to prevent SSR hydration warning
   const [year, setYear] = useState("");
 
   useEffect(() => {
-    // Only show preloader on client — avoids all hydration mismatches
+    // Disable automatic browser scroll restoration so that page reload starts at the very top
+    if (typeof window !== "undefined") {
+      window.history.scrollRestoration = "manual";
+      // Force scroll to top on refresh
+      window.scrollTo(0, 0);
+    }
+
+    // Only run preloader once per session to avoid annoying users on returns
+    const hasLoadedBefore = sessionStorage.getItem("portfolio-loaded");
+    if (hasLoadedBefore) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setYear(String(new Date().getFullYear()));
 
@@ -19,12 +32,13 @@ export default function Preloader() {
           clearInterval(interval);
           setTimeout(() => {
             setLoading(false);
+            sessionStorage.setItem("portfolio-loaded", "true");
           }, 800); // brief hold at 100% for a clean reveal transition
           return 100;
         }
-        return prev + Math.floor(Math.random() * 3) + 1; // slower loading step
+        return prev + Math.floor(Math.random() * 15) + 8; // original dynamic loading step
       });
-    }, 80);
+    }, 100);
 
     return () => clearInterval(interval);
   }, []);
@@ -44,11 +58,7 @@ export default function Preloader() {
 
         <h2 className="font-jersey text-4xl text-raspberry animate-pulse">BOOTING PORTFOLIO.EXE</h2>
         
-        <div className="w-full mt-4 flex flex-col gap-2">
-          <div className="flex justify-between items-center font-jersey text-lg text-raspberry tracking-wider">
-            <span>LOADING...</span>
-            <span>{Math.min(progress, 100)}%</span>
-          </div>
+        <div className="w-full mt-4">
           <ProgressBar
             size="md"
             color="pink"
@@ -72,4 +82,3 @@ export default function Preloader() {
     </div>
   );
 }
-

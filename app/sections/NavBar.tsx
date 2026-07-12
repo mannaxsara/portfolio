@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import ScrollLink from "../components/ScrollLink";
 import NavButton from "../components/NavButton";
 import Link from "next/link";
@@ -30,7 +31,7 @@ export default function Navbar() {
         Manna Sara Bilu
       </Link>
 
-      <div className="hidden md:flex space-x-6 items-center pr-2">
+      <div className="hidden md:flex space-x-4 items-center">
         <NavButton href="#about">About</NavButton>
         <NavButton href="#projects">Projects</NavButton>
         <NavButton href="#gallery">Certifications</NavButton>
@@ -60,21 +61,17 @@ export default function Navbar() {
         )}
       </div>
 
-      {/* Mobile Hamburger Button — wrapped in md:hidden to bulletproof desktop hiding */}
-      <div className="md:hidden">
-        <button
-          className="flex flex-col space-y-1 focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={isOpen}
-        >
-          <span className="w-6 h-1 bg-black"></span>
-          <span className="w-6 h-1 bg-black"></span>
-          <span className="w-6 h-1 bg-black"></span>
-        </button>
-      </div>
+      <button
+        className="md:hidden flex flex-col space-y-1 focus:outline-none"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle menu"
+        aria-expanded={isOpen}
+      >
+        <span className="w-6 h-1 bg-black"></span>
+        <span className="w-6 h-1 bg-black"></span>
+        <span className="w-6 h-1 bg-black"></span>
+      </button>
 
-      {/* Mobile menu overlay */}
       {mounted && isOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-40 md:hidden"
@@ -87,44 +84,52 @@ export default function Navbar() {
           className={`fixed top-0 right-0 h-full w-64 bg-light-pink shadow-lg transform transition-transform duration-300 ease-in-out md:hidden z-50 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
-          style={{ backgroundColor: "#EEC8CF" }}
         >
-          {/* Close button */}
-          <button
-            className="absolute top-4 left-4 text-black text-xl font-bold"
-            onClick={() => setIsOpen(false)}
-            aria-label="Close menu"
-          >
-            ✕
-          </button>
-
-          <div className="flex flex-col mt-20 px-8 font-pixelify text-black gap-6 text-lg">
-            <ScrollLink href="#about" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">About</ScrollLink>
-            <ScrollLink href="#projects" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">Projects</ScrollLink>
-            <ScrollLink href="#gallery" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">Certifications</ScrollLink>
-            <ScrollLink href="#experience" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">Experience</ScrollLink>
-            <ScrollLink href="#contact" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">Contact</ScrollLink>
-            
-            <Link 
-              href="/dashboard" 
-              onClick={() => setIsOpen(false)} 
-              className="hover:text-raspberry transition"
-            >
-              Dashboard
-            </Link>
-
-            {/* Mobile Theme Toggle */}
+          <Sidebar backgroundColor="#EEC8CF" className="h-full">
+            {/* Close button */}
             <button
-              onClick={() => {
-                toggleTheme();
-                setIsOpen(false);
-              }}
-              className="hover:text-raspberry text-left transition select-none cursor-pointer"
-              aria-label="Toggle light and dark mode"
+              className="absolute top-4 left-4 text-black text-xl font-bold"
+              onClick={() => setIsOpen(false)}
+              aria-label="Close menu"
             >
-              {theme === "dark" ? "Light" : "Dark"} Mode
+              ✕
             </button>
-          </div>
+
+            <Menu className="mt-16 font-pixelify text-black">
+              <MenuItem>
+                <ScrollLink as="span" href="#about" onClick={() => setIsOpen(false)}>About</ScrollLink>
+              </MenuItem>
+              <MenuItem>
+                <ScrollLink as="span" href="#projects" onClick={() => setIsOpen(false)}>Projects</ScrollLink>
+              </MenuItem>
+              <MenuItem>
+                <ScrollLink as="span" href="#gallery" onClick={() => setIsOpen(false)}>Certifications</ScrollLink>
+              </MenuItem>
+              <MenuItem>
+                <ScrollLink as="span" href="#experience" onClick={() => setIsOpen(false)}>Experience</ScrollLink>
+              </MenuItem>
+              <MenuItem>
+                <ScrollLink as="span" href="#contact" onClick={() => setIsOpen(false)}>Contact</ScrollLink>
+              </MenuItem>
+              <MenuItem>
+                <Link href="/dashboard" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">
+                  Dashboard
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <button
+                  onClick={() => {
+                    toggleTheme();
+                    setIsOpen(false);
+                  }}
+                  className="w-full text-left font-pixelify select-none cursor-pointer"
+                  aria-label="Toggle light and dark mode"
+                >
+                  {theme === "dark" ? "Light" : "Dark"} Mode
+                </button>
+              </MenuItem>
+            </Menu>
+          </Sidebar>
         </div>
       )}
     </nav>
