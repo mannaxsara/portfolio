@@ -51,6 +51,9 @@ export default function RootLayout({
                 try {
                   const savedTheme = localStorage.getItem("theme") || "dark";
                   document.documentElement.setAttribute("data-theme", savedTheme);
+                  if ('scrollRestoration' in history) {
+                    history.scrollRestoration = 'manual';
+                  }
                 } catch (e) {
                   console.error(e);
                 }

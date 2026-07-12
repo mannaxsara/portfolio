@@ -25,6 +25,7 @@ const ProjectGithub: React.FC<ProjectGithubProps> = ({
         width={size}
         height={size}
         className="hover:opacity-30 transition"
+        suppressHydrationWarning
       />
     </a>
   );

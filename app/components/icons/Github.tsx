@@ -11,6 +11,7 @@ const Github = () => {
                 width={32}
                 height={32}
                 className="hover:opacity-30 transition"
+                suppressHydrationWarning
             />
         </a>
     );

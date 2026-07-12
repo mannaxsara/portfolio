@@ -21,7 +21,7 @@ const About = () => {
                 </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-                <img src="/manna-avatar.png" alt="Manna Sara Bilu" width={200} height={300} className="object-contain mt-6 filter drop-shadow-[4px_4px_0px_#634A45] animate-pixel-float"/>
+                <img src="/manna-avatar.png" alt="Manna Sara Bilu" width={200} height={300} className="object-contain mt-6 filter drop-shadow-[4px_4px_0px_#634A45] animate-pixel-float" suppressHydrationWarning/>
             </ScrollReveal>
             <ScrollReveal delay={0.3} className="mt-6 flex justify-center">
                 <Button

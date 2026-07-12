@@ -43,6 +43,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           width={400}
           height={600}
           className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-110 ${className}`}
+          suppressHydrationWarning
         />
       </div>
 
