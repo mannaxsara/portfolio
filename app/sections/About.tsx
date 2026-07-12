@@ -6,7 +6,7 @@ import ScrollReveal from "../components/ScrollReveal";
 
 const About = () => {
     return (  
-        <div className="min-h-screen max-w-2xl mx-auto px-4 flex flex-col items-center py-20 bg-deep-plum">
+        <div className="min-h-screen max-w-2xl mx-auto px-4 flex flex-col items-center py-20 bg-bg-alt">
             <ScrollReveal>
                 <h1 className="font-jersey font-bold text-5xl py-12 text-light-pink text-center">About Me</h1>
             </ScrollReveal>

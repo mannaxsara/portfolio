@@ -24,7 +24,7 @@ const Gallery = () => {
     ];
 
     return (  
-        <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center bg-deep-plum py-16">
+        <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center bg-bg-alt py-16">
             <ScrollReveal>
                 <h1 className="font-jersey font-bold text-5xl py-12 text-light-pink text-center">Certifications</h1>
             </ScrollReveal>

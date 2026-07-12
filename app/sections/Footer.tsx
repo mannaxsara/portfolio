@@ -3,7 +3,7 @@ import ScrollLink from "../components/ScrollLink";
 
 const Footer = () => {
   return (  
-    <footer className="font-pixelify text-sm text-light-pink flex flex-col justify-center items-center bg-deep-plum py-8 border-t-4 border-rosewood gap-6">
+    <footer className="font-pixelify text-sm text-text-base flex flex-col justify-center items-center bg-bg-alt py-8 border-t-4 border-border-accent gap-6">
       
       {/* Navigation Links */}
       <div className="flex flex-wrap justify-center gap-6 text-xs md:text-sm">

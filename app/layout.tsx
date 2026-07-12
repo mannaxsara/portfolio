@@ -1,4 +1,3 @@
-
 import "./globals.css";
 import NavBar from "./sections/NavBar";
 import Footer from "./sections/Footer";
@@ -43,7 +42,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${pixelify.variable} ${jersey.variable} antialiased`}>
-      <body className="bg-plum-brown text-light-pink flex flex-col min-h-screen">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const savedTheme = localStorage.getItem("theme") || "dark";
+                  document.documentElement.setAttribute("data-theme", savedTheme);
+                } catch (e) {
+                  console.error(e);
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="bg-bg-base text-text-base flex flex-col min-h-screen">
         <a href="#main-content" className="skip-nav">
           Skip to main content
         </a>
