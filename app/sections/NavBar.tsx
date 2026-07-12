@@ -49,15 +49,13 @@ export default function Navbar() {
           }
         }}
       >
-        {/* Stylized Lotus SVG Icon */}
-        <svg 
-          viewBox="0 0 24 24" 
-          className="w-7 h-7 fill-current text-highlight-color group-hover:scale-110 transition-transform duration-200"
-        >
-          <path d="M12 2C12 2 9 8 9 12C9 14 10.5 16 12 18C13.5 16 15 14 15 12C15 8 12 2 12 2Z" />
-          <path d="M12 7C9.5 8.5 6 12 6 15C6 17.5 8 19 10 19C11.5 19 12 18 12 18C12 18 12.5 19 14 19C16 19 18 17.5 18 15C18 12 14.5 8.5 12 7Z" opacity="0.85" />
-          <path d="M12 11C10.5 12 8 14.5 8 17C8 18.5 9 19.5 10.5 19.5C11.5 19.5 12 19 12 19C12 19 12.5 19 13.5 19.5C15 19.5 16 18.5 16 17C16 14.5 13.5 12 12 11Z" opacity="0.7" />
-        </svg>
+        {/* Lotus Icon Image */}
+        <img 
+          src="/icons/favicon.png" 
+          alt="Lotus Logo" 
+          className="w-7 h-7 object-contain group-hover:scale-110 transition-transform duration-200"
+          suppressHydrationWarning
+        />
         <span>Manna</span>
       </Link>
 
