@@ -5,11 +5,13 @@ import Gallery from "./sections/Gallery";
 import Experience from "./sections/Experience";
 import Contact from "./sections/Contact";
 import Preloader from "./components/Preloader";
+import ScrollToTop from "./components/ScrollToTop";
 
 const Home = () => {
   return (
     <main>
-      {/* <Preloader /> */}
+      <ScrollToTop />
+      <Preloader />
       <section id="home">
         <Hero />
       </section>
