@@ -9,7 +9,7 @@ const Hero = () => {
   return (
     <div className="w-full min-h-screen flex items-center justify-center px-4 py-16 relative bg-transparent overflow-hidden">
 
-      <div className="w-full max-w-4xl font-pixelify bg-bg-alt border-4 border-border-accent shadow-[6px_6px_0px_var(--shadow-color)] p-10 md:p-20 text-center relative z-10">
+      <div className="w-full max-w-4xl font-pixelify bg-bg-alt border-4 border-border-accent shadow-[6px_6px_0px_var(--shadow-color)] p-6 sm:p-10 md:p-20 text-center relative z-10">
 
         {/* Corner L-bracket accents */}
         <span className="absolute top-2.5 left-2.5 w-5 h-5 border-t-[3px] border-l-[3px] border-border-accent"></span>
@@ -36,7 +36,7 @@ const Hero = () => {
         {/* Name */}
         <h1
           className="font-jersey font-bold text-raspberry dark:text-light-pink leading-none mb-2"
-          style={{ fontSize: "clamp(64px, 14vw, 130px)" }}
+          style={{ fontSize: "clamp(46px, 14vw, 130px)" }}
         >
           Manna Sara Bilu
         </h1>
