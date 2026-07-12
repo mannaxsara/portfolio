@@ -103,36 +103,21 @@ export default function Navbar() {
         </button>
       </div>
 
-      {mounted && isOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 z-40 md:hidden"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
-      {/* Mobile Sidebar/Drawer */}
+      {/* Mobile Dropdown Menu (Top-down) */}
       {mounted && (
         <div
-          className={`fixed top-0 right-0 h-full w-64 bg-bg-alt border-l-4 border-border-accent shadow-[-6px_0px_0px_rgba(0,0,0,0.15)] transform transition-transform duration-300 ease-in-out md:hidden z-50 ${
-            isOpen ? "translate-x-0" : "translate-x-full"
+          className={`absolute top-full left-0 w-full bg-bg-alt/95 backdrop-blur-md border-b-4 border-border-accent shadow-[0_6px_0px_var(--shadow-color)] transition-all duration-300 ease-in-out md:hidden z-50 overflow-hidden ${
+            isOpen 
+              ? "max-h-[380px] opacity-100 border-t-2 border-border-accent/10" 
+              : "max-h-0 opacity-0 pointer-events-none"
           }`}
         >
-          {/* Close button */}
-          <button
-            className="absolute top-4 right-4 text-text-base text-2xl font-bold hover:text-highlight-color transition-colors focus:outline-none p-2"
-            onClick={() => setIsOpen(false)}
-            aria-label="Close menu"
-          >
-            ✕
-          </button>
-
-          {/* Mobile Menu Links */}
-          <div className="mt-20 px-6 flex flex-col gap-6 font-pixelify text-lg text-text-base">
+          <div className="px-6 py-4 flex flex-col gap-4 font-pixelify text-base text-text-base">
             <ScrollLink 
               as="span" 
               href="#about" 
               onClick={() => setIsOpen(false)} 
-              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
             >
               About
             </ScrollLink>
@@ -140,7 +125,7 @@ export default function Navbar() {
             <Link 
               href="/dashboard" 
               onClick={() => setIsOpen(false)} 
-              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
             >
               Dashboard
             </Link>
@@ -149,7 +134,7 @@ export default function Navbar() {
               as="span" 
               href="#projects" 
               onClick={() => setIsOpen(false)} 
-              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
             >
               Projects
             </ScrollLink>
@@ -158,7 +143,7 @@ export default function Navbar() {
               as="span" 
               href="#gallery" 
               onClick={() => setIsOpen(false)} 
-              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
             >
               Certifications
             </ScrollLink>
@@ -167,7 +152,7 @@ export default function Navbar() {
               as="span" 
               href="#experience" 
               onClick={() => setIsOpen(false)} 
-              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
             >
               Experience
             </ScrollLink>
@@ -176,7 +161,7 @@ export default function Navbar() {
               as="span" 
               href="#contact" 
               onClick={() => setIsOpen(false)} 
-              className="py-2 border-b-2 border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
             >
               Contact
             </ScrollLink>
@@ -187,7 +172,7 @@ export default function Navbar() {
                 toggleTheme();
                 setIsOpen(false);
               }}
-              className="flex items-center justify-between w-full py-2 hover:text-highlight-color transition-colors text-left font-pixelify"
+              className="flex items-center justify-between w-full py-1 hover:text-highlight-color transition-colors text-left font-pixelify"
             >
               <span>Theme: {theme === "dark" ? "Dark" : "Light"}</span>
               <span className="text-xl">{theme === "dark" ? "🌙" : "☀️"}</span>
