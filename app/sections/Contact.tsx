@@ -31,10 +31,10 @@ const Contact = () => {
     return (  
         <div className="max-w-2xl mx-auto px-4 flex flex-col items-center pb-32">
             <ScrollReveal>
-                <h1 className="font-jersey font-bold text-5xl py-12 text-light-pink text-center">Contact Me</h1>
+                <h1 className="font-jersey font-bold text-5xl py-12 text-text-base text-center">Contact Me</h1>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-                <p className="font-pixelify text-center leading-relaxed mb-8 text-light-pink/90">
+                <p className="font-pixelify text-center leading-relaxed mb-8 text-text-base/90">
                     Hey, thanks for scrolling all the way down here! Whether you want to chat about data pipelines, collaborate on a project, or just say hi — my inbox is always open. I&apos;d love to hear from you! 💌🌸
                 </p>
             </ScrollReveal>

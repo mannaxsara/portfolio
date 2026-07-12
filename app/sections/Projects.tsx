@@ -8,10 +8,10 @@ const Projects = () => {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center">
         <ScrollReveal>
-            <h1 className="font-jersey font-bold text-5xl py-12 text-light-pink text-center">Projects</h1>
+            <h1 className="font-jersey font-bold text-5xl py-12 text-text-base text-center">Projects</h1>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
-            <p className="leading-relaxed text-center font-pixelify text-light-pink/90">
+            <p className="leading-relaxed text-center font-pixelify text-text-base/90">
                 A little collection of things I&apos;ve been building, breaking, and tinkering with — from IoT lab platforms to predictive analytics pipelines. Each one taught me something new (and probably caused at least one 2am debugging session) ✨💫
             </p>
         </ScrollReveal>

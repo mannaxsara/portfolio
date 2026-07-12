@@ -51,7 +51,7 @@ export default function Experience() {
     return (
         <div className="min-h-screen max-w-3xl mx-auto px-4 flex flex-col items-center justify-center py-20">
             <ScrollReveal>
-                <h1 className="font-jersey font-bold text-5xl py-12 text-light-pink text-center">Experience</h1>
+                <h1 className="font-jersey font-bold text-5xl py-12 text-text-base text-center">Experience</h1>
             </ScrollReveal>
             
             {/* Timeline Line */}
