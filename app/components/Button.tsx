@@ -7,9 +7,16 @@ interface ButtonProps {
   className?: string;
 }
 
+const sizeClasses = {
+  sm: "px-3 text-sm",
+  md: "px-5",
+  lg: "px-7 text-lg",
+};
+
 const Button: React.FC<ButtonProps> = ({
   text,
   onClick,
+  size = "md",
   className = "",
 }) => {
   return (
@@ -20,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({
         shadow-[4px_4px_0px_#412722] 
         hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_#412722] 
         active:translate-x-2 active:translate-y-2 active:shadow-none
-        transition-transform duration-100 px-5
+        transition-transform duration-100 ${sizeClasses[size]}
          ${className}`}
     >
       {text}

@@ -36,7 +36,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
       {/* Image — shrinks on hover to make room for detail panel */}
       <div
-        className="overflow-hidden border-b-4 border-rosewood transition-all duration-300 ease-in-out h-68 group-hover:h-24"
+        className="overflow-hidden border-b-4 border-rosewood transition-all duration-300 ease-in-out h-[17rem] group-hover:h-24"
       >
         <Image
           src={image}

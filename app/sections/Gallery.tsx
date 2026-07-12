@@ -2,6 +2,7 @@
 
 import GalleryCard from "../components/GalleryCard";
 import Button from "../components/Button";
+import ScrollReveal from "../components/ScrollReveal";
 
 const Gallery = () => {
     const featuredCertifications = [
@@ -23,28 +24,30 @@ const Gallery = () => {
     ];
 
     return (  
-        <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center">
-            <h1 className="font-jersey font-bold text-5xl py-12">Certifications</h1>
-            <p className="font-pixelify text-center leading-relaxed">A few of the badges I've collected along the way — proof that I actually finished those courses and didn't just bookmark them forever 😅🎓✨</p>
+        <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center bg-deep-plum py-16">
+            <ScrollReveal>
+                <h1 className="font-jersey font-bold text-5xl py-12 text-light-pink text-center">Certifications</h1>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+                <p className="font-pixelify text-center leading-relaxed text-light-pink/90">A few of the badges I&apos;ve collected along the way — proof that I actually finished those courses and didn&apos;t just bookmark them forever 😅🎓✨</p>
+            </ScrollReveal>
             <div className="mt-10 flex flex-wrap gap-8 justify-center">
-                {featuredCertifications.map((cert) => (
-                    <GalleryCard 
-                        key={cert.caption}
-                        image={cert.src}
-                        caption={cert.caption}
-                        titlebar={cert.titlebar}
-                        className="w-72"
-                    />
+                {featuredCertifications.map((cert, i) => (
+                    <ScrollReveal key={cert.caption} delay={0.15 + i * 0.1}>
+                        <GalleryCard 
+                            image={cert.src}
+                            caption={cert.caption}
+                            titlebar={cert.titlebar}
+                            className="w-72"
+                        />
+                    </ScrollReveal>
                 ))}
             </div>  
-            <a
-                href="/gallery"
-                className="mt-12"
-            >
-                <Button 
-                    text="See all credentials"
-                />
-            </a>    
+            <ScrollReveal delay={0.4}>
+                <a href="/gallery" className="mt-12">
+                    <Button text="See all credentials" />
+                </a>
+            </ScrollReveal>
         </div>
     );
 }

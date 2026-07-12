@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Book from "../components/Book";
 import bookData from "../data/books.json"
 

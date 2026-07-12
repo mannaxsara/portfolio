@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 interface GalleryCardProps {
@@ -10,6 +10,18 @@ interface GalleryCardProps {
 
 const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, className = "" }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Close modal on Escape key press
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   return (
     <>
@@ -61,6 +73,8 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
         <div
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 font-pixelify p-4"
           onClick={() => setIsOpen(false)}
+          role="dialog"
+          aria-modal="true"
         >
           <div
             className="relative bg-light-pink border-4 border-rosewood shadow-[8px_8px_0px_#412722]
@@ -77,6 +91,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
                 className="w-5 h-5 flex items-center justify-center
                            bg-raspberry border-2 border-rosewood text-light-pink
                            text-[8px] hover:bg-mauve-brown transition-colors focus:outline-none"
+                aria-label="Close modal"
               >
                 ✕
               </button>
@@ -118,7 +133,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
 
               {/* Click outside hint */}
               <p className="text-[7px] text-mauve-brown text-center tracking-widest opacity-60">
-                click outside to close
+                click outside or press ESC to close
               </p>
             </div>
           </div>

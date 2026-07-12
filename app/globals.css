@@ -1,12 +1,28 @@
 @import "tailwindcss";
 
 @theme {
+  /* ═══════════════════════════════════════════
+     RETRO PIXEL PORTFOLIO — DESIGN SYSTEM
+     ═══════════════════════════════════════════ */
+
+  /* Core Palette */
   --color-light-pink: #f4e2ea;
   --color-rosewood: #af7491;
   --color-raspberry: #773957;
   --color-mauve-brown: #634A45;
   --color-plum-brown: #0f0c3c;
   --color-ocean: #a9bcd9;
+
+  /* Extended Palette */
+  --color-deep-plum: #1a1535;
+  --color-card-dark: #241e4a;
+  --color-elevated: #2e2660;
+  --color-soft-pink: #e8b4c8;
+  --color-muted-lavender: #8b7a9e;
+  --color-pale-rose: #fdf0f4;
+  --color-rose-accent: #fce8f0;
+  --color-dark-rose: #5a3a45;
+  --color-border-muted: #8b5c6e;
 
   --font-pixelify: var(--font-pixelify);
   --font-jersey: var(--font-jersey);
@@ -16,17 +32,35 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom Retro Animations */
+/* ═══════════════════════════════════════════
+   GLOBAL DARK THEME BASE
+   ═══════════════════════════════════════════ */
+
+body {
+  background-color: var(--color-plum-brown);
+  color: var(--color-light-pink);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION ALTERNATING BACKGROUNDS
+   ═══════════════════════════════════════════ */
+
+.section-dark {
+  background-color: var(--color-plum-brown);
+}
+
+.section-alt {
+  background-color: var(--color-deep-plum);
+}
+
+/* ═══════════════════════════════════════════
+   PIXEL ART ANIMATIONS
+   ═══════════════════════════════════════════ */
+
 @keyframes pixel-float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
 }
 
 @keyframes pixel-twinkle {
@@ -41,15 +75,19 @@ html {
 }
 
 @keyframes crt-flicker {
-  0% {
-    opacity: 0.08;
-  }
-  50% {
-    opacity: 0.12;
-  }
-  100% {
-    opacity: 0.08;
-  }
+  0% { opacity: 0.08; }
+  50% { opacity: 0.12; }
+  100% { opacity: 0.08; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(175, 116, 145, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(175, 116, 145, 0.6), 0 0 40px rgba(175, 116, 145, 0.2); }
+}
+
+@keyframes scanline-sweep {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200vh); }
 }
 
 .animate-pixel-float {
@@ -62,4 +100,95 @@ html {
 
 .animate-crt-flicker {
   animation: crt-flicker 0.15s infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════
+   CUSTOM SCROLLBAR
+   ═══════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-plum-brown);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-rosewood);
+  border: 1px solid var(--color-raspberry);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-soft-pink);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-rosewood) var(--color-plum-brown);
+}
+
+/* ═══════════════════════════════════════════
+   SKIP NAVIGATION (Accessibility)
+   ═══════════════════════════════════════════ */
+
+.skip-nav {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-raspberry);
+  color: var(--color-light-pink);
+  padding: 8px 16px;
+  z-index: 100;
+  font-family: var(--font-pixelify);
+  border: 2px solid var(--color-rosewood);
+  transition: top 0.2s ease;
+}
+
+.skip-nav:focus {
+  top: 8px;
+}
+
+/* ═══════════════════════════════════════════
+   FOCUS INDICATORS (Accessibility)
+   ═══════════════════════════════════════════ */
+
+:focus-visible {
+  outline: 2px solid var(--color-soft-pink);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════
+   REDUCED MOTION (Accessibility)
+   ═══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   RETRO SCANLINE PATTERN UTILITY
+   ═══════════════════════════════════════════ */
+
+.retro-scanline {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-border-muted) 0px,
+    var(--color-border-muted) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  opacity: 0.3;
 }

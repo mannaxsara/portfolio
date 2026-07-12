@@ -19,10 +19,20 @@ const jersey = Jersey_10({
 });
 
 export const metadata = {
-  title: "Manna Sara Bilu",
-  description: "Manna Sara Bilu — ACM Event Technologist Head & Data Analyst Portfolio",
+  title: "Manna Sara Bilu — Portfolio",
+  description: "Manna Sara Bilu — ACM Event Technologist Head & Data Analyst Portfolio. Explore projects, certifications, and technical articles.",
   icons: {
     icon: "/icons/favicon.png", 
+  },
+  openGraph: {
+    title: "Manna Sara Bilu — Portfolio",
+    description: "ACM Event Technologist Head & Data Analyst. Projects, certifications, and technical articles.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Manna Sara Bilu — Portfolio",
+    description: "ACM Event Technologist Head & Data Analyst. Projects, certifications, and technical articles.",
   },
 };
 
@@ -33,9 +43,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${pixelify.variable} ${jersey.variable} antialiased`}>
-      <body className="bg-white text-gray-900 flex flex-col min-h-screen">
+      <body className="bg-plum-brown text-light-pink flex flex-col min-h-screen">
+        <a href="#main-content" className="skip-nav">
+          Skip to main content
+        </a>
         <NavBar />
-        <main className="flex-grow">{children}</main>
+        <main id="main-content" className="flex-grow">{children}</main>
         <Footer />
       </body>
     </html>

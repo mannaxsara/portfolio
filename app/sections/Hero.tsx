@@ -19,24 +19,22 @@ const Hero = () => {
         <div className="flex items-center gap-3 mb-6">
           <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
           <div className="flex gap-2 text-raspberry text-[9px]">
-            <span className="animate-pixel-twinkle inline-block">✦</span>
-            <span className="animate-pixel-twinkle inline-block" style={{ animationDelay: "0.8s" }}>✦</span>
-            <span className="animate-pixel-twinkle inline-block" style={{ animationDelay: "1.6s" }}>✦</span>
+            <span className="animate-pixel-twinkle inline-block" aria-hidden="true">✦</span>
+            <span className="animate-pixel-twinkle inline-block" style={{ animationDelay: "0.8s" }} aria-hidden="true">✦</span>
+            <span className="animate-pixel-twinkle inline-block" style={{ animationDelay: "1.6s" }} aria-hidden="true">✦</span>
           </div>
           <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
         </div>
 
         {/* Hello label */}
         <p className="text-[13px] text-mauve-brown tracking-[0.2em] mb-4">
-          hello, i'm
+          hello, i&apos;m
         </p>
 
         {/* Name */}
         <h1
           className="font-jersey font-bold text-raspberry leading-none mb-2"
           style={{ fontSize: "clamp(64px, 14vw, 130px)" }}
-          data-aos="fade-up"
-          data-aos-once="false"
         >
           Manna Sara Bilu
         </h1>
@@ -55,7 +53,7 @@ const Hero = () => {
                 {label}
               </span>
               {i < arr.length - 1 && (
-                <span className="text-raspberry text-[9px]">❖</span>
+                <span className="text-raspberry text-[9px]" aria-hidden="true">❖</span>
               )}
             </span>
           ))}

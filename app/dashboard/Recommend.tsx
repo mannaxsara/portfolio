@@ -127,7 +127,7 @@ const Recommend = () => {
 
             {/* ── Left: recommendations list ── */}
             <div className="flex-1 flex flex-col gap-3 min-w-0">
-                <p className="text-raspberry 6tracking-widest flex items-center gap-2">
+                <p className="text-raspberry tracking-widest flex items-center gap-2">
                 ✦ to be read / watched
                 <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
                 </p>

@@ -1,5 +1,10 @@
 import GalleryFullClient from "./GalleryFullClient";
 
+export const metadata = {
+  title: "Certifications — Manna Sara Bilu",
+  description: "View the academic and professional certifications earned by Manna Sara Bilu in data analytics, cyber-physical systems, and competitive coding.",
+};
+
 export default function GalleryPage() {
   const certifications = [
     {
