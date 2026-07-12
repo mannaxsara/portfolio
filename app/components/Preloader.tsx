@@ -12,8 +12,10 @@ export default function Preloader() {
     // Disable automatic browser scroll restoration so that page reload starts at the very top
     if (typeof window !== "undefined") {
       window.history.scrollRestoration = "manual";
-      // Force scroll to top on refresh
-      window.scrollTo(0, 0);
+      // Force scroll to top on refresh after layout pass completes
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 50);
     }
 
     // Only run preloader once per session to avoid annoying users on returns
