@@ -10,7 +10,7 @@ const About = () => {
     return (  
         <div className="min-h-screen max-w-2xl mx-auto px-4 flex flex-col items-center py-20 bg-bg-alt">
             <ScrollReveal>
-                <h1 className="font-jersey font-bold text-5xl py-12 text-text-base text-center">About Me</h1>
+                <h1 className="font-jersey font-bold text-6xl md:text-7xl py-12 text-text-base text-center">About Me</h1>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
                 <div className="flex flex-col justify-center leading-relaxed text-center font-pixelify gap-5 text-text-base/90">

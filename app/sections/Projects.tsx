@@ -11,7 +11,7 @@ const Projects = () => {
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center">
         <ScrollReveal>
-            <h1 className="font-jersey font-bold text-5xl py-12 text-text-base text-center">Projects</h1>
+            <h1 className="font-jersey font-bold text-6xl md:text-7xl py-12 text-text-base text-center">Projects</h1>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
             <p className="leading-relaxed text-center font-pixelify text-text-base/90">

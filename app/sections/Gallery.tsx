@@ -28,7 +28,7 @@ const Gallery = () => {
     return (  
         <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center bg-bg-alt py-16">
             <ScrollReveal>
-                <h1 className="font-jersey font-bold text-5xl py-12 text-text-base text-center">Certifications</h1>
+                <h1 className="font-jersey font-bold text-6xl md:text-7xl py-12 text-text-base text-center">Certifications</h1>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
                 <p className="font-pixelify text-center leading-relaxed text-text-base/90">A few of the badges I&apos;ve collected along the way — proof that I actually finished those courses and didn&apos;t just bookmark them forever 😅🎓✨</p>
