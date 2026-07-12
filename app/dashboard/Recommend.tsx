@@ -5,6 +5,7 @@ interface RecommendType {
     id: number;
     name: string;
     comment: string;
+    tag?: string;
 }
 
 const Recommend = () => {
@@ -21,17 +22,37 @@ const Recommend = () => {
                 process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder-project");
 
             if (isPlaceholder) {
-                // Load cozy default mock recommendations in placeholder/local dev mode
+                // Highly coordinated local recommendations matching the books on the shelf
                 setRecommendList([
                     {
                         id: 101,
-                        name: "Designing Data-Intensive Applications (Martin Kleppmann)",
-                        comment: "Highly recommended for understanding data pipelines, database storage engines, and system scalability! 📊📖"
+                        name: "Clean Code (Robert C. Martin)",
+                        comment: "A handbook of agile software craftsmanship. The logical next step for writing robust, clean, and maintainable systems! 💻✨",
+                        tag: "DEV"
                     },
                     {
                         id: 102,
-                        name: "Everything Everywhere All at Once (Film)",
-                        comment: "An absolute masterpiece. The perfect blend of multiversal chaos, physics geekery, and deep family bonds! 🌀💖"
+                        name: "System Design Interview (Alex Xu)",
+                        comment: "An excellent follow-up to Designing Data-Intensive Applications. Breaks down system design concepts with practical diagrams! 🌐🛠️",
+                        tag: "SYSTEMS"
+                    },
+                    {
+                        id: 103,
+                        name: "The Pragmatic Programmer (Andrew Hunt & David Thomas)",
+                        comment: "Essential reading for software craftsmanship, learning how to write code that is easy to debug, test, and adapt! 🚀📖",
+                        tag: "CRAFT"
+                    },
+                    {
+                        id: 104,
+                        name: "The Hobbit (J.R.R. Tolkien)",
+                        comment: "For when you want to take a break from tech and dive into classic cozy high fantasy adventure! 🗺️🌲",
+                        tag: "FANTASY"
+                    },
+                    {
+                        id: 105,
+                        name: "Hyperion (Dan Simmons)",
+                        comment: "A brilliant, Hugo Award-winning sci-fi space opera epic for fans of hard science fiction! 🌌🪐",
+                        tag: "SCI-FI"
                     }
                 ]);
                 setLoading(false);
@@ -45,7 +66,7 @@ const Recommend = () => {
                     .select("*");
 
                 if (error) {
-                    console.warn("Supabase fetch warning (database not fully setup):", error.message || error);
+                    console.warn("Supabase fetch warning:", error.message || error);
                 } else {
                     setRecommendList(data || []);
                 }
@@ -67,11 +88,11 @@ const Recommend = () => {
             process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder-project");
 
         if (isPlaceholder) {
-            // Support local mock addition in browser state
             const mockNewItem = {
                 id: Date.now(),
                 name: newTitle,
-                comment: newComment
+                comment: newComment,
+                tag: "REC"
             };
             setRecommendList((prev) => [...prev, mockNewItem]);
             setNewTitle("");
@@ -107,178 +128,228 @@ const Recommend = () => {
 
     return (
         <div className="w-full font-pixelify bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] transition-all hover:shadow-[8px_8px_0px_#412722]">
+            
+            {/* Embedded styles to guarantee thick, theme-cohesive borders and active states */}
+            <style dangerouslySetInnerHTML={{ __html: `
+                .pixel-btn-action {
+                    width: 100%;
+                    padding: 8px 0;
+                    background-color: var(--color-rosewood, #af7491);
+                    color: var(--color-light-pink, #f4e2ea);
+                    font-size: 11px;
+                    letter-spacing: 0.1em;
+                    border: 3px solid var(--color-mauve-brown, #634A45);
+                    border-radius: 4px;
+                    box-shadow: 2px 2px 0px var(--color-shadow-color, #412722);
+                    cursor: pointer;
+                    transition: all 0.1s ease-out;
+                    outline: none;
+                }
+                .pixel-btn-action:hover:not(:disabled) {
+                    background-color: var(--color-raspberry, #773957);
+                    color: #ffffff;
+                }
+                .pixel-btn-action:active:not(:disabled) {
+                    transform: translate(1px, 1px);
+                    box-shadow: 1px 1px 0px var(--color-shadow-color, #412722);
+                }
+                .pixel-btn-action:disabled {
+                    opacity: 0.4;
+                    cursor: not-allowed;
+                }
 
-        {/* Titlebar */}
-        <div className="flex items-center justify-between px-3 py-1.5 bg-rosewood">
-            <span className="text-light-pink text-[9px] tracking-widest opacity-70">
-            tbr-tbw.exe
-            </span>
-            <div className="flex gap-1.5">
-            <span className="w-3 h-3 bg-light-pink border border-white/20"></span>
-            <span className="w-3 h-3 bg-raspberry border border-white/20"></span>
-            <span className="w-3 h-3 bg-mauve-brown border border-white/20"></span>
-            </div>
-        </div>
+                .pixel-suggest-card {
+                    background-color: var(--color-light-pink, #f4e2ea);
+                    border: 3px solid var(--color-rosewood, #af7491);
+                    box-shadow: 3px 3px 0px var(--color-shadow-color, #412722);
+                    padding: 16px;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+                
+                .pixel-tbr-card {
+                    background-color: #fdf0f4;
+                    border: 2px solid var(--color-mauve-brown, #634A45);
+                    padding: 12px;
+                    position: relative;
+                    overflow: hidden;
+                    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.05);
+                }
+            `}} />
 
-        <div className="p-5 flex flex-col gap-5">
-
-            {/* Two column layout: list + form */}
-            <div className="flex flex-col md:flex-row gap-5">
-
-            {/* ── Left: recommendations list ── */}
-            <div className="flex-1 flex flex-col gap-3 min-w-0">
-                <p className="text-raspberry tracking-widest flex items-center gap-2">
-                ✦ to be read / watched
-                <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
-                </p>
-
-                {loading ? (
-                <p className="text-[9px] text-mauve-brown tracking-widest animate-pulse text-center py-4">
-                    ✦ loading... ✦
-                </p>
-                ) : recommendList.length === 0 ? (
-                <div className="bg-[#fdf0f4] border-2 border-mauve-brown p-4 relative overflow-hidden">
-                    <div
-                    className="absolute top-0 left-0 right-0 h-0.5 opacity-30"
-                    style={{
-                        background:
-                        "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
-                    }}
-                    />
-                    <p className="text-[9px] text-mauve-brown text-center tracking-widest">
-                    ✦ nothing yet — add something! ✦
-                    </p>
+            {/* Titlebar */}
+            <div className="flex items-center justify-between px-3 py-1.5 bg-rosewood">
+                <span className="text-light-pink text-[9px] tracking-widest opacity-70">
+                    tbr.exe
+                </span>
+                <div className="flex gap-1.5">
+                    <span className="w-3 h-3 bg-light-pink border border-white/20"></span>
+                    <span className="w-3 h-3 bg-raspberry border border-white/20"></span>
+                    <span className="w-3 h-3 bg-mauve-brown border border-white/20"></span>
                 </div>
-                ) : (
-                <div className="flex flex-col gap-2">
-                    {recommendList.map((rec) => (
-                    <div
-                        key={rec.id}
-                        className="bg-[#fdf0f4] border-2 border-mauve-brown p-3 relative overflow-hidden"
-                    >
-                        <div
-                        className="absolute top-0 left-0 right-0 h-0.5 opacity-30"
-                        style={{
-                            background:
-                            "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
-                        }}
-                        />
-                        <p className="text-[12px] text-[#5a3a45] font-bold flex gap-1.5 items-start">
-                        <span className="text-raspberry mt-px">✦</span>
-                        {rec.name}
+            </div>
+
+            <div className="p-5 flex flex-col gap-5">
+                
+                {/* Two column layout: list + form */}
+                <div className="flex flex-col md:flex-row gap-5">
+
+                    {/* ── Left: recommendations list ── */}
+                    <div className="flex-1 flex flex-col gap-3 min-w-0">
+                        <p className="text-raspberry tracking-widest flex items-center gap-2">
+                            <span>✦ to be read</span>
+                            <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
                         </p>
-                        {rec.comment && (
-                        <p className="text-[11px] text-mauve-brown mt-1.5 leading-relaxed pl-4">
-                            {rec.comment}
-                        </p>
+
+                        {loading ? (
+                            <p className="text-[9px] text-mauve-brown tracking-widest animate-pulse text-center py-4">
+                                ✦ loading... ✦
+                            </p>
+                        ) : recommendList.length === 0 ? (
+                            <div className="pixel-tbr-card text-center">
+                                <p className="text-[9px] text-mauve-brown tracking-widest">
+                                    ✦ tbr list is empty ✦
+                                </p>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col gap-3">
+                                {recommendList.map((rec) => {
+                                    const tag = rec.tag || "REC";
+                                    return (
+                                        <div
+                                            key={rec.id}
+                                            className="pixel-tbr-card"
+                                        >
+                                            <div
+                                                className="absolute top-0 left-0 right-0 h-0.5 opacity-30"
+                                                style={{
+                                                    background:
+                                                        "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
+                                                }}
+                                            />
+                                            <div className="flex items-center justify-between gap-2 flex-wrap">
+                                                <p className="text-[12px] text-[#5a3a45] font-bold flex gap-1.5 items-center">
+                                                    <span className="text-raspberry">✦</span>
+                                                    {rec.name}
+                                                </p>
+                                                {/* Mini Pixelated Genre Badge */}
+                                                <span 
+                                                    className="text-[8px] font-bold px-1.5 py-0.5 border border-rosewood rounded-[2px] tracking-wide"
+                                                    style={{
+                                                        backgroundColor: "#fdf0f4",
+                                                        color: "var(--color-rosewood, #af7491)",
+                                                    }}
+                                                >
+                                                    {tag}
+                                                </span>
+                                            </div>
+                                            {rec.comment && (
+                                                <p className="text-[11px] text-mauve-brown mt-1.5 leading-relaxed pl-4">
+                                                    {rec.comment}
+                                                </p>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         )}
                     </div>
-                    ))}
-                </div>
-                )}
-            </div>
 
-            {/* Divider */}
-            <div
-                className="hidden md:block w-px self-stretch flex-shrink-0"
-                style={{
-                background:
-                    "repeating-linear-gradient(180deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
-                opacity: 0.3,
-                }}
-            />
-            <div
-                className="md:hidden h-px"
-                style={{
-                background:
-                    "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
-                opacity: 0.3,
-                }}
-            />
-
-            {/* ── Right: submission form ── */}
-            <div className="md:w-64 flex-shrink-0 flex flex-col gap-3">
-
-                <p className="text-raspberry tracking-widest flex items-center gap-2">
-                ✦ suggest something
-                <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
-                </p>
-
-                <div
-                className="bg-[#fce8f0] border-2 border-raspberry shadow-[3px_3px_0px_#c0396b] p-4 relative flex flex-col gap-3"
-                >
-                {/* Corner accents */}
-                <span className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-raspberry"></span>
-                <span className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-raspberry"></span>
-                <span className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-raspberry"></span>
-                <span className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-raspberry"></span>
-
-                <p className="text-[11px] text-[#5a3a45] leading-relaxed">
-                    got a book or show i should check out? drop it here ✦
-                </p>
-
-                {/* Title input */}
-                <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] text-mauve-brown tracking-widest">
-                    title
-                    </label>
-                    <input
-                    type="text"
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && addRecommendation()}
-                    placeholder="name of book / show..."
-                    className="w-full border-2 border-mauve-brown bg-[#fdf0f4] px-3 py-2
-                                text-[9px] text-[#5a3a45] tracking-wide
-                                placeholder:text-mauve-brown/50
-                                focus:outline-none focus:border-raspberry
-                                transition-colors"
+                    {/* Divider */}
+                    <div
+                        className="hidden md:block w-px self-stretch flex-shrink-0"
+                        style={{
+                            background:
+                                "repeating-linear-gradient(180deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
+                            opacity: 0.3,
+                        }}
                     />
-                </div>
-
-                {/* Comment input */}
-                <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] text-mauve-brown tracking-widest">
-                    why should i? (optional)
-                    </label>
-                    <textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="sell it to me..."
-                    rows={3}
-                    className="w-full border-2 border-mauve-brown bg-[#fdf0f4] px-3 py-2
-                                text-[9px] text-[#5a3a45] tracking-wide leading-relaxed
-                                placeholder:text-mauve-brown/50
-                                focus:outline-none focus:border-raspberry
-                                transition-colors resize-none"
+                    <div
+                        className="md:hidden h-px"
+                        style={{
+                            background:
+                                "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
+                            opacity: 0.3,
+                        }}
                     />
-                </div>
 
-                {/* Submit button */}
-                <button
-                    onClick={addRecommendation}
-                    disabled={submitting || !newTitle.trim()}
-                    className="w-full py-2.5 bg-rosewood text-light-pink text-[11px] tracking-widest
-                            border-2 border-rosewood shadow-[2px_2px_0px_#412722]
-                            hover:bg-raspberry hover:border-raspberry
-                            active:translate-y-px active:shadow-none
-                            disabled:opacity-40 disabled:cursor-not-allowed
-                            transition-all focus:outline-none"
-                >
-                    {submitting ? "adding..." : "✦ add"}
-                </button>
+                    {/* ── Right: submission form ── */}
+                    <div className="md:w-64 flex-shrink-0 flex flex-col gap-3">
+                        <p className="text-raspberry tracking-widest flex items-center gap-2">
+                            <span>✦ suggest something</span>
+                            <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
+                        </p>
 
-                {/* Success flash */}
-                {submitted && (
-                    <p className="text-[8px] text-raspberry text-center tracking-widest animate-pulse">
-                    ✦ thanks for the rec! ✦
-                    </p>
-                )}
+                        <div className="pixel-suggest-card">
+                            {/* Corner accents */}
+                            <span className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-raspberry"></span>
+                            <span className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-raspberry"></span>
+                            <span className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-raspberry"></span>
+                            <span className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-raspberry"></span>
+
+                            <p className="text-[11px] text-[#5a3a45] leading-relaxed">
+                                got a book or show i should check out? drop it here ✦
+                            </p>
+
+                            {/* Title input */}
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[10px] text-mauve-brown tracking-widest">
+                                    title
+                                </label>
+                                <input
+                                    type="text"
+                                    value={newTitle}
+                                    onChange={(e) => setNewTitle(e.target.value)}
+                                    onKeyDown={(e) => e.key === "Enter" && addRecommendation()}
+                                    placeholder="name of book..."
+                                    className="w-full border-2 border-mauve-brown bg-[#fdf0f4] px-3 py-2
+                                                text-[9px] text-[#5a3a45] tracking-wide
+                                                placeholder:text-mauve-brown/50
+                                                focus:outline-none focus:border-raspberry
+                                                transition-colors"
+                                />
+                            </div>
+
+                            {/* Comment input */}
+                            <div className="flex flex-col gap-1.5">
+                                <label className="text-[10px] text-mauve-brown tracking-widest">
+                                    why should i? (optional)
+                                </label>
+                                <textarea
+                                    value={newComment}
+                                    onChange={(e) => setNewComment(e.target.value)}
+                                    placeholder="sell it to me..."
+                                    rows={3}
+                                    className="w-full border-2 border-mauve-brown bg-[#fdf0f4] px-3 py-2
+                                                text-[9px] text-[#5a3a45] tracking-wide leading-relaxed
+                                                placeholder:text-mauve-brown/50
+                                                focus:outline-none focus:border-raspberry
+                                                transition-colors resize-none"
+                                />
+                            </div>
+
+                            {/* Submit button */}
+                            <button
+                                onClick={addRecommendation}
+                                disabled={submitting || !newTitle.trim()}
+                                className="pixel-btn-action"
+                            >
+                                {submitting ? "adding..." : "✦ add"}
+                            </button>
+
+                            {/* Success flash */}
+                            {submitted && (
+                                <p className="text-[8px] text-raspberry text-center tracking-widest animate-pulse">
+                                    ✦ thanks for the rec! ✦
+                                </p>
+                            )}
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-            </div>
-        </div>
         </div>
     );
 };

@@ -2,6 +2,7 @@ import "./globals.css";
 import "pixel-retroui/dist/index.css";
 import NavBar from "./sections/NavBar";
 import Footer from "./sections/Footer";
+import SmoothScroll from "./components/SmoothScroll";
 
 import { Pixelify_Sans, Jersey_10 } from "next/font/google";
 
@@ -51,6 +52,11 @@ export default function RootLayout({
                 try {
                   const savedTheme = localStorage.getItem("theme") || "dark";
                   document.documentElement.setAttribute("data-theme", savedTheme);
+                  if (savedTheme === "dark") {
+                    document.documentElement.classList.add("dark");
+                  } else {
+                    document.documentElement.classList.remove("dark");
+                  }
                   if ('scrollRestoration' in history) {
                     history.scrollRestoration = 'manual';
                   }
@@ -66,9 +72,11 @@ export default function RootLayout({
         <a href="#main-content" className="skip-nav">
           Skip to main content
         </a>
-        <NavBar />
-        <div id="main-content" className="flex-grow">{children}</div>
-        <Footer />
+        <SmoothScroll>
+          <NavBar />
+          <div id="main-content" className="flex-grow">{children}</div>
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );

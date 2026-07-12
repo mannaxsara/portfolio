@@ -9,9 +9,11 @@ const Projects = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center">
+    <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center justify-center">
         <ScrollReveal>
-            <h1 className="font-jersey font-bold text-6xl md:text-7xl py-12 text-text-base text-center">Projects</h1>
+            <h1 className="font-jersey text-7xl md:text-8xl uppercase tracking-[0.12em] text-text-base text-center py-6">
+                ✦ Projects ✦
+            </h1>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
             <p className="leading-relaxed text-center font-pixelify text-text-base/90">
@@ -29,9 +31,9 @@ const Projects = () => {
                 <ProjectCard
                     title="RLabs Platform"
                     description="An innovative cloud-connected remote lab platform enabling students to perform real-time physical experiments through the browser."
-                    skills={["React", "IoT", "Node.js", "WebSockets", "Microcontrollers"]}
-                    image="/projects/proj-rlabs.png"
-                    git="https://github.com/Chaitanyahoon"
+                    skills={["React", "IoT", "Node.js", "WebSockets", "ESP32", "C++"]}
+                    image="/projects/proj-rlabs.webp"
+                    git="https://github.com/mannaxsara"
                 />
             </div>
           </ScrollReveal>
@@ -44,8 +46,8 @@ const Projects = () => {
                 title="SAIL Analytics"
                 description="Analysis of industrial manufacturing operational datasets and predictive time-series modeling for Bhilai Steel Plant (SAIL)."
                 skills={["Python", "Prophet", "SQL", "Pandas", "Data Analytics"]}
-                image="/projects/proj-sail.png"
-                git="https://github.com/Chaitanyahoon"
+                image="/projects/proj-sail.webp"
+                git="https://github.com/mannaxsara"
               />
             </div>
           </ScrollReveal>

@@ -1,65 +1,70 @@
 'use client';
 
 import ProjectCard from "../components/ProjectCard";
+import ScrollReveal from "../components/ScrollReveal";
 
 const ProjectsFull = () => {
     return (  
-        <div className="min-h-screen max-w-6xl mx-auto px-4 flex flex-col items-center py-24">
-            <h1 className="font-jersey font-bold text-5xl pb-6">Projects</h1>
-            <p className="max-w-2xl leading-relaxed text-center font-pixelify">
-                Here's the full lineup! Some are polished, some are scrappy experiments, but every single one taught me something new. I love the process of going from "wait, how does this even work?" to "oh wow, it actually works!" — that's the best feeling ever 🌸✨💫
-            </p>
+        <div className="min-h-screen max-w-6xl mx-auto px-4 flex flex-col items-center pt-28 pb-20">
+            {/* Staggered Heading matching About/Experience styles */}
+            <ScrollReveal>
+                <h1 className="font-jersey text-7xl md:text-8xl uppercase tracking-[0.12em] text-text-base text-center py-6">
+                    ✦ Projects ✦
+                </h1>
+            </ScrollReveal>
+            
+            <ScrollReveal delay={0.1}>
+                <p className="max-w-2xl leading-relaxed text-center font-pixelify text-text-base/90 text-[15px] md:text-[16px]">
+                    Here&apos;s the lineup of work I&apos;ve built and optimized! From cloud-connected IoT systems enabling remote physics experiments to predictive time-series modeling pipelines designed to analyze industrial manufacturing operational variables. 🌸✨💫
+                </p>
+            </ScrollReveal>
         
-            {/*Project Cards*/}
-            <div className="mt-12 flex flex-wrap gap-8 justify-center">
-                <div
-                onClick={() => window.open("https://rlabs.iiit.ac.in/", "_blank")}
-                className="cursor-pointer"
-                >
-                    <ProjectCard
-                        title="RLabs Platform"
-                        description="An innovative cloud-connected remote lab platform enabling students to perform real-time physical experiments through the browser."
-                        skills={["React", "IoT", "Node.js", "WebSockets", "Microcontrollers"]}
-                        image="/projects/proj-rlabs.png"
-                        git="https://github.com/Chaitanyahoon"
-                    />
-                </div>
-                <div
-                onClick={() => window.open("https://www.sail.co.in/", "_blank")}
-                className="cursor-pointer"
-                >
-                    <ProjectCard
-                        title="SAIL Analytics"
-                        description="Analysis of industrial manufacturing operational datasets and predictive time-series modeling for Bhilai Steel Plant (SAIL)."
-                        skills={["Python", "Prophet", "SQL", "Pandas", "Data Analytics"]}
-                        image="/projects/proj-sail.png"
-                        git="https://github.com/Chaitanyahoon"
-                    />
-                </div>
-                <div
-                onClick={() => window.open("https://www.acm.org/", "_blank")}
-                className="cursor-pointer"
-                >
-                    <ProjectCard
-                        title="ACM Portal"
-                        description="Event management and technologist head software portals, streamlining registration pipelines and event workflows."
-                        skills={["React", "Next.js", "Tailwind CSS", "Vite", "Node.js"]}
-                        image="/projects/proj-acm.png"
-                        git="https://github.com/Chaitanyahoon"
-                    />
-                </div>
-                <div
-                onClick={() => window.open("https://facebook.github.io/prophet/", "_blank")}
-                className="cursor-pointer"
-                >
-                    <ProjectCard
-                        title="Prophet Forecasting"
-                        description="Predictive modeling and time-series analysis on manufacturing dataset variables using Facebook's Prophet framework."
-                        skills={["Python", "Prophet", "Jupyter", "Machine Learning"]}
-                        image="/projects/proj-prophet.png"
-                        git="https://github.com/Chaitanyahoon"
-                    />
-                </div>
+            {/* Project Cards with staggered scroll reveal delays */}
+            <div className="mt-16 flex flex-wrap gap-10 justify-center">
+                <ScrollReveal delay={0.2}>
+                    <div
+                        onClick={() => window.open("https://rlabs.iiit.ac.in/", "_blank")}
+                        className="cursor-pointer"
+                    >
+                        <ProjectCard
+                            title="RLabs Platform"
+                            description="An innovative cloud-connected remote lab platform enabling students to perform real-time physical experiments through the browser."
+                            skills={["React", "IoT", "Node.js", "WebSockets", "ESP32", "C++"]}
+                            image="/projects/proj-rlabs.webp"
+                            git="https://github.com/mannaxsara"
+                        />
+                    </div>
+                </ScrollReveal>
+
+                <ScrollReveal delay={0.3}>
+                    <div
+                        onClick={() => window.open("https://www.sail.co.in/", "_blank")}
+                        className="cursor-pointer"
+                    >
+                        <ProjectCard
+                            title="SAIL Analytics"
+                            description="Analysis of industrial manufacturing operational datasets and predictive time-series modeling for Bhilai Steel Plant (SAIL)."
+                            skills={["Python", "Prophet", "SQL", "Pandas", "Data Analytics"]}
+                            image="/projects/proj-sail.webp"
+                            git="https://github.com/mannaxsara"
+                        />
+                    </div>
+                </ScrollReveal>
+
+                <ScrollReveal delay={0.4}>
+                    <div
+                        onClick={() => window.open("https://facebook.github.io/prophet/", "_blank")}
+                        className="cursor-pointer"
+                    >
+                        <ProjectCard
+                            title="Industrial Anomaly Detector"
+                            description="Predictive modeling and time-series anomaly detection on manufacturing dataset variables to pre-emptively identify component thermal fatigue."
+                            skills={["Python", "Prophet", "Scikit-Learn", "Jupyter", "Machine Learning"]}
+                            image="/projects/proj-prophet.webp"
+                            git="https://github.com/mannaxsara"
+                        />
+                    </div>
+                </ScrollReveal>
             </div>
 
         </div>

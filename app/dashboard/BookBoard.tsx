@@ -38,7 +38,14 @@ const BookBoard = () => {
 
             {/* Shelf */}
             <div className="relative">
-            <div className="flex items-end overflow-x-auto gap-1 pb-0 border-b-[6px] border-rosewood shadow-[0_4px_0px_#412722]">
+            <div 
+                className="flex items-end overflow-x-auto overflow-y-hidden gap-1 pt-6 pb-0 border-b-[6px] border-rosewood shadow-[0_4px_0px_#412722]"
+                style={{
+                    backgroundColor: "#fdf0f4",
+                    backgroundImage: "linear-gradient(90deg, rgba(65, 39, 34, 0.04) 1px, transparent 1px)",
+                    backgroundSize: "20px 100%"
+                }}
+            >
                 {books.map((book) => (
                 <Book
                     key={book.id}
@@ -46,8 +53,17 @@ const BookBoard = () => {
                     onClick={() => setSelectedBook(book)}
                 />
                 ))}
-                <div className="flex-shrink-0 ml-auto">
-                <Image src="/icons/flowerpot.png" alt="flowerpot" width={70} height={38} />
+                <div className="flex-shrink-0 ml-auto flex items-end">
+                <img 
+                    src="/icons/flowerpot.png?v=8" 
+                    alt="flowerpot" 
+                    style={{ 
+                        imageRendering: "pixelated",
+                        height: "140px",
+                        width: "auto"
+                    }} 
+                    className="block"
+                />
                 </div>
             </div>
             <div className="h-1.5 bg-rosewood/40"></div>

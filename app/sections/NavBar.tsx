@@ -15,6 +15,12 @@ export default function Navbar() {
     setMounted(true);
     const savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -22,14 +28,20 @@ export default function Navbar() {
     setTheme(nextTheme);
     localStorage.setItem("theme", nextTheme);
     document.documentElement.setAttribute("data-theme", nextTheme);
+    if (nextTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-light-pink border-b-2 border-rosewood text-plum-brown p-4 flex justify-between items-center z-50 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
+    <nav className="fixed top-0 left-0 w-full bg-nav-bg backdrop-blur-md border-b-2 border-border-accent text-text-base p-4 flex justify-between items-center z-50 shadow-[0_4px_10px_rgba(0,0,0,0.15)] transition-all duration-300">
+      
       {/* Logo */}
       <Link 
         href="/" 
-        className="text-2xl font-bold font-pixelify text-plum-brown px-5"
+        className="text-3xl font-bold font-jersey tracking-wider text-text-base px-5 hover:text-highlight-color transition-colors"
         onClick={(e) => {
           if (typeof window !== 'undefined' && window.location.pathname === "/") {
             e.preventDefault();
@@ -40,30 +52,33 @@ export default function Navbar() {
         Manna Sara Bilu
       </Link>
 
+      {/* Desktop Menu links */}
       <div className="hidden md:flex space-x-4 items-center">
         <NavButton href="#about">About</NavButton>
+        <NavButton href="/dashboard">Dashboard</NavButton>
         <NavButton href="#projects">Projects</NavButton>
         <NavButton href="#gallery">Certifications</NavButton>
         <NavButton href="#experience">Experience</NavButton>
         <NavButton href="#contact">Contact</NavButton>
-        
-        <Link
-          href="/dashboard"
-          className="relative px-3 py-1 font-pixelify text-plum-brown border-2 border-transparent 
-                     hover:border-mauve-brown hover:bg-raspberry hover:shadow-[4px_4px_0px_#412722] hover:text-white
-                     transition-all duration-150"
-        >
-          Dashboard
-        </Link>
 
-        {/* Retro Theme Toggle */}
+        {/* Retro Theme Toggle Button (Sun/Moon) */}
         {mounted && (
           <button
             onClick={toggleTheme}
-            className="font-pixelify text-xs border-2 border-rosewood bg-raspberry text-light-pink px-3 py-1 shadow-[2px_2px_0px_#412722] hover:bg-rosewood hover:text-light-pink transition-all select-none cursor-pointer active:translate-y-px active:shadow-none"
+            className="group w-9 h-9 border-2 border-transparent hover:border-border-accent hover:bg-highlight-color hover:shadow-[4px_4px_0px_var(--shadow-color)] hover:text-white flex items-center justify-center transition-all duration-150 cursor-pointer focus:outline-none ml-2 text-text-base"
             aria-label="Toggle light and dark mode"
           >
-            [ {theme === "dark" ? "LIGHT" : "DARK"} MODE ]
+            {theme === "dark" ? (
+              /* Moon Icon for Dark Mode */
+              <svg className="w-5 h-5 fill-current transform transition-transform duration-300 group-hover:rotate-12" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            ) : (
+              /* Sun Icon for Light Mode */
+              <svg className="w-5 h-5 fill-current transform transition-transform duration-300 group-hover:rotate-45" viewBox="0 0 24 24">
+                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2v-2H2v2zm18 0h2v-2h-2v2zM11 2v2h2V2h-2zm0 18v2h2v-2h-2zm-5.5-12.1l1.4-1.4-1.4-1.4-1.4 1.4 1.4 1.4zm11.3 11.3l1.4-1.4-1.4-1.4-1.4 1.4 1.4 1.4zm-1.4-12.7l1.4 1.4 1.4-1.4-1.4-1.4-1.4 1.4zM5.1 17.5l1.4 1.4 1.4-1.4-1.4-1.4-1.4 1.4z" />
+              </svg>
+            )}
           </button>
         )}
       </div>
@@ -76,9 +91,9 @@ export default function Navbar() {
           aria-label="Toggle menu"
           aria-expanded={isOpen}
         >
-          <span className="w-6 h-1 bg-black"></span>
-          <span className="w-6 h-1 bg-black"></span>
-          <span className="w-6 h-1 bg-black"></span>
+          <span className="w-6 h-1 bg-text-base"></span>
+          <span className="w-6 h-1 bg-text-base"></span>
+          <span className="w-6 h-1 bg-text-base"></span>
         </button>
       </div>
 
@@ -89,51 +104,61 @@ export default function Navbar() {
         />
       )}
 
+      {/* Mobile Sidebar */}
       {mounted && (
         <div
-          className={`fixed top-0 right-0 h-full w-64 bg-light-pink shadow-lg transform transition-transform duration-300 ease-in-out md:hidden z-50 ${
+          className={`fixed top-0 right-0 h-full w-64 bg-bg-alt shadow-lg transform transition-transform duration-300 ease-in-out md:hidden z-50 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <Sidebar backgroundColor="#EEC8CF" className="h-full">
+          <Sidebar backgroundColor="var(--bg-alt)" className="h-full border-l-2 border-border-accent">
             {/* Close button */}
             <button
-              className="absolute top-4 left-4 text-black text-xl font-bold"
+              className="absolute top-4 left-4 text-text-base text-xl font-bold"
               onClick={() => setIsOpen(false)}
               aria-label="Close menu"
             >
               ✕
             </button>
 
-            <Menu className="mt-16 font-pixelify text-black">
+            <Menu className="mt-16 font-pixelify text-text-base">
               <MenuItem>
-                <ScrollLink as="span" href="#about" onClick={() => setIsOpen(false)}>About</ScrollLink>
+                <ScrollLink as="span" href="#about" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">About</ScrollLink>
               </MenuItem>
               <MenuItem>
-                <ScrollLink as="span" href="#projects" onClick={() => setIsOpen(false)}>Projects</ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="#gallery" onClick={() => setIsOpen(false)}>Certifications</ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="#experience" onClick={() => setIsOpen(false)}>Experience</ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="#contact" onClick={() => setIsOpen(false)}>Contact</ScrollLink>
-              </MenuItem>
-              <MenuItem>
-                <ScrollLink as="span" href="/dashboard" onClick={() => setIsOpen(false)} className="hover:text-raspberry transition">
+                <ScrollLink as="span" href="/dashboard" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">
                   Dashboard
                 </ScrollLink>
               </MenuItem>
+              <MenuItem>
+                <ScrollLink as="span" href="#projects" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">Projects</ScrollLink>
+              </MenuItem>
+              <MenuItem>
+                <ScrollLink as="span" href="#gallery" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">Certifications</ScrollLink>
+              </MenuItem>
+              <MenuItem>
+                <ScrollLink as="span" href="#experience" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">Experience</ScrollLink>
+              </MenuItem>
+              <MenuItem>
+                <ScrollLink as="span" href="#contact" onClick={() => setIsOpen(false)} className="hover:text-highlight-color transition">Contact</ScrollLink>
+              </MenuItem>
+
+              {/* Mobile Sidebar Theme slider toggle */}
               <MenuItem
                 onClick={() => {
                   toggleTheme();
                   setIsOpen(false);
                 }}
-                className="hover:text-raspberry transition"
+                className="hover:text-highlight-color transition"
               >
-                {theme === "dark" ? "Light" : "Dark"} Mode
+                <div className="flex items-center justify-between w-full pr-4">
+                  <span>Theme: {theme === "dark" ? "Dark" : "Light"}</span>
+                  {theme === "dark" ? (
+                    <span className="text-xl">🌙</span>
+                  ) : (
+                    <span className="text-xl">☀️</span>
+                  )}
+                </div>
               </MenuItem>
             </Menu>
           </Sidebar>

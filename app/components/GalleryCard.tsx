@@ -27,13 +27,13 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
       {/* Card */}
       <div
         onClick={() => setIsOpen(true)}
-        className={`group cursor-pointer font-pixelify bg-light-pink border-4 border-rosewood
-          shadow-[4px_4px_0px_#412722] hover:shadow-[7px_7px_0px_#412722]
+        className={`group cursor-pointer font-pixelify bg-bg-alt border-4 border-border-accent
+          shadow-[4px_4px_0px_var(--shadow-color)] hover:shadow-[7px_7px_0px_var(--shadow-color)]
           hover:-translate-y-1 transition-all duration-200 ${className}`}
       >
         {/* Titlebar */}
-        <div className="bg-rosewood text-light-pink px-3 py-1 flex items-center justify-between">
-          <span className="text-[8px] tracking-widest opacity-70">{titlebar || "certificate.sys"}</span>
+        <div className="bg-border-accent text-bg-base px-3 py-1 flex items-center justify-between">
+          <span className="text-[8px] tracking-widest opacity-80">{titlebar || "certificate.sys"}</span>
           <div className="flex gap-1.5">
             <span className="w-2.5 h-2.5 bg-raspberry border border-white/20"></span>
             <span className="w-2.5 h-2.5 bg-mauve-brown border border-white/20"></span>
@@ -42,7 +42,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
         </div>
 
         {/* Image */}
-        <div className="border-b-4 border-rosewood overflow-hidden">
+        <div className="border-b-4 border-border-accent overflow-hidden">
           <img
             src={image}
             alt={caption || "Artwork"}
@@ -60,10 +60,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
               className="absolute top-0 left-0 right-0 h-0.5 opacity-30"
               style={{
                 background:
-                  "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
+                  "repeating-linear-gradient(90deg, var(--border-accent) 0px, var(--border-accent) 4px, transparent 4px, transparent 8px)",
               }}
             />
-            <p className="text-[8px] text-[#5a3a45] tracking-wide">✦ {caption}</p>
+            <p className="text-[8px] text-text-base tracking-wide opacity-90">✦ {caption}</p>
           </div>
         )}
       </div>
@@ -77,20 +77,20 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
           aria-modal="true"
         >
           <div
-            className="relative bg-light-pink border-4 border-rosewood shadow-[8px_8px_0px_#412722]
+            className="relative bg-bg-alt border-4 border-border-accent shadow-[8px_8px_0px_var(--shadow-color)]
               max-w-[90vw] max-h-[90vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal titlebar */}
-            <div className="flex items-center justify-between px-3 py-1.5 bg-rosewood flex-shrink-0">
-              <span className="text-light-pink text-[8px] tracking-widest opacity-70">
+            <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent flex-shrink-0">
+              <span className="text-bg-base text-[8px] tracking-widest opacity-80">
                 {titlebar ? `view_${titlebar}` : "certificate_view.exe"}
               </span>
               <button
                 onClick={() => setIsOpen(false)}
                 className="w-5 h-5 flex items-center justify-center
-                           bg-raspberry border-2 border-rosewood text-light-pink
-                           text-[8px] hover:bg-mauve-brown transition-colors focus:outline-none"
+                           bg-highlight-color border-2 border-border-accent text-bg-base
+                           text-[8px] hover:bg-border-accent transition-colors focus:outline-none"
                 aria-label="Close modal"
               >
                 ✕
@@ -99,12 +99,12 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
 
             {/* Full image */}
             <div className="p-4 flex flex-col gap-3 overflow-auto">
-              <div className="border-2 border-mauve-brown shadow-[3px_3px_0px_#8b5c6e] relative">
+              <div className="border-2 border-border-accent shadow-[3px_3px_0px_var(--border-accent)] relative">
                 {/* Corner accents */}
-                <span className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-raspberry z-10"></span>
-                <span className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-raspberry z-10"></span>
-                <span className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-raspberry z-10"></span>
-                <span className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-raspberry z-10"></span>
+                <span className="absolute top-1.5 left-1.5 w-3 h-3 border-t-2 border-l-2 border-border-accent z-10"></span>
+                <span className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-border-accent z-10"></span>
+                <span className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-border-accent z-10"></span>
+                <span className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-border-accent z-10"></span>
                 <img
                   src={image}
                   alt={caption || "Full Artwork"}
@@ -117,23 +117,23 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
 
               {/* Caption in modal */}
               {caption && (
-                <div className="bg-[#fce8f0] border-2 border-raspberry p-3 relative overflow-hidden">
+                <div className="bg-bg-base border-2 border-border-accent p-3 relative overflow-hidden">
                   <div
                     className="absolute top-0 left-0 right-0 h-0.5 opacity-30"
                     style={{
                       background:
-                        "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
+                        "repeating-linear-gradient(90deg, var(--border-accent) 0px, var(--border-accent) 4px, transparent 4px, transparent 8px)",
                     }}
                   />
-                  <p className="text-raspberry text-[8px] tracking-widest flex items-center gap-2">
+                  <p className="text-highlight-color text-[8px] tracking-widest flex items-center gap-2">
                     ✦ {caption}
-                    <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
+                    <span className="flex-1 h-px bg-border-accent opacity-30"></span>
                   </p>
                 </div>
               )}
 
               {/* Click outside hint */}
-              <p className="text-[7px] text-mauve-brown text-center tracking-widest opacity-60">
+              <p className="text-[7px] text-text-muted text-center tracking-widest opacity-60">
                 click outside or press ESC to close
               </p>
             </div>

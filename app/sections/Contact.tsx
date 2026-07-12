@@ -4,6 +4,8 @@ import { useState } from "react";
 import { TextArea, Button, Input } from "pixel-retroui";
 import Github from "../components/icons/Github";
 import Linkedin from "../components/icons/Linkedin";
+import Insta from "../components/icons/Insta";
+import Email from "../components/icons/Email";
 import ScrollReveal from "../components/ScrollReveal";
 
 const Contact = () => {
@@ -31,7 +33,9 @@ const Contact = () => {
     return (  
         <div className="max-w-2xl mx-auto px-4 flex flex-col items-center pb-32">
             <ScrollReveal>
-                <h1 className="font-jersey font-bold text-6xl md:text-7xl py-12 text-text-base text-center">Contact Me</h1>
+                <h1 className="font-jersey text-7xl md:text-8xl uppercase tracking-[0.12em] text-text-base text-center py-6">
+                    ✦ Contact Me ✦
+                </h1>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
                 <p className="font-pixelify text-center leading-relaxed mb-8 text-text-base/90">
@@ -41,61 +45,64 @@ const Contact = () => {
 
             {/* Retro form container */}
             <ScrollReveal delay={0.2} className="w-full max-w-lg">
-                <form onSubmit={handleSubmit} className="w-full font-pixelify bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] p-6 mb-12 flex flex-col gap-4 text-plum-brown">
+                <form onSubmit={handleSubmit} className="w-full font-pixelify bg-bg-alt border-4 border-border-accent shadow-[6px_6px_0px_var(--shadow-color)] p-6 mb-12 flex flex-col gap-4 text-text-base">
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] text-mauve-brown tracking-widest uppercase font-bold">Name</label>
+                        <label className="text-[11px] text-text-muted tracking-widest uppercase font-bold">Name</label>
                         <Input 
                             type="text" 
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="your name..." 
-                            bg="#fdf0f4"
-                            textColor="#634A45"
-                            borderColor="#634A45"
+                            bg="var(--bg-base)"
+                            textColor="var(--text-base)"
+                            borderColor="var(--border-accent)"
                             required
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] text-mauve-brown tracking-widest uppercase font-bold">Email</label>
+                        <label className="text-[11px] text-text-muted tracking-widest uppercase font-bold">Email</label>
                         <Input 
                             type="email" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="your email..." 
-                            bg="#fdf0f4"
-                            textColor="#634A45"
-                            borderColor="#634A45"
+                            bg="var(--bg-base)"
+                            textColor="var(--text-base)"
+                            borderColor="var(--border-accent)"
                             required
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] text-mauve-brown tracking-widest uppercase font-bold">Message</label>
+                        <label className="text-[11px] text-text-muted tracking-widest uppercase font-bold">Message</label>
                         <TextArea 
                             placeholder="write your message here..." 
                             onChange={(e) => setMessage(e.target.value)}
                             value={message}
-                            bg="#fdf0f4"
-                            textColor="#634A45"
-                            borderColor="#634A45"
+                            bg="var(--bg-base)"
+                            textColor="var(--text-base)"
+                            borderColor="var(--border-accent)"
                         />
                     </div>
 
-                    <Button 
+                    <button
                         type="submit"
                         disabled={submitting}
-                        bg="#af7491"
-                        textColor="#f4e2ea"
-                        borderColor="#634A45"
-                        shadow="#412722"
-                        className="w-full cursor-pointer transition-all disabled:opacity-50 mt-2"
+                        className="w-full text-base tracking-widest uppercase py-2.5 px-4 cursor-pointer transition-all disabled:opacity-50 disabled:pointer-events-none mt-2 flex items-center justify-center gap-2 hover:-translate-y-0.5 active:translate-y-0"
+                        style={{
+                          backgroundColor: "var(--highlight-color)",
+                          color: "var(--bg-base)",
+                          borderColor: "var(--border-accent)",
+                          borderWidth: "4px",
+                          borderStyle: "solid",
+                          boxShadow: "4px 4px 0px var(--shadow-color)",
+                          fontFamily: "var(--font-jersey)",
+                        }}
                     >
-                        <span className="font-jersey text-sm tracking-widest uppercase block py-1">
-                            {submitting ? "SENDING..." : "✦ SEND MESSAGE"}
-                        </span>
-                    </Button>
+                        {submitting ? "SENDING..." : "✦ SEND MESSAGE"}
+                    </button>
 
                     {sent && (
-                        <p className="text-xs text-raspberry text-center tracking-widest animate-pulse mt-2">
+                        <p className="text-xs text-border-accent text-center tracking-widest animate-pulse mt-2">
                             ✦ Message sent successfully! ✦
                         </p>
                     )}
@@ -104,14 +111,11 @@ const Contact = () => {
 
             {/* Social links */}
             <ScrollReveal delay={0.3}>
-                <div className="flex flex-wrap gap-5 items-center justify-center">
+                <div className="flex flex-wrap gap-4 items-center justify-center">
                     <Linkedin />
                     <Github />
-                    <a href="mailto:mannasarabilu@gmail.com" className="hover:opacity-60 transition flex items-center justify-center w-[32px] h-[32px] text-light-pink" title="Email">
-                        <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0l-7.5-4.615a2.25 2.25 0 01-1.07-1.916V6.75" />
-                        </svg>
-                    </a>
+                    <Insta />
+                    <Email />
                 </div>
             </ScrollReveal>
         </div>

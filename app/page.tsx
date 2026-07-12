@@ -6,12 +6,16 @@ import Experience from "./sections/Experience";
 import Contact from "./sections/Contact";
 import Preloader from "./components/Preloader";
 import ScrollToTop from "./components/ScrollToTop";
+import CherryBlossoms from "./components/CherryBlossoms";
+import FloatingCompanion from "./components/FloatingCompanion";
 
 const Home = () => {
   return (
     <main>
       <ScrollToTop />
       <Preloader />
+      <CherryBlossoms />
+      <FloatingCompanion />
       <section id="home">
         <Hero />
       </section>

@@ -6,11 +6,11 @@ import BookBoard from "./BookBoard";
 import GameCard from "./GameCard";
 import Recommend from "./Recommend";
 import Image from "next/image";
-import FilmBoard from "./FilmBoard";
+
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen max-w-2xl mx-auto px-4 flex flex-col items-center pb-16">
+    <div className="min-h-screen max-w-3xl mx-auto px-4 flex flex-col items-center pb-16">
       <h1 className="font-jersey font-bold text-5xl pt-24 pb-6">Dashboard</h1>
 
       {/* Introduction */}
@@ -200,9 +200,7 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 gap-6 w-full mt-12">
         <BookBoard />
-        <FilmBoard />
         <MusicPlayer />
-        {/* <GameCard /> */}
         <Recommend />
       </div>
     </div>
