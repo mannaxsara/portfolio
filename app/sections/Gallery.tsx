@@ -1,10 +1,12 @@
 'use client'
 
+import { Button } from "pixel-retroui";
+import { useRouter } from "next/navigation";
 import GalleryCard from "../components/GalleryCard";
-import Button from "../components/Button";
 import ScrollReveal from "../components/ScrollReveal";
 
 const Gallery = () => {
+    const router = useRouter();
     const featuredCertifications = [
         {
           src: "/cert-data-analytics.png",
@@ -44,7 +46,18 @@ const Gallery = () => {
                 ))}
             </div>  
             <ScrollReveal delay={0.4} className="mt-12 flex justify-center">
-                <Button text="See all credentials" href="/gallery" />
+                <Button
+                    onClick={() => router.push("/gallery")}
+                    bg="#f4e2ea"
+                    textColor="#0f0c3c"
+                    borderColor="#af7491"
+                    shadow="#412722"
+                    className="cursor-pointer"
+                >
+                    <span className="font-jersey text-xl uppercase tracking-wide px-4 py-1 block">
+                        See all credentials
+                    </span>
+                </Button>
             </ScrollReveal>
         </div>
     );

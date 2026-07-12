@@ -1,9 +1,12 @@
 'use client';
 
-import Button from "../components/Button";
+import { Button } from "pixel-retroui";
+import { useRouter } from "next/navigation";
 import ScrollReveal from "../components/ScrollReveal";
 
 const About = () => {
+    const router = useRouter();
+
     return (  
         <div className="min-h-screen max-w-2xl mx-auto px-4 flex flex-col items-center py-20 bg-bg-alt">
             <ScrollReveal>
@@ -20,11 +23,19 @@ const About = () => {
             <ScrollReveal delay={0.2}>
                 <img src="/manna-avatar.png" alt="Manna Sara Bilu" width={200} height={300} className="object-contain mt-6 filter drop-shadow-[4px_4px_0px_#634A45] animate-pixel-float"/>
             </ScrollReveal>
-            <ScrollReveal delay={0.3} className="flex justify-center text-center font-jersey text-2xl mt-6">
+            <ScrollReveal delay={0.3} className="mt-6 flex justify-center">
                 <Button
-                    text="Dashboard"
-                    href="/dashboard"
-                />
+                    onClick={() => router.push("/dashboard")}
+                    bg="#f4e2ea"
+                    textColor="#0f0c3c"
+                    borderColor="#af7491"
+                    shadow="#412722"
+                    className="cursor-pointer"
+                >
+                    <span className="font-jersey text-2xl uppercase tracking-wide px-4 py-1 block">
+                        Dashboard
+                    </span>
+                </Button>
             </ScrollReveal>
         </div>
     );

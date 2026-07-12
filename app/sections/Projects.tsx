@@ -1,10 +1,13 @@
 'use client';
 
+import { Button } from "pixel-retroui";
+import { useRouter } from "next/navigation";
 import ProjectCard from "../components/ProjectCard";
-import Button from "../components/Button";
 import ScrollReveal from "../components/ScrollReveal";
 
 const Projects = () => {
+  const router = useRouter();
+
   return (
     <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center">
         <ScrollReveal>
@@ -48,7 +51,18 @@ const Projects = () => {
           </ScrollReveal>
         </div>
         <ScrollReveal delay={0.3} className="mt-12 flex justify-center">
-            <Button text="See more projects" href="/projects" />
+            <Button
+                onClick={() => router.push("/projects")}
+                bg="#f4e2ea"
+                textColor="#0f0c3c"
+                borderColor="#af7491"
+                shadow="#412722"
+                className="cursor-pointer"
+            >
+                <span className="font-jersey text-xl uppercase tracking-wide px-4 py-1 block">
+                    See more projects
+                </span>
+            </Button>
         </ScrollReveal>
     </div>
   );

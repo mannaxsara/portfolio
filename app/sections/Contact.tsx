@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TextArea } from "pixel-retroui";
+import { TextArea, Button } from "pixel-retroui";
 import Github from "../components/icons/Github";
 import Linkedin from "../components/icons/Linkedin";
 import ScrollReveal from "../components/ScrollReveal";
@@ -72,13 +72,19 @@ const Contact = () => {
                         />
                     </div>
 
-                    <button 
+                    <Button 
                         type="submit"
                         disabled={submitting}
-                        className="w-full py-2.5 bg-rosewood text-light-pink text-sm tracking-widest border-2 border-rosewood shadow-[2px_2px_0px_#412722] hover:bg-raspberry hover:border-raspberry active:translate-y-px active:shadow-none transition-all disabled:opacity-50 mt-2 font-jersey uppercase"
+                        bg="#af7491"
+                        textColor="#f4e2ea"
+                        borderColor="#634A45"
+                        shadow="#412722"
+                        className="w-full cursor-pointer transition-all disabled:opacity-50 mt-2"
                     >
-                        {submitting ? "SENDING..." : "✦ SEND MESSAGE"}
-                    </button>
+                        <span className="font-jersey text-sm tracking-widest uppercase block py-1">
+                            {submitting ? "SENDING..." : "✦ SEND MESSAGE"}
+                        </span>
+                    </Button>
 
                     {sent && (
                         <p className="text-xs text-raspberry text-center tracking-widest animate-pulse mt-2">
