@@ -25,9 +25,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-light-pink text-white p-4 flex justify-between items-center z-50">
+    <nav className="fixed top-0 left-0 w-full bg-light-pink border-b-2 border-rosewood text-plum-brown p-4 flex justify-between items-center z-50 shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
       {/* Logo */}
-      <Link href="/" className="text-2xl font-bold font-pixelify text-black px-5">
+      <Link href="/" className="text-2xl font-bold font-pixelify text-plum-brown px-5">
         Manna Sara Bilu
       </Link>
 
@@ -40,7 +40,7 @@ export default function Navbar() {
         
         <Link
           href="/dashboard"
-          className="relative px-3 py-1 font-pixelify text-black border-2 border-transparent 
+          className="relative px-3 py-1 font-pixelify text-plum-brown border-2 border-transparent 
                      hover:border-mauve-brown hover:bg-raspberry hover:shadow-[4px_4px_0px_#412722] hover:text-white
                      transition-all duration-150"
         >
@@ -51,9 +51,7 @@ export default function Navbar() {
         {mounted && (
           <button
             onClick={toggleTheme}
-            className="relative px-3 py-1 font-pixelify text-black border-2 border-transparent 
-                       hover:border-mauve-brown hover:bg-raspberry hover:shadow-[4px_4px_0px_#412722] hover:text-white
-                       transition-all duration-150 cursor-pointer select-none"
+            className="font-pixelify text-xs border-2 border-rosewood bg-raspberry text-light-pink px-3 py-1 shadow-[2px_2px_0px_#412722] hover:bg-rosewood hover:text-light-pink transition-all select-none cursor-pointer active:translate-y-px active:shadow-none"
             aria-label="Toggle light and dark mode"
           >
             [ {theme === "dark" ? "LIGHT" : "DARK"} MODE ]
