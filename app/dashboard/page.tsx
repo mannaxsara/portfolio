@@ -103,7 +103,7 @@ const Dashboard = () => {
               </div>
 
               {/* Likes / Dislikes inline on wider screens */}
-              <div className="flex gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 {/* Likes */}
                 <div className="flex-1 bg-[#fdf0f4] border-2 border-mauve-brown p-3 relative overflow-hidden">
                   <div
