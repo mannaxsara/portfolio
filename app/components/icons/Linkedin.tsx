@@ -1,0 +1,22 @@
+import Image from "next/image";
+
+const Linkedin = () => {
+    return (  
+        <a
+            href='https://www.linkedin.com/in/manna-sara-bilu-5979262b0'
+            target="_blank" 
+            rel="noopener noreferrer" 
+        >
+            <Image 
+                src="/icons/linkedin.png"
+                alt="Linkedin"
+                width={32}
+                height={32}
+                className="hover:opacity-30 transition"
+
+            />
+        </a>
+    );
+}
+ 
+export default Linkedin;

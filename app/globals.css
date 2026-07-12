@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --color-light-pink: #f4e2ea;
+  --color-rosewood: #af7491;
+  --color-raspberry: #773957;
+  --color-mauve-brown: #634A45;
+  --color-plum-brown: #0f0c3c;
+  --color-ocean: #a9bcd9;
+
+  --font-pixelify: var(--font-pixelify);
+  --font-jersey: var(--font-jersey);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Retro Animations */
+@keyframes pixel-float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pixel-twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(15deg);
+  }
+}
+
+@keyframes crt-flicker {
+  0% {
+    opacity: 0.08;
+  }
+  50% {
+    opacity: 0.12;
+  }
+  100% {
+    opacity: 0.08;
+  }
+}
+
+.animate-pixel-float {
+  animation: pixel-float 3.5s ease-in-out infinite;
+}
+
+.animate-pixel-twinkle {
+  animation: pixel-twinkle 2.5s ease-in-out infinite;
+}
+
+.animate-crt-flicker {
+  animation: crt-flicker 0.15s infinite;
+}
