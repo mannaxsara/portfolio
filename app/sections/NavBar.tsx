@@ -24,9 +24,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-light-pink text-white py-4 px-6 flex justify-between items-center z-50">
+    <nav className="fixed top-0 left-0 w-full bg-light-pink text-white p-4 flex justify-between items-center z-50">
       {/* Logo */}
-      <Link href="/" className="text-2xl font-bold font-pixelify text-black px-4">
+      <Link href="/" className="text-2xl font-bold font-pixelify text-black px-5">
         Manna Sara Bilu
       </Link>
 
@@ -60,16 +60,19 @@ export default function Navbar() {
         )}
       </div>
 
-      <button
-        className="flex md:hidden flex-col space-y-1 focus:outline-none"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle menu"
-        aria-expanded={isOpen}
-      >
-        <span className="w-6 h-1 bg-black"></span>
-        <span className="w-6 h-1 bg-black"></span>
-        <span className="w-6 h-1 bg-black"></span>
-      </button>
+      {/* Mobile Hamburger Button — wrapped in md:hidden to bulletproof desktop hiding */}
+      <div className="md:hidden">
+        <button
+          className="flex flex-col space-y-1 focus:outline-none"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={isOpen}
+        >
+          <span className="w-6 h-1 bg-black"></span>
+          <span className="w-6 h-1 bg-black"></span>
+          <span className="w-6 h-1 bg-black"></span>
+        </button>
+      </div>
 
       {/* Mobile menu overlay */}
       {mounted && isOpen && (
