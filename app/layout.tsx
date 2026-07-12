@@ -42,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${pixelify.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
+    <html lang="en" data-theme="dark" className={`${pixelify.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -64,7 +64,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <NavBar />
-        <main id="main-content" className="flex-grow">{children}</main>
+        <div id="main-content" className="flex-grow">{children}</div>
         <Footer />
       </body>
     </html>

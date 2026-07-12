@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const Github = () => {
     return (  
         <a
@@ -7,7 +5,7 @@ const Github = () => {
             target="_blank" 
             rel="noopener noreferrer" 
         >
-            <Image 
+            <img 
                 src="/icons/github.png"
                 alt="github"
                 width={32}

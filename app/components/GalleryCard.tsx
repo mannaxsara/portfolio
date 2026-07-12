@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Image from "next/image";
 
 interface GalleryCardProps {
   image: string;
@@ -44,7 +43,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
 
         {/* Image */}
         <div className="border-b-4 border-rosewood overflow-hidden">
-          <Image
+          <img
             src={image}
             alt={caption || "Artwork"}
             width={400}
@@ -105,7 +104,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
                 <span className="absolute top-1.5 right-1.5 w-3 h-3 border-t-2 border-r-2 border-raspberry z-10"></span>
                 <span className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b-2 border-l-2 border-raspberry z-10"></span>
                 <span className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b-2 border-r-2 border-raspberry z-10"></span>
-                <Image
+                <img
                   src={image}
                   alt={caption || "Full Artwork"}
                   width={800}

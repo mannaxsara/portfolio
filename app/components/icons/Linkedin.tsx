@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const Linkedin = () => {
     return (  
         <a
@@ -7,13 +5,12 @@ const Linkedin = () => {
             target="_blank" 
             rel="noopener noreferrer" 
         >
-            <Image 
+            <img 
                 src="/icons/linkedin.png"
                 alt="Linkedin"
                 width={32}
                 height={32}
                 className="hover:opacity-30 transition"
-
             />
         </a>
     );

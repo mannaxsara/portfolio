@@ -1,6 +1,5 @@
 import ProjectGithub from "./icons/ProjGit";
 import Youtube from "./icons/Youtube";
-import Image from "next/image";
 
 interface ProjectCardProps {
   title: string;
@@ -38,7 +37,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <div
         className="overflow-hidden border-b-4 border-rosewood transition-all duration-300 ease-in-out h-[17rem] group-hover:h-24"
       >
-        <Image
+        <img
           src={image}
           alt={title}
           width={400}

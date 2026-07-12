@@ -1,7 +1,6 @@
 'use client';
 
 import Button from "../components/Button";
-import Image from "next/image";
 import ScrollReveal from "../components/ScrollReveal";
 
 const About = () => {
@@ -19,7 +18,7 @@ const About = () => {
                 </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-                <Image src="/manna-avatar.png" alt="Manna Sara Bilu" width={200} height={300} className="object-contain mt-6 filter drop-shadow-[4px_4px_0px_#634A45] animate-pixel-float"/>
+                <img src="/manna-avatar.png" alt="Manna Sara Bilu" width={200} height={300} className="object-contain mt-6 filter drop-shadow-[4px_4px_0px_#634A45] animate-pixel-float"/>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
                 <a href="/dashboard" className="flex justify-center text-center font-jersey text-2xl mt-6">

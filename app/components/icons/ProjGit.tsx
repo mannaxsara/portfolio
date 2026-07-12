@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 
 interface ProjectGithubProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -20,7 +19,7 @@ const ProjectGithub: React.FC<ProjectGithubProps> = ({
       rel="noopener noreferrer"
       {...props}
     >
-      <Image
+      <img
         src="/icons/github.png"
         alt={alt}
         width={size}
