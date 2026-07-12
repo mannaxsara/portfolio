@@ -39,7 +39,11 @@ export default function Preloader() {
 
         <h2 className="font-jersey text-4xl text-raspberry animate-pulse">BOOTING PORTFOLIO.EXE</h2>
         
-        <div className="w-full mt-4">
+        <div className="w-full mt-4 flex flex-col gap-2">
+          <div className="flex justify-between items-center font-jersey text-lg text-raspberry tracking-wider">
+            <span>LOADING...</span>
+            <span>{Math.min(progress, 100)}%</span>
+          </div>
           <ProgressBar
             size="md"
             color="pink"
