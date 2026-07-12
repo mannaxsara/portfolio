@@ -57,7 +57,7 @@ export default function Experience() {
             </ScrollReveal>
             
             {/* Timeline Line */}
-            <div className="relative border-l-4 border-border-accent ml-4 flex flex-col gap-12 w-full font-pixelify">
+            <div className="relative border-l-4 border-border-accent ml-4 flex flex-col gap-12 font-pixelify">
                 {experiences.map((exp, idx) => (
                     <ScrollReveal key={idx} delay={0.1 + idx * 0.15} direction="left">
                         <div className="relative pl-8">

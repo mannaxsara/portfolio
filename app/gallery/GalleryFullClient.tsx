@@ -24,7 +24,7 @@ export default function GalleryFullClient({ artworks }: { artworks: Artwork[] })
       {/* Grid Layout */}
       <div className="flex flex-wrap gap-8 justify-center mt-6">
         {artworks.map((art, idx) => (
-          <div key={`${art.src}-${idx}`} className="w-72">
+          <div key={`${art.src}-${idx}`} className="w-full max-w-72">
             <GalleryCard 
               image={art.src} 
               caption={art.caption} 

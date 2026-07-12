@@ -42,7 +42,7 @@ const Gallery = () => {
                             image={cert.src}
                             caption={cert.caption}
                             titlebar={cert.titlebar}
-                            className="w-72"
+                            className="w-full max-w-72"
                         />
                     </ScrollReveal>
                 ))}

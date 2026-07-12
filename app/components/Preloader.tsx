@@ -82,7 +82,7 @@ export default function Preloader() {
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-[#8b5c6e]/5 to-transparent bg-[length:100%_4px] animate-crt-flicker"></div>
       
       {/* Clean Centered Loader Container */}
-      <div className="w-full max-w-md bg-light-pink dark:bg-[#201518] border-4 border-rosewood dark:border-[#8b5c6e] shadow-[8px_8px_0px_#412722] dark:shadow-[8px_8px_0px_#020204] p-8 flex flex-col items-center gap-6 text-center relative transition-all duration-300">
+      <div className="w-full max-w-md bg-light-pink dark:bg-[#201518] border-4 border-rosewood dark:border-[#8b5c6e] shadow-[8px_8px_0px_#412722] dark:shadow-[8px_8px_0px_#020204] p-5 sm:p-8 flex flex-col items-center gap-6 text-center relative transition-all duration-300">
         
         {/* Frame Accent Corners */}
         <span className="absolute top-2.5 left-2.5 w-4 h-4 border-t-2 border-l-2 border-rosewood dark:border-[#8b5c6e]"></span>
@@ -117,8 +117,8 @@ export default function Preloader() {
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
-          <div className="flex justify-between items-center mt-2 text-[9px] text-mauve-brown dark:text-[#c49db0] tracking-widest font-bold">
-            <span>{statusMsg}</span>
+          <div className="flex flex-col sm:flex-row justify-between items-center mt-2 text-[9px] gap-1 text-mauve-brown dark:text-[#c49db0] tracking-wide sm:tracking-widest font-bold">
+            <span className="text-center sm:text-left">{statusMsg}</span>
             <span>{Math.min(progress, 100)}%</span>
           </div>
         </div>

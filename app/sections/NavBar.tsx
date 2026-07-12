@@ -9,6 +9,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [theme, setTheme] = useState("light");
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -20,7 +21,52 @@ export default function Navbar() {
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, []);
+
+    // Touch swipe gestures
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.changedTouches[0].clientX;
+      touchStartY = e.changedTouches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const distanceX = touchStartX - touchEndX;
+      const distanceY = touchStartY - touchEndY;
+
+      if (Math.abs(distanceX) > Math.abs(distanceY)) {
+        if (distanceX > 60 && touchStartX > window.innerWidth - 60) {
+          setIsOpen(true);
+        }
+        if (distanceX < -60) {
+          setIsOpen(false);
+        }
+      }
+    };
+
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    // Handle viewport resize tracking
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setIsOpen(false);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isOpen]);
 
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
@@ -59,16 +105,16 @@ export default function Navbar() {
       </Link>
 
       {/* Desktop Menu links */}
-      <div className="hidden md:flex space-x-4 items-center">
-        <NavButton href="#about">About</NavButton>
-        <NavButton href="/dashboard">Dashboard</NavButton>
-        <NavButton href="#projects">Projects</NavButton>
-        <NavButton href="#gallery">Certifications</NavButton>
-        <NavButton href="#experience">Experience</NavButton>
-        <NavButton href="#contact">Contact</NavButton>
+      {mounted && !isMobile && (
+        <div className="flex space-x-4 items-center">
+          <NavButton href="#about">About</NavButton>
+          <NavButton href="/dashboard">Dashboard</NavButton>
+          <NavButton href="#projects">Projects</NavButton>
+          <NavButton href="#gallery">Certifications</NavButton>
+          <NavButton href="#experience">Experience</NavButton>
+          <NavButton href="#contact">Contact</NavButton>
 
-        {/* Retro Theme Toggle Button (Sun/Moon) */}
-        {mounted && (
+          {/* Retro Theme Toggle Button (Sun/Moon) */}
           <button
             onClick={toggleTheme}
             className="group w-9 h-9 border-2 border-transparent hover:border-border-accent hover:bg-highlight-color hover:shadow-[4px_4px_0px_var(--shadow-color)] hover:text-white flex items-center justify-center transition-all duration-150 cursor-pointer focus:outline-none ml-2 text-text-base"
@@ -86,98 +132,93 @@ export default function Navbar() {
               </svg>
             )}
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Mobile Hamburger Button */}
-      <div className="md:hidden flex items-center pr-2">
-        <button
-          className="w-10 h-10 border-2 border-border-accent bg-bg-alt flex flex-col items-center justify-center gap-1.5 focus:outline-none shadow-[2px_2px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-100"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={isOpen}
-        >
-          <span className={`w-5 h-[3px] bg-text-base transition-transform duration-200 ${isOpen ? "rotate-45 translate-y-[6px]" : ""}`}></span>
-          <span className={`w-5 h-[3px] bg-text-base transition-opacity duration-200 ${isOpen ? "opacity-0" : ""}`}></span>
-          <span className={`w-5 h-[3px] bg-text-base transition-transform duration-200 ${isOpen ? "-rotate-45 -translate-y-[6px]" : ""}`}></span>
-        </button>
-      </div>
+      {mounted && isMobile && (
+        <div className="flex items-center pr-2 relative z-50">
+          <button
+            className="w-10 h-10 border-2 border-border-accent bg-bg-alt flex flex-col items-center justify-center gap-1.5 focus:outline-none shadow-[2px_2px_0px_var(--shadow-color)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all duration-100"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={isOpen}
+          >
+            <span className={`w-5 h-[3px] bg-current transition-transform duration-200 ${isOpen ? "rotate-45 translate-y-[6px]" : ""}`}></span>
+            <span className={`w-5 h-[3px] bg-current transition-opacity duration-200 ${isOpen ? "opacity-0" : ""}`}></span>
+            <span className={`w-5 h-[3px] bg-current transition-transform duration-200 ${isOpen ? "-rotate-45 -translate-y-[6px]" : ""}`}></span>
+          </button>
+        </div>
+      )}
 
-      {/* Mobile Dropdown Menu (Top-down) */}
-      {mounted && (
+      {mounted && isMobile && isOpen && (
         <div
-          className={`absolute top-full left-0 w-full bg-bg-alt/95 backdrop-blur-md border-b-4 border-border-accent shadow-[0_6px_0px_var(--shadow-color)] transition-all duration-300 ease-in-out md:hidden z-50 overflow-hidden ${
-            isOpen 
-              ? "max-h-[380px] opacity-100 border-t-2 border-border-accent/10" 
-              : "max-h-0 opacity-0 pointer-events-none"
-          }`}
+          className="absolute top-full left-0 w-full bg-bg-alt border-b-4 border-border-accent shadow-[0_6px_0px_var(--shadow-color)] z-40 flex flex-col p-6 gap-4 font-pixelify text-base text-text-base"
         >
-          <div className="px-6 py-4 flex flex-col gap-4 font-pixelify text-base text-text-base">
-            <ScrollLink 
-              as="span" 
-              href="#about" 
-              onClick={() => setIsOpen(false)} 
-              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
-            >
-              About
-            </ScrollLink>
-            
-            <Link 
-              href="/dashboard" 
-              onClick={() => setIsOpen(false)} 
-              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
-            >
-              Dashboard
-            </Link>
-            
-            <ScrollLink 
-              as="span" 
-              href="#projects" 
-              onClick={() => setIsOpen(false)} 
-              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
-            >
-              Projects
-            </ScrollLink>
-            
-            <ScrollLink 
-              as="span" 
-              href="#gallery" 
-              onClick={() => setIsOpen(false)} 
-              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
-            >
-              Certifications
-            </ScrollLink>
-            
-            <ScrollLink 
-              as="span" 
-              href="#experience" 
-              onClick={() => setIsOpen(false)} 
-              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
-            >
-              Experience
-            </ScrollLink>
-            
-            <ScrollLink 
-              as="span" 
-              href="#contact" 
-              onClick={() => setIsOpen(false)} 
-              className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
-            >
-              Contact
-            </ScrollLink>
+          <ScrollLink 
+            as="span" 
+            href="#about" 
+            onClick={() => setIsOpen(false)} 
+            className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+          >
+            About
+          </ScrollLink>
+          
+          <Link 
+            href="/dashboard" 
+            onClick={() => setIsOpen(false)} 
+            className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+          >
+            Dashboard
+          </Link>
+          
+          <ScrollLink 
+            as="span" 
+            href="#projects" 
+            onClick={() => setIsOpen(false)} 
+            className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+          >
+            Projects
+          </ScrollLink>
+          
+          <ScrollLink 
+            as="span" 
+            href="#gallery" 
+            onClick={() => setIsOpen(false)} 
+            className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+          >
+            Certifications
+          </ScrollLink>
+          
+          <ScrollLink 
+            as="span" 
+            href="#experience" 
+            onClick={() => setIsOpen(false)} 
+            className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+          >
+            Experience
+          </ScrollLink>
+          
+          <ScrollLink 
+            as="span" 
+            href="#contact" 
+            onClick={() => setIsOpen(false)} 
+            className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+          >
+            Contact
+          </ScrollLink>
 
-            {/* Mobile Theme Toggle */}
-            <button
-              onClick={() => {
-                toggleTheme();
-                setIsOpen(false);
-              }}
-              className="flex items-center justify-between w-full py-1 hover:text-highlight-color transition-colors text-left font-pixelify"
-            >
-              <span>Theme: {theme === "dark" ? "Dark" : "Light"}</span>
-              <span className="text-xl">{theme === "dark" ? "🌙" : "☀️"}</span>
-            </button>
-          </div>
+          {/* Mobile Theme Toggle */}
+          <button
+            onClick={() => {
+              toggleTheme();
+              setIsOpen(false);
+            }}
+            className="flex items-center justify-between w-full py-1 hover:text-highlight-color transition-colors text-left font-pixelify"
+          >
+            <span>Theme: {theme === "dark" ? "Dark" : "Light"}</span>
+            <span className="text-xl">{theme === "dark" ? "🌙" : "☀️"}</span>
+          </button>
         </div>
       )}
     </nav>

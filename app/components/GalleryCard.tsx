@@ -9,6 +9,8 @@ interface GalleryCardProps {
 
 const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, className = "" }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   // Close modal on Escape key press
   useEffect(() => {
@@ -21,6 +23,25 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientY);
+    setTouchEnd(null);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientY);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart === null || touchEnd === null) return;
+    const distanceY = touchStart - touchEnd;
+    
+    // Swipe Up or Swipe Down by more than 80px closes lightbox
+    if (Math.abs(distanceY) > 80) {
+      setIsOpen(false);
+    }
+  };
 
   return (
     <>
@@ -73,6 +94,9 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
         <div
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 font-pixelify p-4"
           onClick={() => setIsOpen(false)}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           role="dialog"
           aria-modal="true"
         >
