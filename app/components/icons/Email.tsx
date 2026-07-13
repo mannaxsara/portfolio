@@ -2,10 +2,17 @@ const Email = () => {
     return (  
         <a
             href="mailto:mannasarabilu@gmail.com"
-            className="w-8 h-8 flex items-center justify-center hover:opacity-30 transition text-text-base"
+            className="w-8 h-8 flex items-center justify-center hover:opacity-30 transition"
             title="Email"
         >
-            <i className="hn hn-envelope text-[28px]" />
+            <img 
+                src="/icons/mail-icon.png"
+                alt="Email"
+                width={32}
+                height={32}
+                className="object-contain dark:invert dark:brightness-125"
+                suppressHydrationWarning
+            />
         </a>
     );
 }

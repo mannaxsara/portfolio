@@ -4,9 +4,16 @@ const Github = () => {
             href='https://github.com/mannaxsara'
             target="_blank" 
             rel="noopener noreferrer" 
-            className="w-8 h-8 flex items-center justify-center hover:opacity-30 transition text-text-base"
+            className="w-8 h-8 flex items-center justify-center hover:opacity-30 transition"
         >
-            <i className="hn hn-github text-[28px]" />
+            <img 
+                src="/icons/gh-icon.png"
+                alt="github"
+                width={32}
+                height={32}
+                className="object-contain dark:invert dark:brightness-125"
+                suppressHydrationWarning
+            />
         </a>
     );
 }
