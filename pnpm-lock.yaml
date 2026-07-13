@@ -23,6 +23,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.57.4
         version: 2.110.2
+      framer-motion:
+        specifier: ^12.0.0
+        version: 12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       gray-matter:
         specifier: ^4.0.3
         version: 4.0.3
