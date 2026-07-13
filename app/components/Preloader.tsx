@@ -67,30 +67,31 @@ export default function Preloader() {
 
   const statusMsg =
     progress < 30
-      ? "✦ INITIALIZING FILE SYSTEM..."
+      ? "♡ WARMING UP THE PIXEL HEARTS..."
       : progress < 70
-      ? "✦ MOUNTING CERTIFICATES & ASSETS..."
+      ? "♡ SPRINKLING CHERRY BLOSSOMS..."
       : progress < 100
-      ? "✦ STARTING GRAPHICAL SYSTEM..."
-      : "✦ READY! LOADING PORTFOLIO...";
+      ? "♡ ALMOST READY, CUTIE..."
+      : "♡ WELCOME IN~";
 
   return (
-    <div className={`fixed inset-0 z-[9999] bg-[#EEC8CF] dark:bg-[#150e11] flex flex-col items-center justify-center p-6 font-poppins select-none transition-all duration-500 ease-out ${
+    <div className={`fixed inset-0 z-[9999] bg-[#ffe8f0] dark:bg-[#160e14] flex flex-col items-center justify-center p-6 font-body select-none transition-all duration-500 ease-out ${
       isFadingOut ? "opacity-0 pointer-events-none scale-105" : "opacity-100 scale-100"
     }`}>
-      {/* Retro CRT monitor flicker */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-[#8b5c6e]/5 to-transparent bg-[length:100%_4px] animate-crt-flicker"></div>
+      <div className="absolute inset-0 pointer-events-none opacity-40" aria-hidden="true">
+        <span className="absolute top-[20%] left-[18%] text-2xl text-blush animate-pixel-twinkle">♡</span>
+        <span className="absolute top-[30%] right-[20%] text-xl text-sparkle animate-soft-bounce">✦</span>
+        <span className="absolute bottom-[25%] left-[30%] text-lg text-peach animate-heart-beat">♥</span>
+        <span className="absolute bottom-[35%] right-[28%] text-sm text-blush animate-wiggle">❀</span>
+      </div>
       
-      {/* Clean Centered Loader Container */}
-      <div className="w-full max-w-md bg-light-pink dark:bg-[#201518] border-4 border-rosewood dark:border-[#8b5c6e] shadow-[8px_8px_0px_#412722] dark:shadow-[8px_8px_0px_#020204] p-5 sm:p-8 flex flex-col items-center gap-6 text-center relative transition-all duration-300">
+      <div className="w-full max-w-md bg-[#fffafc] dark:bg-[#2c1a24] border-[3px] border-[#e8a0b8] dark:border-[#d489a8] shadow-[8px_8px_0px_#d489a8] dark:shadow-[8px_8px_0px_#8b4a66] p-5 sm:p-8 flex flex-col items-center gap-6 text-center relative transition-all duration-300">
         
-        {/* Frame Accent Corners */}
-        <span className="absolute top-2.5 left-2.5 w-4 h-4 border-t-2 border-l-2 border-rosewood dark:border-[#8b5c6e]"></span>
-        <span className="absolute top-2.5 right-2.5 w-4 h-4 border-t-2 border-r-2 border-rosewood dark:border-[#8b5c6e]"></span>
-        <span className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b-2 border-l-2 border-rosewood dark:border-[#8b5c6e]"></span>
-        <span className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b-2 border-r-2 border-rosewood dark:border-[#8b5c6e]"></span>
+        <span className="absolute top-2.5 left-2.5 w-4 h-4 border-t-2 border-l-2 border-[#ff9eb8]"></span>
+        <span className="absolute top-2.5 right-2.5 w-4 h-4 border-t-2 border-r-2 border-[#ff9eb8]"></span>
+        <span className="absolute bottom-2.5 left-2.5 w-4 h-4 border-b-2 border-l-2 border-[#ff9eb8]"></span>
+        <span className="absolute bottom-2.5 right-2.5 w-4 h-4 border-b-2 border-r-2 border-[#ff9eb8]"></span>
 
-        {/* Waving Avatar Video */}
         <div className="w-24 h-24 overflow-hidden mb-2 animate-pixel-float">
           <video
             autoPlay
@@ -104,28 +105,25 @@ export default function Preloader() {
           </video>
         </div>
 
-        {/* Boot Header */}
-        <h2 className="font-jersey text-4xl text-raspberry dark:text-[#af7491] animate-pulse leading-none">
-          BOOTING PORTFOLIO.EXE
+        <h2 className="pixel-heading font-jersey text-4xl text-[#db6b8f] dark:text-[#f0a8c0] animate-pulse uppercase">
+          LOADING CUTE MODE
         </h2>
         
-        {/* Progress Bar */}
         <div className="w-full mt-2">
-          <div className="w-full h-5 border-4 border-rosewood dark:border-[#8b5c6e] bg-[#fdf0f4] dark:bg-[#120a0d] p-0.5 relative overflow-hidden">
+          <div className="w-full h-5 border-[3px] border-[#e8a0b8] dark:border-[#d489a8] bg-[#fff5f8] dark:bg-[#160e14] p-0.5 relative overflow-hidden">
             <div 
-              className="h-full bg-raspberry dark:bg-[#af7491] transition-all duration-100 ease-out" 
+              className="h-full bg-gradient-to-r from-[#ff9eb8] via-[#db6b8f] to-[#ff9eb8] transition-all duration-100 ease-out" 
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </div>
-          <div className="flex flex-col sm:flex-row justify-between items-center mt-2 text-[9px] gap-1 text-mauve-brown dark:text-[#c49db0] tracking-wide sm:tracking-widest font-bold">
+          <div className="flex flex-col sm:flex-row justify-between items-center mt-2 text-xs gap-1 text-[#5c3a48] dark:text-[#c49aad] tracking-wide sm:tracking-widest font-bold">
             <span className="text-center sm:text-left">{statusMsg}</span>
             <span>{Math.min(progress, 100)}%</span>
           </div>
         </div>
 
-        {/* Copyright info */}
-        <span className="text-[8px] text-rosewood dark:text-[#c49db0] opacity-70 tracking-wider">
-          MANNA SARA BILU © {year}
+        <span className="text-[10px] text-[#e8a0b8] dark:text-[#c49aad] opacity-70 tracking-wider">
+          MANNA SARA BILU © {year} ♡
         </span>
 
       </div>

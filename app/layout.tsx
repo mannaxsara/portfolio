@@ -1,34 +1,35 @@
 import "./globals.css";
 import "pixel-retroui/dist/index.css";
+import "@hackernoon/pixel-icon-library/fonts/iconfont.css";
 import NavBar from "./sections/NavBar";
 import Footer from "./sections/Footer";
 import SmoothScroll from "./components/SmoothScroll";
 
-import { Poppins, Jersey_10 } from "next/font/google";
+import { Quicksand, Jersey_10 } from "next/font/google";
 
-const poppins = Poppins({
+const quicksand = Quicksand({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: 'swap',
-  variable: "--font-pixelify",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-quicksand",
 });
 
 const jersey = Jersey_10({
   subsets: ["latin"],
   weight: "400",
-  display: 'swap',
+  display: "swap",
   variable: "--font-jersey",
 });
 
 export const metadata = {
   title: "Manna Sara Bilu ✦ Portfolio",
-  description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a retro pixelated world.",
+  description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a cute pixel world.",
   icons: {
-    icon: "/icons/favicon.png", 
+    icon: "/icons/favicon.png",
   },
   openGraph: {
     title: "Manna Sara Bilu ✦ Portfolio",
-    description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a retro pixelated world.",
+    description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a cute pixel world.",
     url: "https://mannaportfolio.vercel.app",
     siteName: "Manna Sara Bilu Portfolio",
     images: [
@@ -45,13 +46,13 @@ export const metadata = {
   twitter: {
     card: "summary",
     title: "Manna Sara Bilu ✦ Portfolio",
-    description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a retro pixelated world.",
+    description: "ACM Event Technologist Head & Data Analyst. Exploring data pipelines, certifications, and technical articles in a cute pixel world.",
     images: ["https://mannaportfolio.vercel.app/manna-avatar-heart.png"],
   },
 };
 
 export const viewport = {
-  themeColor: "#773957",
+  themeColor: "#db6b8f",
 };
 
 export default function RootLayout({
@@ -60,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="light" className={`${poppins.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
+    <html lang="en" data-theme="light" className={`${quicksand.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

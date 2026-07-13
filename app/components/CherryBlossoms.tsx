@@ -199,7 +199,11 @@ class BlossomScene {
     // Depth factor: map z (0..200) to percentage (0..1)
     let depthPercent = petal.z / 200;
     let scale = 0.35 + depthPercent * 0.65; // scale from 0.35x to 1.0x
-    let opacity = 0.15 + depthPercent * 0.40; // opacity from 0.15 to 0.55 (darker, more subtle)
+    let opacity = 0.28 + depthPercent * 0.52; // brighter petals for cuter vibe
+    if (document.documentElement.classList.contains("dark") ||
+        document.documentElement.getAttribute("data-theme") === "dark") {
+      opacity = Math.min(0.95, opacity + 0.18);
+    }
 
     // Construct smooth 3D transform with tumble and scale
     let t = `translate3d(${petal.x}px, ${petal.y}px, ${petal.z}px) ` +

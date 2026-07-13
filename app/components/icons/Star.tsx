@@ -13,7 +13,7 @@ const PixelStar = ({ filled }: { filled: boolean }) => (
     <path
       d="M12 2L15 9h7l-6 5 2 8-6-4-6 4 2-8-6-5h7z"
       fill={filled ? "#AE5969" : "none"}
-      stroke="#412722"
+      stroke="#d489a8"
       strokeWidth="2"
     />
   </svg>

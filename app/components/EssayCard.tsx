@@ -1,8 +1,11 @@
+import PixelIcon from "./PixelIcon";
+
 interface EssayCardProps {
   title: string;
   description: string;
   fileLabel?: string;
   href?: string;
+  date?: string;
 }
 
 const EssayCard = ({
@@ -10,62 +13,64 @@ const EssayCard = ({
   description,
   fileLabel = "essay.txt",
   href,
+  date,
 }: EssayCardProps) => {
-  const Wrapper = href ? "a" : "div";
+  const className =
+    "group block w-full font-body cute-card overflow-hidden cursor-pointer";
 
-  return (
-    <Wrapper
-      {...(href ? { href } : {})}
-      className="group block w-full font-poppins bg-bg-alt border-4 border-border-accent
-        shadow-[4px_4px_0px_var(--shadow-color)] hover:shadow-[7px_7px_0px_var(--shadow-color)]
-        hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-    >
-      {/* Titlebar */}
+  const body = (
+    <>
       <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
-        <span className="text-bg-base text-[8px] tracking-widest opacity-80">
+        <span className="text-cream text-[10px] tracking-widest inline-flex items-center gap-1.5">
+          <PixelIcon name="book" solid size={10} />
           {fileLabel}
         </span>
         <div className="flex gap-1.5">
-          <span className="w-2.5 h-2.5 bg-raspberry border border-white/20"></span>
-          <span className="w-2.5 h-2.5 bg-mauve-brown border border-white/20"></span>
-          <span className="w-2.5 h-2.5 bg-light-pink border border-white/20"></span>
+          <span className="w-2.5 h-2.5 bg-raspberry border border-white/30" />
+          <span className="w-2.5 h-2.5 bg-blush border border-white/30" />
+          <span className="w-2.5 h-2.5 bg-cream border border-white/30" />
         </div>
       </div>
 
-      <div className="px-4 pt-3 pb-2 flex flex-col gap-2">
+      <div className="px-4 pt-3 pb-3 flex flex-col gap-2">
+        {date && (
+          <span className="text-[10px] text-text-muted tracking-widest uppercase inline-flex items-center gap-1.5">
+            <PixelIcon name="calendar-alt" size={10} className="text-highlight-color" />
+            {date}
+          </span>
+        )}
 
-        {/* Title */}
-        <h2
-          className="text-lg font-bold text-border-accent hover:text-highlight-color transition-colors duration-200"
-          style={{ textShadow: "2px 2px 0 rgba(65,39,34,0.08)" }}
-        >
+        <h3 className="pixel-heading font-jersey text-2xl sm:text-3xl text-highlight-color leading-snug group-hover:text-raspberry transition-colors uppercase">
           {title}
-        </h2>
+        </h3>
 
-        {/* Description */}
-        <div className="bg-bg-base border-2 border-border-accent p-3 relative overflow-hidden">
-          <div
-            className="absolute top-0 left-0 right-0 h-0.5 opacity-30"
-            style={{
-              background:
-                "repeating-linear-gradient(90deg, var(--border-accent) 0px, var(--border-accent) 4px, transparent 4px, transparent 8px)",
-            }}
-          />
-          <p className="text-highlight-color text-[11px] tracking-widest mb-2 flex items-center gap-2">
-            ✦ about
-            <span className="flex-1 h-px bg-border-accent opacity-30"></span>
+        <div className="bg-cream/70 dark:bg-bg-base border-2 border-border-accent p-3 relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-0.5 opacity-40 retro-scanline" />
+          <p className="text-highlight-color text-xs tracking-widest mb-2 flex items-center gap-2 font-semibold">
+            <PixelIcon name="sparkles" size={11} />
+            about
+            <span className="flex-1 h-px bg-border-accent opacity-40" />
           </p>
-          <p className="text-[10px] text-text-base leading-relaxed opacity-95">{description}</p>
+          <p className="text-sm text-text-base leading-relaxed opacity-95">{description}</p>
         </div>
 
-        {/* Read hint */}
-        <p className="text-[8px] text-text-muted tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-right">
-          read ›
+        <p className="text-[10px] text-text-muted tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-right inline-flex items-center justify-end gap-1">
+          read more
+          <PixelIcon name="sparkles" size={10} className="text-highlight-color" />
         </p>
-
       </div>
-    </Wrapper>
+    </>
   );
+
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        {body}
+      </a>
+    );
+  }
+
+  return <div className={className}>{body}</div>;
 };
 
 export default EssayCard;

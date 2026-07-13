@@ -48,22 +48,20 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
       {/* Card */}
       <div
         onClick={() => setIsOpen(true)}
-        className={`group cursor-pointer font-poppins bg-bg-alt border-4 border-border-accent
-          shadow-[4px_4px_0px_var(--shadow-color)] hover:shadow-[7px_7px_0px_var(--shadow-color)]
-          hover:-translate-y-1 transition-all duration-200 ${className}`}
+        className={`group cursor-pointer font-body cute-card ${className}`}
       >
         {/* Titlebar */}
-        <div className="bg-border-accent text-bg-base px-3 py-1 flex items-center justify-between">
-          <span className="text-[8px] tracking-widest opacity-80">{titlebar || "certificate.sys"}</span>
+        <div className="bg-border-accent text-cream px-3 py-1.5 flex items-center justify-between">
+          <span className="text-[10px] tracking-widest opacity-90">♡ {titlebar || "certificate.sys"}</span>
           <div className="flex gap-1.5">
-            <span className="w-2.5 h-2.5 bg-raspberry border border-white/20"></span>
-            <span className="w-2.5 h-2.5 bg-mauve-brown border border-white/20"></span>
-            <span className="w-2.5 h-2.5 bg-light-pink border border-white/20"></span>
+            <span className="w-2.5 h-2.5 bg-raspberry border border-white/30"></span>
+            <span className="w-2.5 h-2.5 bg-blush border border-white/30"></span>
+            <span className="w-2.5 h-2.5 bg-cream border border-white/30"></span>
           </div>
         </div>
 
         {/* Image */}
-        <div className="border-b-4 border-border-accent overflow-hidden">
+        <div className="border-b-[3px] border-border-accent overflow-hidden">
           <img
             src={image}
             alt={caption || "Artwork"}
@@ -78,13 +76,13 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
         {caption && (
           <div className="px-3 py-2 relative overflow-hidden">
             <div
-              className="absolute top-0 left-0 right-0 h-0.5 opacity-30"
+              className="absolute top-0 left-0 right-0 h-0.5 opacity-40"
               style={{
                 background:
                   "repeating-linear-gradient(90deg, var(--border-accent) 0px, var(--border-accent) 4px, transparent 4px, transparent 8px)",
               }}
             />
-            <p className="text-[8px] text-text-base tracking-wide opacity-90">✦ {caption}</p>
+            <p className="text-xs text-text-base tracking-wide opacity-90">♡ {caption}</p>
           </div>
         )}
       </div>
@@ -92,7 +90,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
       {/* Modal */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 font-poppins p-4"
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 font-body p-4"
           onClick={() => setIsOpen(false)}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -107,14 +105,14 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
           >
             {/* Modal titlebar */}
             <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent flex-shrink-0">
-              <span className="text-bg-base text-[8px] tracking-widest opacity-80">
+              <span className="text-bg-base text-[10px] tracking-widest opacity-80">
                 {titlebar ? `view_${titlebar}` : "certificate_view.exe"}
               </span>
               <button
                 onClick={() => setIsOpen(false)}
                 className="w-5 h-5 flex items-center justify-center
                            bg-highlight-color border-2 border-border-accent text-bg-base
-                           text-[8px] hover:bg-border-accent transition-colors focus:outline-none"
+                           text-[10px] hover:bg-border-accent transition-colors focus:outline-none"
                 aria-label="Close modal"
               >
                 ✕
@@ -149,7 +147,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
                         "repeating-linear-gradient(90deg, var(--border-accent) 0px, var(--border-accent) 4px, transparent 4px, transparent 8px)",
                     }}
                   />
-                  <p className="text-highlight-color text-[8px] tracking-widest flex items-center gap-2">
+                  <p className="text-highlight-color text-xs tracking-widest flex items-center gap-2">
                     ✦ {caption}
                     <span className="flex-1 h-px bg-border-accent opacity-30"></span>
                   </p>
@@ -157,7 +155,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
               )}
 
               {/* Click outside hint */}
-              <p className="text-[7px] text-text-muted text-center tracking-widest opacity-60">
+              <p className="text-[10px] text-text-muted text-center tracking-widest opacity-60">
                 click outside or press ESC to close
               </p>
             </div>

@@ -4,75 +4,81 @@ import Github from "../components/icons/Github";
 import Linkedin from "../components/icons/Linkedin";
 import Insta from "../components/icons/Insta";
 import Email from "../components/icons/Email";
+import PixelIcon from "../components/PixelIcon";
 
 const Hero = () => {
   return (
-    <div className="w-full min-h-screen flex items-center justify-center px-3 sm:px-4 py-16 relative bg-transparent overflow-hidden">
+    <div className="w-full min-h-screen flex items-center justify-center px-3 sm:px-4 py-20 relative bg-transparent overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <span className="absolute top-[18%] left-[8%] text-blush/60 animate-soft-bounce">
+          <PixelIcon name="heart" solid size={28} />
+        </span>
+        <span className="absolute top-[28%] right-[10%] text-sparkle/70 animate-pixel-twinkle" style={{ animationDelay: "0.6s" }}>
+          <PixelIcon name="sparkles" size={24} />
+        </span>
+        <span className="absolute bottom-[22%] left-[14%] text-peach animate-wiggle">
+          <PixelIcon name="star" solid size={22} />
+        </span>
+        <span className="absolute bottom-[30%] right-[16%] text-blush/50 animate-heart-beat">
+          <PixelIcon name="heart" solid size={26} />
+        </span>
+        <span className="absolute top-[42%] left-[4%] text-border-accent/50 animate-pixel-twinkle" style={{ animationDelay: "1.2s" }}>
+          <PixelIcon name="star" size={14} />
+        </span>
+        <span className="absolute top-[55%] right-[5%] text-border-accent/50 animate-pixel-twinkle" style={{ animationDelay: "1.8s" }}>
+          <PixelIcon name="sparkles" size={14} />
+        </span>
+      </div>
 
-      <div className="w-full max-w-4xl font-poppins bg-bg-alt border-2 sm:border-4 border-border-accent shadow-[3px_3px_0px_var(--shadow-color)] sm:shadow-[6px_6px_0px_var(--shadow-color)] p-4 sm:p-10 md:p-20 text-center relative z-10 overflow-hidden">
+      <div className="w-full max-w-4xl font-body hero-panel p-5 sm:p-10 md:p-16 text-center relative z-10 overflow-hidden">
+        <span className="absolute top-2.5 left-2.5 w-5 h-5 border-t-[3px] border-l-[3px] border-blush" aria-hidden="true" />
+        <span className="absolute top-2.5 right-2.5 w-5 h-5 border-t-[3px] border-r-[3px] border-blush" aria-hidden="true" />
+        <span className="absolute bottom-2.5 left-2.5 w-5 h-5 border-b-[3px] border-l-[3px] border-blush" aria-hidden="true" />
+        <span className="absolute bottom-2.5 right-2.5 w-5 h-5 border-b-[3px] border-r-[3px] border-blush" aria-hidden="true" />
 
-        {/* Corner L-bracket accents */}
-        <span className="absolute top-2.5 left-2.5 w-5 h-5 border-t-[3px] border-l-[3px] border-border-accent"></span>
-        <span className="absolute top-2.5 right-2.5 w-5 h-5 border-t-[3px] border-r-[3px] border-border-accent"></span>
-        <span className="absolute bottom-2.5 left-2.5 w-5 h-5 border-b-[3px] border-l-[3px] border-border-accent"></span>
-        <span className="absolute bottom-2.5 right-2.5 w-5 h-5 border-b-[3px] border-r-[3px] border-border-accent"></span>
-
-        {/* Top divider */}
         <div className="flex items-center gap-3 mb-6">
-          <span className="flex-1 h-px bg-border-accent opacity-30"></span>
-          <div className="flex gap-2 text-border-accent text-[9px]">
-            <span className="animate-pixel-twinkle inline-block" aria-hidden="true">✦</span>
-            <span className="animate-pixel-twinkle inline-block" style={{ animationDelay: "0.8s" }} aria-hidden="true">✦</span>
-            <span className="animate-pixel-twinkle inline-block" style={{ animationDelay: "1.6s" }} aria-hidden="true">✦</span>
+          <span className="flex-1 h-px bg-gradient-to-r from-transparent via-border-accent to-transparent" />
+          <div className="flex gap-2 text-highlight-color items-center">
+            <PixelIcon name="heart" solid size={14} className="animate-pixel-twinkle" />
+            <PixelIcon name="heart" solid size={16} className="animate-heart-beat" />
+            <PixelIcon name="heart" solid size={14} className="animate-pixel-twinkle" style={{ animationDelay: "0.8s" }} />
           </div>
-          <span className="flex-1 h-px bg-border-accent opacity-30"></span>
+          <span className="flex-1 h-px bg-gradient-to-r from-transparent via-border-accent to-transparent" />
         </div>
 
-        {/* Hello label */}
-        <p className="text-[13px] text-text-muted tracking-[0.2em] mb-4">
+        <p className="text-sm sm:text-base text-text-base font-semibold tracking-[0.25em] mb-3 uppercase opacity-90">
           hello, i&apos;m
         </p>
 
-        {/* Name */}
         <h1
-          className="font-jersey font-bold text-raspberry dark:text-light-pink leading-none mb-2 break-words"
-          style={{ fontSize: "clamp(36px, 12vw, 130px)" }}
+          className="pixel-heading font-jersey leading-none mb-3 text-shimmer whitespace-nowrap"
+          style={{ fontSize: "clamp(26px, 7.2vw, 110px)" }}
         >
-          Manna Sara Bilu
+          Manna&nbsp;Sara&nbsp;Bilu
         </h1>
 
-        {/* Identity chips */}
-        <div className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-2 md:gap-3 my-4 sm:my-6">
-          {["cs student", "data nerd", "event tech head", "nagpur, India"].map((label, i, arr) => (
-            <span key={label} className="flex items-center gap-2 md:gap-3">
-              <span
-                className="text-text-base text-xs px-2 sm:px-4 py-1 tracking-wide"
-                style={{
-                  borderTop: "1.5px solid var(--border-accent)",
-                  borderBottom: "1.5px solid var(--border-accent)",
-                }}
-              >
-                {label}
-              </span>
-              {i < arr.length - 1 && (
-                <span className="text-border-accent text-[9px]" aria-hidden="true">❖</span>
-              )}
+        <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 my-5 sm:my-7">
+          {["cs student", "data nerd", "event tech head", "nagpur, india"].map((label) => (
+            <span
+              key={label}
+              className="text-text-base text-xs sm:text-sm px-3 sm:px-4 py-1.5 tracking-wide bg-cream/80 dark:bg-card-bg/80 border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] hover:-translate-y-0.5 hover:shadow-[3px_3px_0_var(--shadow-color)] transition-all font-medium inline-flex items-center gap-1.5"
+            >
+              <PixelIcon name="heart" solid size={11} className="text-highlight-color" />
+              {label}
             </span>
           ))}
         </div>
 
-        {/* Bottom divider + social icons */}
-        <div className="flex items-center gap-2 sm:gap-3 mt-4 sm:mt-6">
-          <span className="flex-1 h-px bg-border-accent opacity-30"></span>
+        <div className="flex items-center gap-2 sm:gap-3 mt-2 sm:mt-4">
+          <span className="flex-1 h-px bg-gradient-to-r from-transparent via-border-accent to-transparent" />
           <div className="flex gap-4 items-center justify-center">
             <Linkedin />
             <Github />
             <Insta />
             <Email />
           </div>
-          <span className="flex-1 h-px bg-border-accent opacity-30"></span>
+          <span className="flex-1 h-px bg-gradient-to-r from-transparent via-border-accent to-transparent" />
         </div>
-
       </div>
     </div>
   );

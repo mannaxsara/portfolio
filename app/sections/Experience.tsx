@@ -2,6 +2,7 @@
 
 import React from "react";
 import ScrollReveal from "../components/ScrollReveal";
+import SectionHeading from "../components/SectionHeading";
 
 interface ExperienceItem {
     role: string;
@@ -51,40 +52,36 @@ export default function Experience() {
     return (
         <div className="min-h-screen max-w-3xl mx-auto px-4 flex flex-col items-center justify-center py-20">
             <ScrollReveal>
-                <h1 className="font-jersey text-4xl sm:text-6xl md:text-8xl uppercase tracking-[0.12em] text-text-base text-center py-6">
-                    ✦ Experience ✦
-                </h1>
+                <SectionHeading>Experience</SectionHeading>
             </ScrollReveal>
             
-            {/* Timeline Line */}
-            <div className="relative border-l-4 border-border-accent ml-4 flex flex-col gap-12 font-poppins">
+            <div className="relative border-l-4 border-border-accent ml-4 flex flex-col gap-12 font-body mt-4">
                 {experiences.map((exp, idx) => (
                     <ScrollReveal key={idx} delay={0.1 + idx * 0.15} direction="left">
                         <div className="relative pl-8">
-                            {/* Timeline Diamond Node */}
-                            <span className="absolute -left-[14px] top-1.5 w-6 h-6 bg-bg-alt border-4 border-border-accent rotate-45 flex items-center justify-center shadow-[2px_2px_0px_var(--shadow-color)]">
-                                <span className="w-1.5 h-1.5 bg-highlight-color rotate-45"></span>
+                            <span className="absolute -left-[15px] top-1.5 w-6 h-6 bg-bg-alt border-[3px] border-border-accent rotate-45 flex items-center justify-center shadow-[2px_2px_0px_var(--shadow-color)]">
+                                <span className="w-1.5 h-1.5 bg-highlight-color rounded-none" />
                             </span>
                             
-                            {/* Experience Card */}
-                            <div className="bg-bg-alt border-4 border-border-accent shadow-[6px_6px_0px_var(--shadow-color)] hover:shadow-[8px_8px_0px_var(--shadow-color)] transition-all duration-200 text-text-base">
-                                {/* Card Header bar */}
-                                <div className="bg-border-accent text-bg-base px-3 py-1.5 flex items-center justify-between text-[9px] tracking-widest opacity-80 select-none">
-                                    <span>{exp.sysLabel}</span>
+                            <div className="cute-card text-text-base overflow-hidden">
+                                <div className="bg-border-accent text-cream px-3 py-1.5 flex items-center justify-between text-[11px] tracking-widest select-none">
+                                    <span>♡ {exp.sysLabel}</span>
                                     <div className="flex gap-1">
-                                        <span className="w-2.5 h-2.5 bg-raspberry border border-white/20"></span>
-                                        <span className="w-2.5 h-2.5 bg-mauve-brown border border-white/20"></span>
+                                        <span className="w-2.5 h-2.5 bg-raspberry border border-white/30" />
+                                        <span className="w-2.5 h-2.5 bg-blush border border-white/30" />
+                                        <span className="w-2.5 h-2.5 bg-cream border border-white/30" />
                                     </div>
                                 </div>
                                 
-                                {/* Card Body */}
                                 <div className="p-5">
                                     <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-2">
                                         <div>
-                                            <h3 className="text-lg font-bold text-highlight-color leading-none">{exp.role}</h3>
-                                            <p className="text-sm text-text-muted mt-1.5 font-bold">{exp.company}</p>
+                                            <h3 className="pixel-heading font-jersey text-xl sm:text-2xl text-highlight-color leading-snug">
+                                            {exp.role}
+                                            </h3>
+                                            <p className="text-base text-text-base/80 mt-1.5 font-semibold">{exp.company}</p>
                                         </div>
-                                        <span className="text-xs text-text-base bg-bg-base border border-border-accent px-3 py-1 self-start md:self-auto">
+                                        <span className="text-sm text-text-base bg-cream/80 dark:bg-bg-base border-2 border-border-accent px-3 py-1 self-start md:self-auto shadow-[2px_2px_0_var(--shadow-color)]">
                                             {exp.period}
                                         </span>
                                     </div>

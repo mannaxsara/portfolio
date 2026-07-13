@@ -1,6 +1,7 @@
 "use client";
 
 import GalleryCard from "../components/GalleryCard";
+import SectionHeading from "../components/SectionHeading";
 
 interface Artwork {
   src: string;
@@ -10,19 +11,14 @@ interface Artwork {
 
 export default function GalleryFullClient({ artworks }: { artworks: Artwork[] }) {
   return (
-    <div className="min-h-screen max-w-6xl mx-auto px-4 flex flex-col items-center pb-24">
-      
-      <div className="max-w-2xl pb-12 text-center">
-        <h1 className="font-jersey font-bold text-5xl pt-24 pb-6">
+    <div className="min-h-screen max-w-6xl mx-auto px-4 flex flex-col items-center pb-24 pt-16">
+      <div className="max-w-2xl pb-8 text-center">
+        <SectionHeading subtitle="Here are all the credentials I've picked up on my journey so far — each one represents a rabbit hole I fell into and (eventually) climbed out of, a little wiser and a lot more caffeinated">
           Certifications
-        </h1>
-        <p className="font-poppins text-text-base opacity-90">
-          Here are all the credentials I've picked up on my journey so far — each one represents a rabbit hole I fell into and (eventually) climbed out of, a little wiser and a lot more caffeinated
-        </p>
+        </SectionHeading>
       </div>
 
-      {/* Grid Layout */}
-      <div className="flex flex-wrap gap-8 justify-center mt-6">
+      <div className="flex flex-wrap gap-8 justify-center mt-2">
         {artworks.map((art, idx) => (
           <div key={`${art.src}-${idx}`} className="w-full max-w-72">
             <GalleryCard 

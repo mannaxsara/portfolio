@@ -121,7 +121,7 @@ const MusicPlayer = () => {
     const progressPct = duration > 0 ? (currentTime / duration) * 100 : 0;
 
     return (
-        <div className="w-full font-poppins bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] transition-all hover:shadow-[8px_8px_0px_#412722]">
+        <div className="w-full font-body cute-card overflow-hidden transition-all">
             <audio
                 ref={audioRef}
                 onTimeUpdate={() => audioRef.current && setCurrentTime(audioRef.current.currentTime)}
@@ -165,7 +165,7 @@ const MusicPlayer = () => {
                     border: 3px solid var(--color-rosewood, #af7491);
                     border-radius: 50%;
                     color: var(--color-raspberry, #773957);
-                    box-shadow: 3px 3px 0px var(--color-shadow-color, #412722);
+                    box-shadow: 3px 3px 0px var(--color-shadow-color, #d489a8);
                     cursor: pointer;
                     display: flex;
                     align-items: center;
@@ -180,7 +180,7 @@ const MusicPlayer = () => {
                 }
                 .pixel-player-btn-play:active {
                     transform: translate(2px, 2px);
-                    box-shadow: 1px 1px 0px var(--color-shadow-color, #412722);
+                    box-shadow: 1px 1px 0px var(--color-shadow-color, #d489a8);
                 }
 
                 .pixel-player-btn-skip {
@@ -190,7 +190,7 @@ const MusicPlayer = () => {
                     border: 3px solid var(--color-rosewood, #af7491);
                     border-radius: 6px;
                     color: var(--color-rosewood, #af7491);
-                    box-shadow: 2px 2px 0px var(--color-shadow-color, #412722);
+                    box-shadow: 2px 2px 0px var(--color-shadow-color, #d489a8);
                     cursor: pointer;
                     display: flex;
                     align-items: center;
@@ -205,7 +205,7 @@ const MusicPlayer = () => {
                 }
                 .pixel-player-btn-skip:active {
                     transform: translate(1px, 1px);
-                    box-shadow: 1px 1px 0px var(--color-shadow-color, #412722);
+                    box-shadow: 1px 1px 0px var(--color-shadow-color, #d489a8);
                 }
 
                 /* Retro volume slider */
@@ -255,14 +255,15 @@ const MusicPlayer = () => {
             `}} />
 
             {/* Titlebar */}
-            <div className="flex items-center justify-between px-3 py-1.5 bg-rosewood">
-                <span className="text-light-pink text-[8px] tracking-widest opacity-70">
+            <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
+                <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5">
+                    <i className="hn hn-music-solid" style={{ fontSize: 11 }} aria-hidden="true" />
                     music.exe
                 </span>
                 <div className="flex gap-1.5">
-                    <span className="w-3 h-3 bg-light-pink border border-white/20"></span>
-                    <span className="w-3 h-3 bg-raspberry border border-white/20"></span>
-                    <span className="w-3 h-3 bg-mauve-brown border border-white/20"></span>
+                    <span className="w-3 h-3 bg-cream border border-white/30"></span>
+                    <span className="w-3 h-3 bg-blush border border-white/30"></span>
+                    <span className="w-3 h-3 bg-raspberry border border-white/30"></span>
                 </div>
             </div>
 
@@ -271,9 +272,10 @@ const MusicPlayer = () => {
                 
                 {/* ── Player panel ── */}
                 <div className="flex-1 p-5 flex flex-col gap-4 min-w-0">
-                    <div className="text-raspberry tracking-widest flex items-center gap-2">
-                        <span>✦ now playing</span>
-                        <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
+                    <div className="text-highlight-color tracking-widest flex items-center gap-2 pixel-heading font-jersey text-2xl uppercase">
+                        <i className="hn hn-music-solid" style={{ fontSize: 16 }} aria-hidden="true" />
+                        <span>now playing</span>
+                        <span className="flex-1 h-px bg-border-accent opacity-40"></span>
                         
                         {/* 16-bit Pixel Equalizer Visualizer */}
                         <span className="flex items-end gap-[2px] h-[22px] px-1 bg-black/10 border-2 border-rosewood/20 rounded-[2px] pointer-events-none">
@@ -303,7 +305,7 @@ const MusicPlayer = () => {
                     {/* Cover + song info row */}
                     <div className="flex gap-4 items-center">
                         {/* Album art */}
-                        <div className="flex-shrink-0 border-2 border-mauve-brown shadow-[3px_3px_0px_#8b5c6e] overflow-hidden">
+                        <div className="flex-shrink-0 border-2 border-border-accent shadow-[3px_3px_0_var(--shadow-color)] overflow-hidden">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={currentSong.title}
@@ -317,8 +319,8 @@ const MusicPlayer = () => {
                                         alt={currentSong.title}
                                         width={110}
                                         height={110}
-                                        className="block object-cover"
-                                        style={{ width: 110, height: 110 }}
+                                        className="block object-cover h-auto w-auto"
+                                        style={{ width: "auto", height: "auto", maxWidth: 110 }}
                                     />
                                 </motion.div>
                             </AnimatePresence>
@@ -335,20 +337,16 @@ const MusicPlayer = () => {
                                 className="flex flex-col gap-2 min-w-0 flex-1"
                             >
                                 <div>
-                                    <p className="text-sm font-bold text-rosewood leading-snug text-[18px] truncate">
+                                    <p className="pixel-heading font-jersey text-highlight-color leading-snug text-2xl truncate uppercase">
                                         {currentSong.title}
                                     </p>
-                                    <p className="text-[11px] text-mauve-brown mt-1 truncate">
+                                    <p className="text-[11px] text-text-muted mt-1 truncate">
                                         {currentSong.artist}
                                     </p>
                                 </div>
                                 <div className="flex gap-2 items-center">
                                     <span
-                                        className="text-mauve-brown text-[9px] px-2 tracking-wide whitespace-nowrap"
-                                        style={{
-                                            borderTop: "1.5px solid #8b5c6e",
-                                            borderBottom: "1.5px solid #8b5c6e",
-                                        }}
+                                        className="text-text-muted text-[9px] px-2 tracking-wide whitespace-nowrap border-y-[1.5px] border-border-accent"
                                     >
                                         30s preview
                                     </span>
@@ -356,7 +354,7 @@ const MusicPlayer = () => {
                                         href={currentSong.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-[9px] text-rosewood hover:text-raspberry underline flex items-center gap-1 focus:outline-none"
+                                        className="text-[9px] text-highlight-color hover:text-blush underline flex items-center gap-1 focus:outline-none"
                                     >
                                         {/* Spotify link out */}
                                         <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -385,7 +383,7 @@ const MusicPlayer = () => {
                             />
                         </div>
                         {/* Time digital readout */}
-                        <div className="flex justify-between items-center text-[10px] text-mauve-brown font-mono tracking-wide px-0.5">
+                        <div className="flex justify-between items-center text-[10px] text-text-muted font-mono tracking-wide px-0.5">
                             <span>{formatTime(currentTime)}</span>
                             <span>{formatTime(duration)}</span>
                         </div>
@@ -435,7 +433,7 @@ const MusicPlayer = () => {
                         {/* Pixelated Volume Slider */}
                         <div className="flex items-center gap-2 flex-1 max-w-[120px]">
                             {/* Speaker Icon */}
-                            <svg className="w-4 h-4 fill-mauve-brown flex-shrink-0" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 fill-text-muted flex-shrink-0" viewBox="0 0 24 24">
                                 <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
                             </svg>
                             <input
@@ -452,28 +450,14 @@ const MusicPlayer = () => {
                 </div>
 
                 {/* Vertical Divider */}
-                <div
-                    className="md:hidden h-px mx-5"
-                    style={{
-                        background:
-                            "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
-                        opacity: 0.3,
-                    }}
-                />
-                <div
-                    className="hidden md:block w-px self-stretch flex-shrink-0"
-                    style={{
-                        background:
-                            "repeating-linear-gradient(180deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
-                        opacity: 0.3,
-                    }}
-                />
+                <div className="md:hidden h-px mx-5 bg-border-accent/40" />
+                <div className="hidden md:block w-px self-stretch flex-shrink-0 bg-border-accent/40" />
 
                 {/* ── Queue panel ── */}
                 <div className="md:w-44 flex-shrink-0 p-5 flex flex-col gap-3">
-                    <p className="text-raspberry text-[12px] tracking-widest flex items-center gap-2">
-                        ✦ queue
-                        <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
+                    <p className="text-highlight-color text-[12px] tracking-widest flex items-center gap-2">
+                        <span className="pixel-heading font-jersey text-highlight-color text-xl uppercase tracking-widest">queue</span>
+                        <span className="flex-1 h-px bg-border-accent opacity-40"></span>
                     </p>
 
                     <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-x-visible pb-1 md:pb-0">
@@ -488,39 +472,36 @@ const MusicPlayer = () => {
                                                 flex-shrink-0 md:flex-shrink md:w-full
                                                 flex-col w-20
                                                 ${isActive
-                                                    ? "bg-[#fce8f0] border-raspberry shadow-[2px_2px_0px_#c0396b]"
-                                                    : "bg-[#fdf0f4] border-mauve-brown opacity-50 hover:opacity-80 hover:border-raspberry"
+                                                    ? "bg-peach/60 dark:bg-highlight-color/25 border-border-accent shadow-[2px_2px_0_var(--shadow-color)]"
+                                                    : "bg-cream/70 dark:bg-bg-base border-border-accent/70 opacity-70 hover:opacity-100 hover:border-border-accent"
                                                 }`}
                                 >
-                                    {/* Mini cover */}
-                                    <div className="flex-shrink-0 border border-mauve-brown overflow-hidden">
+                                    <div className="flex-shrink-0 border border-border-accent overflow-hidden">
                                         <Image
                                             src={song.cover}
                                             alt={song.title}
                                             width={32}
                                             height={32}
-                                            className="block object-cover"
-                                            style={{ width: 32, height: 32 }}
+                                            className="block object-cover h-auto w-auto"
+                                            style={{ width: "auto", height: "auto", maxWidth: 32 }}
                                         />
                                     </div>
 
-                                    {/* Info */}
                                     <div className="min-w-0 flex-1 hidden md:block">
-                                        <p className="text-[10px] text-[#5a3a45] leading-snug truncate">
+                                        <p className="text-[10px] text-text-base leading-snug truncate">
                                             {song.title}
                                         </p>
-                                        <p className="text-[9px] text-mauve-brown mt-0.5 truncate">
+                                        <p className="text-[9px] text-text-muted mt-0.5 truncate">
                                             {song.artist}
                                         </p>
                                         {isActive && (
-                                            <p className="text-[9px] text-raspberry mt-0.5 tracking-wide">
+                                            <p className="text-[9px] text-highlight-color mt-0.5 tracking-wide">
                                                 {isPlaying ? "▶ playing" : "⏸ paused"}
                                             </p>
                                         )}
                                     </div>
 
-                                    {/* Mobile info */}
-                                    <p className="md:hidden text-[6px] text-[#5a3a45] text-center leading-snug w-full truncate">
+                                    <p className="md:hidden text-[6px] text-text-base text-center leading-snug w-full truncate">
                                         {song.title}
                                     </p>
                                 </button>

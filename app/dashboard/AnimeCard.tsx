@@ -43,26 +43,28 @@ const AnimeCard = () => {
     };
 
     return (
-        <div className="w-full font-poppins bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] transition-all hover:shadow-[8px_8px_0px_#412722]">
+        <div className="w-full font-body cute-card overflow-hidden transition-all">
 
         {/* Titlebar */}
-        <div className="flex items-center justify-between px-3 py-1.5 bg-rosewood">
-            <span className="text-light-pink text-[9px] tracking-widest opacity-70">
+        <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
+            <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5">
+            <i className="hn hn-camera-solid" style={{ fontSize: 11 }} aria-hidden="true" />
             animelist.exe
             </span>
             <div className="flex gap-1.5">
-            <span className="w-3 h-3 bg-light-pink border border-white/20"></span>
-            <span className="w-3 h-3 bg-raspberry border border-white/20"></span>
-            <span className="w-3 h-3 bg-mauve-brown border border-white/20"></span>
+            <span className="w-3 h-3 bg-cream border border-white/30"></span>
+            <span className="w-3 h-3 bg-blush border border-white/30"></span>
+            <span className="w-3 h-3 bg-raspberry border border-white/30"></span>
             </div>
         </div>
 
         <div className="p-5 flex flex-col gap-4">
 
             {/* Section label */}
-            <p className="text-raspberry tracking-widest flex items-center gap-2">
-            ✦ anime watched
-            <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
+            <p className="pixel-heading font-jersey text-highlight-color tracking-widest flex items-center gap-2 text-2xl uppercase">
+            <i className="hn hn-sparkles-solid" style={{ fontSize: 16 }} aria-hidden="true" />
+            anime watched
+            <span className="flex-1 h-px bg-border-accent opacity-40"></span>
             </p>
 
             {/* Scroll strip container */}
@@ -79,7 +81,7 @@ const AnimeCard = () => {
                 onClick={() => scroll("left")}
                 className="pointer-events-auto w-8 h-8 flex items-center justify-center
                             bg-rosewood border-2 border-rosewood text-light-pink
-                            text-base font-bold shadow-[2px_2px_0px_#412722]
+                            text-base font-bold shadow-[2px_2px_0px_#d489a8]
                             hover:bg-raspberry transition-colors focus:outline-none ml-1"
                 >
                 ‹
@@ -97,7 +99,7 @@ const AnimeCard = () => {
                 onClick={() => scroll("right")}
                 className="pointer-events-auto w-8 h-8 flex items-center justify-center
                             bg-rosewood border-2 border-rosewood text-light-pink
-                            text-base font-bold shadow-[2px_2px_0px_#412722]
+                            text-base font-bold shadow-[2px_2px_0px_#d489a8]
                             hover:bg-raspberry transition-colors focus:outline-none mr-1"
                 >
                 ›
@@ -134,6 +136,7 @@ const AnimeCard = () => {
                         width={150}
                         height={210}
                         className="block w-full h-full object-cover"
+                        style={{ width: "100%", height: "100%" }}
                         />
 
                         {/* Overlay */}
@@ -191,18 +194,17 @@ const AnimeCard = () => {
                     <Image
                     src={selected.cover}
                     alt={selected.name}
-                    width={150}
-                    height={140}
-                    className="block"
-                    style={{ width: 120, height: 210, objectFit: "cover" }}
+                    width={120}
+                    height={210}
+                    className="block border-2 border-border-accent shadow-[3px_3px_0_var(--shadow-color)]"
+                    style={{ width: "auto", height: "auto", maxWidth: 120 }}
                     />
                 </div>
 
                 <div className="flex flex-col gap-3 flex-1">
                     <div>
                     <h3
-                        className="text-base font-bold text-rosewood leading-snug mb-2 text-[18px]"
-                        style={{ textShadow: "2px 2px 0 rgba(65,39,34,0.1)" }}
+                        className="pixel-heading font-jersey text-2xl sm:text-3xl text-highlight-color leading-snug mb-2 uppercase"
                     >
                         {selected.name}
                     </h3>
@@ -232,11 +234,12 @@ const AnimeCard = () => {
                             "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
                         }}
                     ></div>
-                    <p className="text-raspberry text-[13px] tracking-widest mb-2 flex items-center gap-2">
-                        ✦ thoughts
-                        <span className="flex-1 h-px bg-mauve-brown opacity-30"></span>
+                    <p className="text-highlight-color text-sm tracking-widest mb-2 flex items-center gap-2 font-semibold">
+                        <i className="hn hn-sparkles" style={{ fontSize: 12 }} aria-hidden="true" />
+                        thoughts
+                        <span className="flex-1 h-px bg-border-accent opacity-40"></span>
                     </p>
-                    <p className="text-[11px] text-[#5a3a45] leading-relaxed">
+                    <p className="text-sm text-text-base leading-relaxed">
                         {selected.comment}
                     </p>
                     </div>
@@ -252,8 +255,9 @@ const AnimeCard = () => {
                     "repeating-linear-gradient(90deg, #8b5c6e 0px, #8b5c6e 4px, transparent 4px, transparent 8px)",
                 }}
                 ></div>
-                <p className="text-[9px] text-mauve-brown text-center tracking-widest">
-                ✦ click a cover to see details ✦
+                <p className="text-[11px] text-text-muted text-center tracking-widest inline-flex items-center justify-center gap-2 w-full">
+                <i className="hn hn-camera" style={{ fontSize: 12 }} aria-hidden="true" />
+                click a cover to see details
                 </p>
             </div>
             )}

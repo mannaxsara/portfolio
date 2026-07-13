@@ -13,8 +13,8 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-plum-brown text-light-pink flex items-center justify-center p-4 font-poppins">
-      <div className="w-full max-w-lg bg-light-pink border-4 border-rosewood shadow-[8px_8px_0px_#412722] text-plum-brown relative">
+    <div className="min-h-screen bg-plum-brown text-light-pink flex items-center justify-center p-4 font-body">
+      <div className="w-full max-w-lg bg-light-pink border-4 border-rosewood shadow-[8px_8px_0px_#d489a8] text-plum-brown relative">
         
         {/* Modal titlebar */}
         <div className="flex items-center justify-between px-3 py-1.5 bg-rosewood text-light-pink">
@@ -50,13 +50,13 @@ export default function Error({ error, reset }: ErrorProps) {
           <div className="flex gap-4 font-jersey text-xl mt-2">
             <button 
               onClick={() => reset()}
-              className="px-5 py-1.5 bg-rosewood text-light-pink border-2 border-rosewood shadow-[3px_3px_0px_#412722] hover:bg-raspberry hover:border-raspberry active:translate-y-px active:shadow-none transition-all uppercase"
+              className="px-5 py-1.5 bg-rosewood text-light-pink border-2 border-rosewood shadow-[3px_3px_0px_#d489a8] hover:bg-raspberry hover:border-raspberry active:translate-y-px active:shadow-none transition-all uppercase"
             >
               Restart System
             </button>
             <a 
               href="/"
-              className="px-5 py-1.5 bg-light-pink border-2 border-rosewood shadow-[3px_3px_0px_#412722] hover:bg-[#fce8f0] active:translate-y-px active:shadow-none transition-all uppercase"
+              className="px-5 py-1.5 bg-light-pink border-2 border-rosewood shadow-[3px_3px_0px_#d489a8] hover:bg-[#fce8f0] active:translate-y-px active:shadow-none transition-all uppercase"
             >
               Go Home
             </a>
