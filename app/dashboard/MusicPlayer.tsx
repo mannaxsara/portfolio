@@ -121,7 +121,7 @@ const MusicPlayer = () => {
     const progressPct = duration > 0 ? (currentTime / duration) * 100 : 0;
 
     return (
-        <div className="w-full font-pixelify bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] transition-all hover:shadow-[8px_8px_0px_#412722]">
+        <div className="w-full font-poppins bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] transition-all hover:shadow-[8px_8px_0px_#412722]">
             <audio
                 ref={audioRef}
                 onTimeUpdate={() => audioRef.current && setCurrentTime(audioRef.current.currentTime)}

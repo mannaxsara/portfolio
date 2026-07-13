@@ -16,8 +16,8 @@ const Projects = () => {
             </h1>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
-            <p className="leading-relaxed text-center font-pixelify text-text-base/90">
-                A little collection of things I&apos;ve been building, breaking, and tinkering with — from IoT lab platforms to predictive analytics pipelines. Each one taught me something new (and probably caused at least one 2am debugging session) ✨💫
+            <p className="leading-relaxed text-base text-center font-poppins text-text-base/90">
+                A little collection of things I&apos;ve been building, breaking, and tinkering with — from IoT lab platforms to predictive analytics pipelines. Each one taught me something new (and probably caused at least one 2am debugging session)
             </p>
         </ScrollReveal>
     

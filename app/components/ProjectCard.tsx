@@ -28,7 +28,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <div 
-      className="group w-full max-w-72 font-pixelify bg-bg-alt border-4 border-border-accent shadow-[4px_4px_0px_var(--shadow-color)] hover:shadow-[8px_8px_0px_var(--shadow-color)] hover:-translate-y-2 transition-all duration-500 ease-in-out flex flex-col overflow-hidden"
+      className="group w-full max-w-72 font-poppins bg-bg-alt border-4 border-border-accent shadow-[4px_4px_0px_var(--shadow-color)] hover:shadow-[8px_8px_0px_var(--shadow-color)] hover:-translate-y-2 transition-all duration-500 ease-in-out flex flex-col overflow-hidden"
     >
       {/* Titlebar */}
       <div className="px-3 py-1 flex items-center justify-between text-bg-base bg-border-accent">
@@ -89,7 +89,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                   "repeating-linear-gradient(90deg, var(--border-accent) 0px, var(--border-accent) 4px, transparent 4px, transparent 8px)",
               }}
             />
-            <p className="text-[10px] text-text-base leading-relaxed font-pixelify opacity-90">{description}</p>
+            <p className="text-[10px] text-text-base leading-relaxed font-poppins opacity-90">{description}</p>
           </div>
 
           {/* Action Links */}

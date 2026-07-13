@@ -57,7 +57,7 @@ export default function Experience() {
             </ScrollReveal>
             
             {/* Timeline Line */}
-            <div className="relative border-l-4 border-border-accent ml-4 flex flex-col gap-12 font-pixelify">
+            <div className="relative border-l-4 border-border-accent ml-4 flex flex-col gap-12 font-poppins">
                 {experiences.map((exp, idx) => (
                     <ScrollReveal key={idx} delay={0.1 + idx * 0.15} direction="left">
                         <div className="relative pl-8">
@@ -82,13 +82,13 @@ export default function Experience() {
                                     <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 gap-2">
                                         <div>
                                             <h3 className="text-lg font-bold text-highlight-color leading-none">{exp.role}</h3>
-                                            <p className="text-xs text-text-muted mt-1.5 font-bold">{exp.company}</p>
+                                            <p className="text-sm text-text-muted mt-1.5 font-bold">{exp.company}</p>
                                         </div>
-                                        <span className="text-[10px] text-text-base bg-bg-base border border-border-accent px-3 py-1 self-start md:self-auto">
+                                        <span className="text-xs text-text-base bg-bg-base border border-border-accent px-3 py-1 self-start md:self-auto">
                                             {exp.period}
                                         </span>
                                     </div>
-                                    <ul className="flex flex-col gap-2 pl-4 list-disc text-sm text-text-base opacity-95 leading-relaxed">
+                                    <ul className="flex flex-col gap-2 pl-4 list-disc text-base text-text-base opacity-95 leading-relaxed">
                                         {exp.bullets.map((bullet, bIdx) => (
                                             <li key={bIdx}>{bullet}</li>
                                         ))}

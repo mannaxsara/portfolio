@@ -13,7 +13,7 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-plum-brown text-light-pink flex items-center justify-center p-4 font-pixelify">
+    <div className="min-h-screen bg-plum-brown text-light-pink flex items-center justify-center p-4 font-poppins">
       <div className="w-full max-w-lg bg-light-pink border-4 border-rosewood shadow-[8px_8px_0px_#412722] text-plum-brown relative">
         
         {/* Modal titlebar */}

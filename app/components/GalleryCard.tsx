@@ -48,7 +48,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
       {/* Card */}
       <div
         onClick={() => setIsOpen(true)}
-        className={`group cursor-pointer font-pixelify bg-bg-alt border-4 border-border-accent
+        className={`group cursor-pointer font-poppins bg-bg-alt border-4 border-border-accent
           shadow-[4px_4px_0px_var(--shadow-color)] hover:shadow-[7px_7px_0px_var(--shadow-color)]
           hover:-translate-y-1 transition-all duration-200 ${className}`}
       >
@@ -92,7 +92,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
       {/* Modal */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 font-pixelify p-4"
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 font-poppins p-4"
           onClick={() => setIsOpen(false)}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}

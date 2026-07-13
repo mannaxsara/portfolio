@@ -17,7 +17,7 @@ const BookBoard = () => {
     const [selectedBook, setSelectedBook] = useState<BookType | null>(null);
 
     return (
-        <div className="w-full font-pixelify bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] transition-all hover:shadow-[8px_8px_0px_#412722]">
+        <div className="w-full font-poppins bg-light-pink border-4 border-rosewood shadow-[6px_6px_0px_#412722] transition-all hover:shadow-[8px_8px_0px_#412722]">
         {/* Titlebar */}
         <div className="flex items-center justify-between px-3 py-1.5 bg-rosewood">
             <span className="text-light-pink text-[9px] tracking-widest opacity-70">

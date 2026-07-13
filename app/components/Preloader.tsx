@@ -75,7 +75,7 @@ export default function Preloader() {
       : "✦ READY! LOADING PORTFOLIO...";
 
   return (
-    <div className={`fixed inset-0 z-[9999] bg-[#EEC8CF] dark:bg-[#150e11] flex flex-col items-center justify-center p-6 font-pixelify select-none transition-all duration-500 ease-out ${
+    <div className={`fixed inset-0 z-[9999] bg-[#EEC8CF] dark:bg-[#150e11] flex flex-col items-center justify-center p-6 font-poppins select-none transition-all duration-500 ease-out ${
       isFadingOut ? "opacity-0 pointer-events-none scale-105" : "opacity-100 scale-100"
     }`}>
       {/* Retro CRT monitor flicker */}

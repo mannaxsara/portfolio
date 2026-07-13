@@ -16,7 +16,7 @@ const EssayCard = ({
   return (
     <Wrapper
       {...(href ? { href } : {})}
-      className="group block w-full font-pixelify bg-bg-alt border-4 border-border-accent
+      className="group block w-full font-poppins bg-bg-alt border-4 border-border-accent
         shadow-[4px_4px_0px_var(--shadow-color)] hover:shadow-[7px_7px_0px_var(--shadow-color)]
         hover:-translate-y-1 transition-all duration-200 cursor-pointer"
     >

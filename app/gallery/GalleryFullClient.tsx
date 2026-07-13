@@ -16,8 +16,8 @@ export default function GalleryFullClient({ artworks }: { artworks: Artwork[] })
         <h1 className="font-jersey font-bold text-5xl pt-24 pb-6">
           Certifications
         </h1>
-        <p className="font-pixelify text-text-base opacity-90">
-          Here are all the credentials I've picked up on my journey so far — each one represents a rabbit hole I fell into and (eventually) climbed out of, a little wiser and a lot more caffeinated ☕🎓✨
+        <p className="font-poppins text-text-base opacity-90">
+          Here are all the credentials I've picked up on my journey so far — each one represents a rabbit hole I fell into and (eventually) climbed out of, a little wiser and a lot more caffeinated
         </p>
       </div>
 

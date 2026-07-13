@@ -42,4 +42,4 @@ That moment when theoretical data science becomes a tool that prevents real equi
 - **Domain knowledge matters.** I spent my first week just learning how blast furnaces work, and it made every modeling decision 10x better.
 - **Keep it simple.** The engineers didn't care about my fancy hyperparameter tuning — they cared about a clear forecast they could act on.
 
-If I could go back and tell past-me one thing before starting this internship, it would be: "learn pandas better." Seriously. `pd.merge()` and `groupby()` will become your best friends 🐼📊
+If I could go back and tell past-me one thing before starting this internship, it would be: "learn pandas better." Seriously. `pd.merge()` and `groupby()` will become your best friends.

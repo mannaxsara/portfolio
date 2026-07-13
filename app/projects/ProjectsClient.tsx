@@ -14,8 +14,8 @@ const ProjectsFull = () => {
             </ScrollReveal>
             
             <ScrollReveal delay={0.1}>
-                <p className="max-w-2xl leading-relaxed text-center font-pixelify text-text-base/90 text-[15px] md:text-[16px]">
-                    Here&apos;s the lineup of work I&apos;ve built and optimized! From cloud-connected IoT systems enabling remote physics experiments to predictive time-series modeling pipelines designed to analyze industrial manufacturing operational variables. 🌸✨💫
+                <p className="max-w-2xl leading-relaxed text-center font-poppins text-text-base/90 text-[15px] md:text-[16px]">
+                    Here&apos;s the lineup of work I&apos;ve built and optimized! From cloud-connected IoT systems enabling remote physics experiments to predictive time-series modeling pipelines designed to analyze industrial manufacturing operational variables.
                 </p>
             </ScrollReveal>
         

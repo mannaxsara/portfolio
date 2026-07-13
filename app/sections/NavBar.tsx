@@ -108,11 +108,11 @@ export default function Navbar() {
       {mounted && !isMobile && (
         <div className="flex space-x-4 items-center">
           <NavButton href="#about">About</NavButton>
-          <NavButton href="/dashboard">Dashboard</NavButton>
           <NavButton href="#projects">Projects</NavButton>
           <NavButton href="#gallery">Certifications</NavButton>
           <NavButton href="#experience">Experience</NavButton>
           <NavButton href="#contact">Contact</NavButton>
+          <NavButton href="/dashboard">Dashboard</NavButton>
 
           {/* Retro Theme Toggle Button (Sun/Moon) */}
           <button
@@ -153,7 +153,7 @@ export default function Navbar() {
 
       {mounted && isMobile && isOpen && (
         <div
-          className="absolute top-full left-0 w-full bg-bg-alt border-b-4 border-border-accent shadow-[0_6px_0px_var(--shadow-color)] z-40 flex flex-col p-6 gap-4 font-pixelify text-base text-text-base"
+          className="absolute top-full left-0 w-full bg-bg-alt border-b-4 border-border-accent shadow-[0_6px_0px_var(--shadow-color)] z-40 flex flex-col p-6 gap-4 font-poppins text-base text-text-base"
         >
           <ScrollLink 
             as="span" 
@@ -163,14 +163,6 @@ export default function Navbar() {
           >
             About
           </ScrollLink>
-          
-          <Link 
-            href="/dashboard" 
-            onClick={() => setIsOpen(false)} 
-            className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
-          >
-            Dashboard
-          </Link>
           
           <ScrollLink 
             as="span" 
@@ -208,16 +200,32 @@ export default function Navbar() {
             Contact
           </ScrollLink>
 
+          <Link 
+            href="/dashboard" 
+            onClick={() => setIsOpen(false)} 
+            className="py-1 border-b border-border-accent/10 hover:text-highlight-color cursor-pointer transition-colors block"
+          >
+            Dashboard
+          </Link>
+
           {/* Mobile Theme Toggle */}
           <button
             onClick={() => {
               toggleTheme();
               setIsOpen(false);
             }}
-            className="flex items-center justify-between w-full py-1 hover:text-highlight-color transition-colors text-left font-pixelify"
+            className="flex items-center justify-between w-full py-1 hover:text-highlight-color transition-colors text-left font-poppins"
           >
             <span>Theme: {theme === "dark" ? "Dark" : "Light"}</span>
-            <span className="text-xl">{theme === "dark" ? "🌙" : "☀️"}</span>
+            {theme === "dark" ? (
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2v-2H2v2zm18 0h2v-2h-2v2zM11 2v2h2V2h-2zm0 18v2h2v-2h-2zm-5.5-12.1l1.4-1.4-1.4-1.4-1.4 1.4 1.4 1.4zm11.3 11.3l1.4-1.4-1.4-1.4-1.4 1.4 1.4 1.4zm-1.4-12.7l1.4 1.4 1.4-1.4-1.4-1.4-1.4 1.4zM5.1 17.5l1.4 1.4 1.4-1.4-1.4-1.4-1.4 1.4z" />
+              </svg>
+            )}
           </button>
         </div>
       )}

@@ -3,10 +3,10 @@ import ScrollLink from "../components/ScrollLink";
 
 const Footer = () => {
   return (  
-    <footer className="font-pixelify text-sm text-text-base flex flex-col justify-center items-center bg-bg-alt/80 py-8 border-t-4 border-border-accent gap-6">
+    <footer className="font-poppins text-base text-text-base flex flex-col justify-center items-center bg-bg-alt/80 py-8 border-t-4 border-border-accent gap-6">
       
       {/* Navigation Links */}
-      <div className="flex flex-wrap justify-center gap-6 text-xs md:text-sm">
+      <div className="flex flex-wrap justify-center gap-6 text-base md:text-base">
         <ScrollLink href="#about" className="hover:text-highlight-color transition-colors">About</ScrollLink>
         <ScrollLink href="#projects" className="hover:text-highlight-color transition-colors">Projects</ScrollLink>
         <ScrollLink href="#gallery" className="hover:text-highlight-color transition-colors">Certifications</ScrollLink>
@@ -35,7 +35,7 @@ const Footer = () => {
 
       {/* Copyright info */}
       <div className="text-center flex flex-col gap-1.5 px-4">
-        <p className="text-xs text-text-muted">made with 💖 and way too much coffee by manna</p>
+        <p className="text-xs text-text-muted">made with ♥ and way too much coffee by manna</p>
         <p className="text-[10px] text-text-muted opacity-60">© {new Date().getFullYear()} Manna Sara Bilu. All Rights Reserved.</p>
       </div>
     </footer>

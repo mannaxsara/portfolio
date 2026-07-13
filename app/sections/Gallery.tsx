@@ -33,7 +33,7 @@ const Gallery = () => {
                 </h1>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-                <p className="font-pixelify text-center leading-relaxed text-text-base/90">A few of the badges I&apos;ve collected along the way — proof that I actually finished those courses and didn&apos;t just bookmark them forever 😅🎓✨</p>
+                <p className="font-poppins text-base text-center leading-relaxed text-text-base/90">A few of the badges I&apos;ve collected along the way — proof that I actually finished those courses and didn&apos;t just bookmark them forever</p>
             </ScrollReveal>
             <div className="mt-10 flex flex-wrap gap-8 justify-center">
                 {featuredCertifications.map((cert, i) => (

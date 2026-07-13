@@ -15,7 +15,7 @@ const About = () => {
                 </h1>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-                <div className="flex flex-col justify-center leading-relaxed text-center font-pixelify gap-5 text-text-base/90">
+                <div className="flex flex-col justify-center leading-relaxed text-base text-center font-poppins gap-5 text-text-base/90">
                     <p className="text-justify">I&apos;m Manna Sara Bilu, a Computer Engineering student with a strong interest in Data Analytics, Machine Learning, and Software Development.</p>
                     <p className="text-justify">From developing IoT solutions at IIIT Hyderabad to building forecasting models during my internship at SAIL Bhilai Steel Plant, I enjoy using technology to solve real-world problems. I also have experience leading technical event operations, where I combined problem-solving with teamwork to deliver seamless experiences.</p>
                     <p className="text-justify">I&apos;m particularly interested in Data Science, Data Analytics, and AI/ML, where I can leverage data to build predictive models and develop intelligent, real-world solutions.</p>

@@ -4,10 +4,11 @@ import NavBar from "./sections/NavBar";
 import Footer from "./sections/Footer";
 import SmoothScroll from "./components/SmoothScroll";
 
-import { Pixelify_Sans, Jersey_10 } from "next/font/google";
+import { Poppins, Jersey_10 } from "next/font/google";
 
-const pixelify = Pixelify_Sans({
+const poppins = Poppins({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: 'swap',
   variable: "--font-pixelify",
 });
@@ -59,7 +60,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="light" className={`${pixelify.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
+    <html lang="en" data-theme="light" className={`${poppins.variable} ${jersey.variable} antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

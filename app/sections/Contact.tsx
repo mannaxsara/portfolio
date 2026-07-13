@@ -38,16 +38,16 @@ const Contact = () => {
                 </h1>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-                <p className="font-pixelify text-center leading-relaxed mb-8 text-text-base/90">
-                    Hey, thanks for scrolling all the way down here! Whether you want to chat about data pipelines, collaborate on a project, or just say hi — my inbox is always open. I&apos;d love to hear from you! 💌🌸
+                <p className="font-poppins text-center leading-relaxed mb-8 text-text-base/90 text-base">
+                    Hey, thanks for scrolling all the way down here! Whether you want to chat about data pipelines, collaborate on a project, or just say hi — my inbox is always open. I&apos;d love to hear from you!
                 </p>
             </ScrollReveal>
 
             {/* Retro form container */}
             <ScrollReveal delay={0.2} className="w-full max-w-lg">
-                <form onSubmit={handleSubmit} className="w-full font-pixelify bg-bg-alt border-4 border-border-accent shadow-[6px_6px_0px_var(--shadow-color)] p-6 mb-12 flex flex-col gap-4 text-text-base">
+                <form onSubmit={handleSubmit} className="w-full font-poppins bg-bg-alt border-4 border-border-accent shadow-[6px_6px_0px_var(--shadow-color)] p-6 mb-12 flex flex-col gap-4 text-text-base">
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] text-text-muted tracking-widest uppercase font-bold">Name</label>
+                        <label className="text-sm text-text-muted tracking-widest uppercase font-bold">Name</label>
                         <Input 
                             type="text" 
                             value={name}
@@ -60,7 +60,7 @@ const Contact = () => {
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] text-text-muted tracking-widest uppercase font-bold">Email</label>
+                        <label className="text-sm text-text-muted tracking-widest uppercase font-bold">Email</label>
                         <Input 
                             type="email" 
                             value={email}
@@ -73,7 +73,7 @@ const Contact = () => {
                         />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] text-text-muted tracking-widest uppercase font-bold">Message</label>
+                        <label className="text-sm text-text-muted tracking-widest uppercase font-bold">Message</label>
                         <TextArea 
                             placeholder="write your message here..." 
                             onChange={(e) => setMessage(e.target.value)}

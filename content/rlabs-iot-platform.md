@@ -34,4 +34,4 @@ I also learned more about embedded systems in those few months than I did in an 
 
 The whole point of RLabs is democratization. A student in rural Chhattisgarh should have access to the same experimental apparatus as someone at IIT Bombay. The internet already democratized information — RLabs is trying to do the same for hands-on learning.
 
-It's still early days, but the potential is enormous. And honestly? Working on something with that kind of mission made every debugging session worth it — even the ones at 2am 😅
+It's still early days, but the potential is enormous. And honestly? Working on something with that kind of mission made every debugging session worth it — even the ones at 2am.

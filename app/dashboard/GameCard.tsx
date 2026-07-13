@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const GameCard = () => {
     return (  
-        <div className="bg-light-pink border-4 border-raspberry shadow-[4px_4px_0px_#412722] transition-all hover:shadow-[6px_6px_0px_#AE5969] font-pixelify">
+        <div className="bg-light-pink border-4 border-raspberry shadow-[4px_4px_0px_#412722] transition-all hover:shadow-[6px_6px_0px_#AE5969] font-poppins">
             <div className="flex gap-1 justify-end p-1 bg-rosewood h-full">
                 <span className="w-2 h-2 bg-light-pink border border-plum-brown"></span>
                 <span className="w-2 h-2 bg-raspberry border border-plum-brown"></span>

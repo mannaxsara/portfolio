@@ -60,6 +60,7 @@
   --color-shadow-color: var(--shadow-color);
   --color-highlight-color: var(--highlight-color);
 
+  --font-poppins: var(--font-pixelify);
   --font-pixelify: var(--font-pixelify);
   --font-jersey: var(--font-jersey);
 }
@@ -197,7 +198,7 @@ body {
   color: var(--text-base);
   padding: 8px 16px;
   z-index: 100;
-  font-family: var(--font-pixelify);
+  font-family: var(--font-poppins);
   border: 2px solid var(--border-accent);
   transition: top 0.2s ease;
 }
