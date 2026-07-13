@@ -6,27 +6,27 @@ import { Bubble } from "pixel-retroui";
 const SECTION_MESSAGES: Record<string, { video: string; text: string }> = {
   home: {
     video: "/avatar-videos/peacesign.webm",
-    text: "Hey! Welcome to my portfolio~ ✦",
+    text: "Hey! Welcome to my portfolio~",
   },
   about: {
     video: "/avatar-videos/thinking.webm",
-    text: "That's me! A CS student who loves data & code ✦",
+    text: "That's me! CS student who loves data & code",
   },
   projects: {
     video: "/avatar-videos/thinking.webm",
-    text: "Check out what I've been building! ✦",
+    text: "Check out what I've been building!",
   },
   gallery: {
     video: "/avatar-videos/peacesign.webm",
-    text: "Certified & verified~ ✦",
+    text: "Certified & verified~",
   },
   experience: {
     video: "/avatar-videos/thinking.webm",
-    text: "Here's where I leveled up in real life ✦",
+    text: "Leveled up in real life!",
   },
   contact: {
     video: "/avatar-videos/peacesign.webm",
-    text: "Let's connect! Don't be shy~ ✦",
+    text: "Let's connect! Don't be shy~",
   },
 };
 
@@ -127,7 +127,7 @@ export default function FloatingCompanion() {
     <div className="fixed bottom-4 right-4 z-[100] flex flex-col items-end pointer-events-auto">
       {/* Speech bubble — floats above the avatar */}
       <div
-        className={`transition-all duration-300 font-poppins max-w-[200px] md:max-w-[240px] mb-1 mr-6 ${
+        className={`transition-all duration-300 font-poppins max-w-[240px] md:max-w-[280px] mb-1 mr-6 ${
           showBubble
             ? "opacity-100 translate-y-0 scale-100"
             : "opacity-0 translate-y-4 scale-90 pointer-events-none"
