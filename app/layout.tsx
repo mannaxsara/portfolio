@@ -1,5 +1,6 @@
 import "./globals.css";
 import "pixel-retroui/dist/index.css";
+import "@hackernoon/pixel-icon-library/fonts/iconfont.css";
 import NavBar from "./sections/NavBar";
 import Footer from "./sections/Footer";
 import SmoothScroll from "./components/SmoothScroll";
