@@ -62,7 +62,7 @@ const Dashboard = () => {
                   className="pixel-heading font-jersey text-highlight-color mb-4 break-words"
                   style={{ fontSize: "clamp(40px, 8vw, 72px)" }}
                 >
-                  MANNA | मन्ना
+                  MANNA | <span className="text-[0.65em] inline-block align-middle">मन्ना</span>
                 </h2>
 
                 <div className="flex flex-wrap gap-2 mb-4">

@@ -182,16 +182,16 @@ const Recommend = () => {
                       className="relative overflow-hidden bg-cream/70 dark:bg-bg-base border-2 border-border-accent p-3 shadow-[2px_2px_0_var(--shadow-color)]"
                     >
                       <div className="absolute top-0 left-0 right-0 h-0.5 opacity-40 retro-scanline" />
-                      <div className="flex items-center justify-between gap-2 flex-wrap">
-                        <p className="text-sm text-text-base font-bold flex gap-1.5 items-center">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="text-sm text-text-base font-bold flex gap-1.5 items-start min-w-0">
                           <PixelIcon
                             name="sparkles"
                             size={12}
-                            className="text-highlight-color shrink-0"
+                            className="text-highlight-color shrink-0 mt-0.5"
                           />
-                          {rec.name}
+                          <span>{rec.name}</span>
                         </p>
-                        <span className="text-[10px] font-bold px-1.5 py-0.5 border border-border-accent tracking-wide bg-peach/50 dark:bg-card-bg text-highlight-color">
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 border border-border-accent tracking-wide bg-peach/50 dark:bg-card-bg text-highlight-color shrink-0">
                           {tag}
                         </span>
                       </div>

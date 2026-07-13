@@ -39,17 +39,13 @@ const Book = ({
       onMouseLeave={() => onHoverChange?.(false, null)}
       onFocus={(e) => onHoverChange?.(true, e.currentTarget)}
       onBlur={() => onHoverChange?.(false, null)}
-      className={`cursor-pointer flex-shrink-0 relative z-10 transition-transform duration-150 ease-out outline-none
-        hover:-translate-y-2 hover:-translate-x-0.5
-        focus-visible:-translate-y-2
-        active:translate-y-0 active:translate-x-0
-        ${isActive ? "-translate-y-2 z-20" : ""}`}
+      className={`book-container ${isActive ? "z-20" : "z-10"}`}
     >
       <img
         src={`/icons/book-spine-${spineIndex}.png?v=3`}
         alt=""
         data-cover={cover}
-        className="block select-none pointer-events-none"
+        className={`book-img ${isActive ? "active-lift" : ""}`}
         style={{
           imageRendering: "pixelated",
           height: `${height}px`,

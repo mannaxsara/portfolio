@@ -526,3 +526,29 @@ body::after {
   -moz-osx-font-smoothing: unset;
   text-rendering: optimizeSpeed;
 }
+
+/* Custom Bookshelf Lift Animation */
+.book-container {
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  outline: none;
+}
+
+.book-img {
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(0px) translateX(0px);
+}
+
+.book-container:hover .book-img,
+.book-container:focus-visible .book-img,
+.book-img.active-lift {
+  transform: translateY(-24px) translateX(-2px);
+}
+
+.book-container:active .book-img {
+  transform: translateY(0px) translateX(0px) !important;
+}

@@ -140,15 +140,6 @@ export default function Navbar() {
               suppressHydrationWarning
             />
           </span>
-          <span className="flex flex-col leading-none">
-            <span className="inline-flex items-center gap-1.5">
-              Manna
-              <PixelIcon name="heart" solid size={12} className="text-blush animate-heart-beat" />
-            </span>
-            <span className="hidden sm:block font-body text-[10px] tracking-[0.18em] uppercase text-text-muted font-medium mt-0.5">
-              cute pixel world
-            </span>
-          </span>
         </Link>
 
         {/* Desktop Menu */}

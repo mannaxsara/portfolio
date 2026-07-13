@@ -115,7 +115,7 @@ const BookBoard = () => {
           )}
 
           <div
-            className="bookshelf-shelf flex items-end overflow-x-auto gap-1 pt-6 pb-0 border-b-[6px] border-border-accent shadow-[0_4px_0_var(--shadow-color)] relative z-10"
+            className="bookshelf-shelf flex items-end overflow-x-auto gap-1 pt-10 pb-0 border-b-[6px] border-border-accent shadow-[0_4px_0_var(--shadow-color)] relative z-10"
           >
             {books.map((book) => (
               <Book
