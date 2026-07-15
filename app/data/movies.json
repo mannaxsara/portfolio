@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Your Name",
+    "director": "Makoto Shinkai",
+    "year": "2016",
+    "cover": "/manna-avatar-heart.png",
+    "comment": "An absolute masterpiece of animation, storytelling, and emotional connection. The music by RADWIMPS is unforgettable."
+  },
+  {
+    "id": 2,
+    "title": "Spirited Away",
+    "director": "Hayao Miyazaki",
+    "year": "2001",
+    "cover": "/manna-avatar-heart.png",
+    "comment": "A breathtaking fantasy adventure that is beautiful, imaginative, and deeply nostalgic. Miyazaki's world-building at its peak."
+  },
+  {
+    "id": 3,
+    "title": "Interstellar",
+    "director": "Christopher Nolan",
+    "year": "2014",
+    "cover": "/manna-avatar-heart.png",
+    "comment": "A stellar journey through space and time that captures human emotion, science, and Hans Zimmer's pipe organ score in a spectacular way."
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "cover": "/covers/books/mockingbird.png",
+    "rating": 5,
+    "comment": "Essential reading for anyone wanting to write readable, elegant, and maintainable software. Changed how I structure functions!"
+  },
+  {
+    "id": 2,
+    "title": "The Seven Husbands of Evelyn Hugo",
+    "author": "Taylor Jenkins Reid",
+    "cover": "/covers/books/evelynhugo.png",
+    "rating": 5,
+    "comment": "A sweeping, heartbreaking journey through Old Hollywood glamour, ambition, and the costs of protecting secrets. Utterly unputdownable."
+  },
+  {
+    "id": 3,
+    "title": "The Perks of Being a Wallflower",
+    "author": "Stephen Chbosky",
+    "cover": "/covers/books/perks_wallflower_v3.png",
+    "rating": 4,
+    "comment": "A tender, emotional coming-of-age story that perfectly captures the feeling of feeling infinite and navigating mental health."
+  },
+  {
+    "id": 4,
+    "title": "Verity",
+    "author": "Colleen Hoover",
+    "cover": "/covers/books/verity.png",
+    "rating": 4,
+    "comment": "A dark, deeply unsettling psychological thriller. The twist at the end will leave you questioning everything you just read!"
+  }
+]

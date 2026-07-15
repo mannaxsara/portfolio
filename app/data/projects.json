@@ -1,0 +1,20 @@
+[
+  {
+    "title": "BSP Inventory Optimizer",
+    "description": "An Industry 4.0 raw material demand forecasting dashboard built for Bhilai Steel Plant (SAIL) to predict resource consumption, flag supply shortage risks, and optimize purchase ordering schedules using daily historical logs and Facebook Prophet.",
+    "skills": ["Python", "Prophet", "Pandas", "Chart.js", "Data Analytics", "Excel"],
+    "image": "/projects/proj-bsp-inventory.jpg",
+    "git": "https://github.com/mannaxsara/BSP-Inventory-Optimizer",
+    "url": "https://github.com/mannaxsara/BSP-Inventory-Optimizer",
+    "fileLabel": "bsp_inventory_optimizer.exe"
+  },
+  {
+    "title": "DetectiveAI",
+    "description": "An autonomous data analysis assistant that automates dataset profiling, performs ARIMA forecasting, clusters Isolation Forest outliers, constructs root-cause diagnostic trees, and auto-compiles executive PDF analysis reports.",
+    "skills": ["Next.js", "FastAPI", "Polars", "Scikit-Learn", "Python", "TypeScript", "TailwindCSS"],
+    "image": "/projects/proj-detective-ai.jpg",
+    "git": "https://github.com/mannaxsara/detective-ai",
+    "url": "https://github.com/mannaxsara/detective-ai",
+    "fileLabel": "detective_ai.exe"
+  }
+]

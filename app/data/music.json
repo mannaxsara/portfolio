@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "You Give Love A Bad Name",
+    "artist": "Bon Jovi",
+    "cover": "/covers/music/bon_jovi.png",
+    "rating": 5,
+    "comment": "An absolute 80s rock classic. The energy and the chorus are completely unmatched! Excellent for code jams.",
+    "url": "https://open.spotify.com/track/0rmGAIH9LNJewFw7nKzZnc"
+  },
+  {
+    "id": 2,
+    "title": "Show Me How to Live",
+    "artist": "Audioslave",
+    "cover": "/covers/music/audioslave.png",
+    "rating": 5,
+    "comment": "Chris Cornell's vocals and Tom Morello's riffs make this track a masterpiece of alternative rock.",
+    "url": "https://open.spotify.com/track/1Qdnvn4XlmZANCVy3XjrQo"
+  },
+  {
+    "id": 3,
+    "title": "Lover, You Should've Come Over",
+    "artist": "Jeff Buckley",
+    "cover": "/covers/music/jeff_buckley.png",
+    "rating": 5,
+    "comment": "One of the most beautifully written, emotional songs ever. Buckley's range is breathtaking.",
+    "url": "https://open.spotify.com/track/6Jv7kjGkhY2fT4yuBF3aTz"
+  },
+  {
+    "id": 4,
+    "title": "Running In Circles",
+    "artist": "Dead Poet Society",
+    "cover": "/covers/music/dead_poet.png",
+    "rating": 4,
+    "comment": "Super unique gritty rock sound with incredibly catchy bass lines and dynamic vocal shifts.",
+    "url": "https://open.spotify.com/track/4pEU0NT64oiem9lDT7nuJn"
+  }
+]

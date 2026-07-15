@@ -7,49 +7,9 @@ import ScrollReveal from "../components/ScrollReveal";
 import SectionHeading from "../components/SectionHeading";
 import PixelIcon from "../components/PixelIcon";
 
-const PROJECTS = [
-  {
-    title: "RLabs Platform",
-    description:
-      "An innovative cloud-connected remote lab platform enabling students to perform real-time physical experiments through the browser.",
-    skills: ["React", "IoT", "Node.js", "WebSockets", "ESP32", "C++"],
-    image: "/projects/proj-rlabs.webp",
-    git: "https://github.com/mannaxsara",
-    url: "https://rlabs.iiit.ac.in/",
-    fileLabel: "rlabs.exe",
-  },
-  {
-    title: "SAIL Analytics",
-    description:
-      "Analysis of industrial manufacturing operational datasets and predictive time-series modeling for Bhilai Steel Plant (SAIL).",
-    skills: ["Python", "Prophet", "SQL", "Pandas", "Data Analytics"],
-    image: "/projects/proj-sail.webp",
-    git: "https://github.com/mannaxsara",
-    url: "https://www.sail.co.in/",
-    fileLabel: "sail_analytics.exe",
-  },
-  {
-    title: "Industrial Anomaly Detector",
-    description:
-      "Predictive modeling and time-series anomaly detection on manufacturing dataset variables to pre-emptively identify component thermal fatigue.",
-    skills: ["Python", "Prophet", "Scikit-Learn", "Jupyter", "Machine Learning"],
-    image: "/projects/proj-prophet.webp",
-    git: "https://github.com/mannaxsara",
-    url: "https://facebook.github.io/prophet/",
-    fileLabel: "prophet_model.exe",
-  },
-  // TODO: re-enable 4th project later
-  // {
-  //   title: "ACM Event Tech Portal",
-  //   description:
-  //     "Event registration software and attendee pipelines for college-level tech events — built to stay snappy even when everyone registers at once.",
-  //   skills: ["React", "SQL", "Node.js", "Event Ops"],
-  //   image: "/projects/proj-acm.webp",
-  //   git: "https://github.com/mannaxsara",
-  //   url: "https://github.com/mannaxsara",
-  //   fileLabel: "acm_events.exe",
-  // },
-] as const;
+import projectsData from "../data/projects.json";
+
+const PROJECTS = projectsData;
 
 // TODO: re-enable writeups later
 // const WRITEUPS = [

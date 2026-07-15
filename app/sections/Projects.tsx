@@ -7,6 +7,8 @@ import ScrollReveal from "../components/ScrollReveal";
 import SectionHeading from "../components/SectionHeading";
 import PixelIcon from "../components/PixelIcon";
 
+import projectsData from "../data/projects.json";
+
 const Projects = () => {
   const router = useRouter();
 
@@ -19,36 +21,23 @@ const Projects = () => {
       </ScrollReveal>
 
       <div className="mt-8 flex flex-wrap gap-10 justify-center">
-        <ScrollReveal delay={0.15}>
-          <div
-            onClick={() => window.open("https://rlabs.iiit.ac.in/", "_blank")}
-            className="cursor-pointer"
-          >
-            <ProjectCard
-              title="RLabs Platform"
-              description="An innovative cloud-connected remote lab platform enabling students to perform real-time physical experiments through the browser."
-              skills={["React", "IoT", "Node.js", "WebSockets", "ESP32", "C++"]}
-              image="/projects/proj-rlabs.webp"
-              git="https://github.com/mannaxsara"
-              fileLabel="rlabs.exe"
-            />
-          </div>
-        </ScrollReveal>
-        <ScrollReveal delay={0.25}>
-          <div
-            onClick={() => window.open("https://www.sail.co.in/", "_blank")}
-            className="cursor-pointer"
-          >
-            <ProjectCard
-              title="SAIL Analytics"
-              description="Analysis of industrial manufacturing operational datasets and predictive time-series modeling for Bhilai Steel Plant (SAIL)."
-              skills={["Python", "Prophet", "SQL", "Pandas", "Data Analytics"]}
-              image="/projects/proj-sail.webp"
-              git="https://github.com/mannaxsara"
-              fileLabel="sail_analytics.exe"
-            />
-          </div>
-        </ScrollReveal>
+        {projectsData.slice(0, 2).map((project, idx) => (
+          <ScrollReveal key={project.title} delay={0.15 + idx * 0.1}>
+            <div
+              onClick={() => window.open(project.url, "_blank")}
+              className="cursor-pointer"
+            >
+              <ProjectCard
+                title={project.title}
+                description={project.description}
+                skills={[...project.skills]}
+                image={project.image}
+                git={project.git}
+                fileLabel={project.fileLabel}
+              />
+            </div>
+          </ScrollReveal>
+        ))}
       </div>
 
       <ScrollReveal delay={0.3} className="mt-12 flex justify-center">

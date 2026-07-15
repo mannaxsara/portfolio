@@ -46,10 +46,44 @@ const MusicPlayer = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.7);
+    const [isLooping, setIsLooping] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const progressBarRef = useRef<HTMLDivElement | null>(null);
     const currentSong = songs[currentIndex];
+    const fadeIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Smooth volume fade helper (fadeDuration in ms)
+    const fadeVolume = (targetVolume: number, fadeDuration: number, callback?: () => void) => {
+        if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+        if (!audioRef.current) {
+            if (callback) callback();
+            return;
+        }
+
+        const startVolume = audioRef.current.volume;
+        const steps = 15;
+        const stepTime = fadeDuration / steps;
+        const volumeStep = (targetVolume - startVolume) / steps;
+        let currentStep = 0;
+
+        fadeIntervalRef.current = setInterval(() => {
+            if (!audioRef.current) {
+                if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+                return;
+            }
+            currentStep++;
+            const nextVol = startVolume + volumeStep * currentStep;
+            audioRef.current.volume = Math.max(0, Math.min(1, nextVol));
+
+            if (currentStep >= steps) {
+                audioRef.current.volume = targetVolume;
+                if (fadeIntervalRef.current) clearInterval(fadeIntervalRef.current);
+                fadeIntervalRef.current = null;
+                if (callback) callback();
+            }
+        }, stepTime);
+    };
 
     // Load source on track change
     useEffect(() => {
@@ -59,23 +93,36 @@ const MusicPlayer = () => {
             setCurrentTime(0);
             
             if (isPlaying) {
-                audioRef.current.play().catch((err) => {
+                // Play at 0 volume and fade up
+                audioRef.current.volume = 0;
+                audioRef.current.play().then(() => {
+                    fadeVolume(volume, 400);
+                }).catch((err) => {
                     console.log("Autoplay blocked:", err);
                     setIsPlaying(false);
                 });
+            } else {
+                audioRef.current.volume = volume;
             }
         }
     }, [currentIndex]);
 
-    // Play/Pause handler
+    // Play/Pause handler with volume fading
     const togglePlay = () => {
         if (!audioRef.current) return;
         if (isPlaying) {
-            audioRef.current.pause();
-            setIsPlaying(false);
+            fadeVolume(0, 400, () => {
+                if (audioRef.current) {
+                    audioRef.current.pause();
+                    audioRef.current.volume = volume; // Restore to target volume for next play
+                }
+                setIsPlaying(false);
+            });
         } else {
+            audioRef.current.volume = 0;
             audioRef.current.play().then(() => {
                 setIsPlaying(true);
+                fadeVolume(volume, 400);
             }).catch((err) => {
                 console.log("Playback failed:", err);
             });
@@ -83,11 +130,37 @@ const MusicPlayer = () => {
     };
 
     const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % songs.length);
+        if (isPlaying) {
+            fadeVolume(0, 250, () => {
+                setCurrentIndex((prev) => (prev + 1) % songs.length);
+            });
+        } else {
+            setCurrentIndex((prev) => (prev + 1) % songs.length);
+        }
     };
 
     const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + songs.length) % songs.length);
+        if (isPlaying) {
+            fadeVolume(0, 250, () => {
+                setCurrentIndex((prev) => (prev - 1 + songs.length) % songs.length);
+            });
+        } else {
+            setCurrentIndex((prev) => (prev - 1 + songs.length) % songs.length);
+        }
+    };
+
+    const handleEnded = () => {
+        if (isLooping && audioRef.current) {
+            audioRef.current.currentTime = 0;
+            audioRef.current.volume = 0;
+            audioRef.current.play().then(() => {
+                fadeVolume(volume, 300);
+            }).catch((err) => {
+                console.log("Loop playback failed:", err);
+            });
+        } else {
+            handleNext();
+        }
     };
 
     // Seek track on progress click
@@ -101,10 +174,14 @@ const MusicPlayer = () => {
         setCurrentTime(newTime);
     };
 
-    // Volume change handler
+    // Volume change handler (clears active fade interval)
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newVol = parseFloat(e.target.value);
         setVolume(newVol);
+        if (fadeIntervalRef.current) {
+            clearInterval(fadeIntervalRef.current);
+            fadeIntervalRef.current = null;
+        }
         if (audioRef.current) {
             audioRef.current.volume = newVol;
         }
@@ -126,7 +203,7 @@ const MusicPlayer = () => {
                 ref={audioRef}
                 onTimeUpdate={() => audioRef.current && setCurrentTime(audioRef.current.currentTime)}
                 onLoadedMetadata={() => audioRef.current && setDuration(audioRef.current.duration)}
-                onEnded={handleNext}
+                onEnded={handleEnded}
             />
 
             {/* Custom Embedded CSS mapping directly to the theme variables for perfect cohesion */}
@@ -391,7 +468,7 @@ const MusicPlayer = () => {
 
                     {/* Controls row: SkipPrev, Play/Pause, SkipNext, Volume */}
                     <div className="flex items-center justify-between gap-4 mt-2">
-                        {/* Back, Play, Next */}
+                        {/* Back, Play, Next, Loop */}
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={handlePrev}
@@ -426,6 +503,19 @@ const MusicPlayer = () => {
                             >
                                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                     <path d="M6 6v12l8.5-6L6 6zm10 0h2v12h-2z" />
+                                </svg>
+                            </button>
+                            <button
+                                onClick={() => setIsLooping(!isLooping)}
+                                className={`pixel-player-btn-skip transition-all ${
+                                    isLooping
+                                        ? "text-highlight-color border-highlight-color bg-peach/40 shadow-[1px_1px_0_var(--shadow-color)] translate-x-[1px] translate-y-[1px]"
+                                        : ""
+                                }`}
+                                title={isLooping ? "Loop: ON" : "Loop: OFF"}
+                            >
+                                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                    <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
                                 </svg>
                             </button>
                         </div>

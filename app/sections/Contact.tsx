@@ -8,6 +8,7 @@ import Insta from "../components/icons/Insta";
 import Email from "../components/icons/Email";
 import ScrollReveal from "../components/ScrollReveal";
 import SectionHeading from "../components/SectionHeading";
+import { supabase } from "../../lib/supabaseClient";
 
 const Contact = () => {
     const [name, setName] = useState("");
@@ -15,20 +16,71 @@ const Contact = () => {
     const [message, setMessage] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [sent, setSent] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name.trim() || !email.trim() || !message.trim()) return;
+        setErrorMsg("");
+
+        if (!name.trim() || !email.trim() || !message.trim()) {
+            setErrorMsg("✕ Please fill in all fields.");
+            return;
+        }
+
+        // Email address format validation check
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.trim())) {
+            setErrorMsg("✕ Please enter a valid email address.");
+            return;
+        }
 
         setSubmitting(true);
-        setTimeout(() => {
+
+        const isPlaceholder =
+            !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+            process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder-project");
+
+        if (isPlaceholder) {
+            // Simulated local database insertion for local testing
+            setTimeout(() => {
+                setSubmitting(false);
+                setSent(true);
+                setName("");
+                setEmail("");
+                setMessage("");
+                setTimeout(() => setSent(false), 3000);
+            }, 1000);
+            return;
+        }
+
+        try {
+            const { error } = await supabase
+                .schema("SyePhasuk")
+                .from("ContactMessages")
+                .insert([
+                    {
+                        name: name.trim(),
+                        email: email.trim(),
+                        message: message.trim(),
+                    },
+                ]);
+
+            if (error) {
+                console.error("Supabase contact insert error:", error);
+                setErrorMsg("✕ Failed to send message. Please try again later.");
+            } else {
+                setSent(true);
+                setName("");
+                setEmail("");
+                setMessage("");
+                setTimeout(() => setSent(false), 4000);
+            }
+        } catch (err) {
+            console.error("Supabase insert exception:", err);
+            setErrorMsg("✕ A network error occurred. Please try again.");
+        } finally {
             setSubmitting(false);
-            setSent(true);
-            setName("");
-            setEmail("");
-            setMessage("");
-            setTimeout(() => setSent(false), 3000);
-        }, 1500);
+        }
     };
 
     return (  
@@ -97,8 +149,14 @@ const Contact = () => {
                     </button>
 
                     {sent && (
-                        <p className="text-sm text-highlight-color text-center tracking-widest animate-pulse mt-2">
+                        <p className="text-sm text-highlight-color text-center tracking-widest animate-pulse mt-2 font-semibold">
                             ♡ Message sent successfully! ♡
+                        </p>
+                    )}
+
+                    {errorMsg && (
+                        <p className="text-sm text-red-500 font-bold text-center tracking-widest mt-2 animate-pulse">
+                            {errorMsg}
                         </p>
                     )}
                 </form>

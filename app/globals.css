@@ -8,26 +8,26 @@
 
 :root,
 :root[data-theme="dark"] {
-  /* Dark: velvet rose midnight — candy accents, not muddy */
-  --bg-base: #1a1018;
-  --bg-alt: #2a1824;
-  --text-base: #ffe8f2;
-  --text-muted: #d4a0b8;
-  --border-accent: #e8a0bc;
-  --card-bg: #34202c;
-  --card-text: #ffe8f2;
-  --nav-bg: rgba(26, 16, 24, 0.88);
-  --input-bg: #3a2432;
-  --input-text: #ffe8f2;
-  --shadow-color: #a85a7a;
-  --highlight-color: #ffb3cc;
-  --blush: #ff9ebd;
-  --peach: #ffc4d6;
-  --cream: #fff0f6;
-  --sparkle: #ffd0e0;
-  --glow-pink: rgba(255, 158, 189, 0.42);
-  --glow-lilac: rgba(220, 170, 220, 0.22);
-  --panel-sheen: rgba(255, 182, 201, 0.08);
+  /* Premium Dark: velvet obsidian space — deep plum backgrounds, glowing pink highlights */
+  --bg-base: #0b050d;
+  --bg-alt: #140816;
+  --text-base: #fff0f6;
+  --text-muted: #c98fa8;
+  --border-accent: #5e3046;
+  --card-bg: #1a081c;
+  --card-text: #fff0f6;
+  --nav-bg: rgba(11, 5, 13, 0.92);
+  --input-bg: #250f28;
+  --input-text: #fff0f6;
+  --shadow-color: #3e1229;
+  --highlight-color: #ff7da7;
+  --blush: #ff548f;
+  --peach: #ff9eba;
+  --cream: #221025;
+  --sparkle: #ffb3cc;
+  --glow-pink: rgba(255, 84, 143, 0.3);
+  --glow-lilac: rgba(200, 120, 220, 0.18);
+  --panel-sheen: rgba(255, 125, 167, 0.08);
 }
 
 :root[data-theme="light"] {
@@ -97,6 +97,14 @@ html {
   }
   a, button, [role="button"], input[type="submit"], select, .cursor-pointer {
     cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7-4.5-9.5-8.5C.5 9.5 2.5 6 6 6c1.8 0 3.2 1 4 2.2C10.8 7 12.2 6 14 6c3.5 0 5.5 3.5 3.5 6.5C19 16.5 12 21 12 21z' fill='%23ff9eb8' stroke='%23db6b8f' stroke-width='1.2'/%3E%3C/svg%3E") 8 2, pointer !important;
+  }
+}
+
+/* Disable default cursor when JS custom cursor is loaded */
+@media (hover: hover) and (pointer: fine) {
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none !important;
   }
 }
 

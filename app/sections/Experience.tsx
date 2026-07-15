@@ -19,9 +19,9 @@ const experiences: ExperienceItem[] = [
         period: "June 2026 - July 2026",
         sysLabel: "sail_analytics.sys",
         bullets: [
-            "Processed and cleaned industrial sensor data streams from active blast furnace components using Python and Pandas.",
-            "Engineered predictive time-series models using Facebook's Prophet framework to forecast component temperature variables.",
-            "Constructed database queries to retrieve and clean operational records, reducing diagnostics latency."
+            "Developed robust data pre-processing and cleansing pipelines for high-frequency industrial sensor telemetry from operational blast furnaces using Python and Pandas.",
+            "Engineered predictive time-series models using Facebook's Prophet framework to forecast critical component temperatures, enabling proactive thermal maintenance.",
+            "Optimized SQL database queries to fetch and clean raw operational records, significantly reducing diagnostic latency for furnace engineers."
         ]
     },
     {
@@ -30,9 +30,9 @@ const experiences: ExperienceItem[] = [
         period: "May 2025 - July 2025",
         sysLabel: "iiith_research.sys",
         bullets: [
-            "Contributed to the RLabs remote laboratory platform, enabling web-based remote experiment triggers.",
-            "Built WebSockets data streaming bridges to pipe low-latency telemetry between browser interfaces and gateway routers.",
-            "Programmed ESP32/Arduino microcontrollers to transmit real-time physical sensor data and actuate stepper motors."
+            "Collaborated on the development of the IIIT-H RLabs remote laboratory platform, facilitating web-based triggers and monitoring for physical experiments.",
+            "Designed and implemented high-throughput, low-latency WebSocket communication layers to stream telemetry between gateway routers and responsive client browser interfaces.",
+            "Programmed ESP32 and Arduino microcontrollers to integrate sensor networks, process real-time telemetry, and actuate stepper motors with high precision."
         ]
     },
     {
@@ -41,9 +41,9 @@ const experiences: ExperienceItem[] = [
         period: "August 2024 - Present",
         sysLabel: "acm_event_tech.exe",
         bullets: [
-            "Built and managed event registration software portals, coordinating pipelines for college-level tech events.",
-            "Designed relational database tables and registration pipelines, preventing performance lags under peak user traffic.",
-            "Collaborated with developers and student organizers to automate attendee check-ins and registration reports."
+            "Architected and managed full-stack event registration portals, successfully coordinating digital infrastructure for large-scale, college-level technical events.",
+            "Designed high-performance relational database schemas and optimized data ingestion pipelines, maintaining zero downtime and minimal latency under peak concurrent traffic.",
+            "Spearheaded collaboration with cross-functional development teams and student coordinators to automate attendee check-in systems and generate real-time analytics reports."
         ]
     }
 ];
@@ -85,9 +85,14 @@ export default function Experience() {
                                             {exp.period}
                                         </span>
                                     </div>
-                                    <ul className="flex flex-col gap-2 pl-4 list-disc text-base text-text-base opacity-95 leading-relaxed">
+                                    <ul className="flex flex-col gap-3.5 pl-1 text-base text-text-base opacity-95 leading-relaxed">
                                         {exp.bullets.map((bullet, bIdx) => (
-                                            <li key={bIdx}>{bullet}</li>
+                                            <li key={bIdx} className="flex items-start gap-2.5">
+                                                <span className="text-highlight-color mt-2 flex-shrink-0">
+                                                    <span className="block w-1.5 h-1.5 rotate-45 bg-highlight-color" />
+                                                </span>
+                                                <span>{bullet}</span>
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>

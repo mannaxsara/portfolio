@@ -1,27 +1,64 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MusicPlayer from "./MusicPlayer";
 import BookBoard from "./BookBoard";
+import MovieBoard from "./MovieBoard";
 import Recommend from "./Recommend";
-// import AnimeCard from "./AnimeCard"; // TODO: re-enable anime watch list later
+import MiniGame from "./MiniGame";
+import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
 import SectionHeading from "../components/SectionHeading";
 import PixelIcon, { type PixelIconName } from "../components/PixelIcon";
 
 const INTERESTS: { icon: PixelIconName; label: string }[] = [
-  { icon: "chart-line", label: "clean dashboards" },
-  { icon: "robot", label: "training ML models" },
-  { icon: "wifi", label: "wiring up IoT things" },
-  { icon: "moon", label: "late-night coding" },
-  { icon: "calendar-alt", label: "organizing tech events" },
-  { icon: "paint-brush", label: "pretty UIs" },
+  { icon: "chart-line", label: "dashboard design" },
+  { icon: "robot", label: "machine learning" },
+  { icon: "wifi", label: "iot systems" },
+  { icon: "code", label: "data pipelines" },
+  { icon: "calendar-alt", label: "technical operations" },
+  { icon: "paint-brush", label: "frontend engineering" },
 ];
 
 const Dashboard = () => {
+  const [totalViews, setTotalViews] = useState(1337);
+
+  useEffect(() => {
+    const fetchVisitorCount = async () => {
+      // Fetch local storage counts first to support local real increments
+      let localHits = Number(localStorage.getItem("local-visit-count") || "0");
+      if (localHits === 0) {
+        localHits = 104; // start baseline hit count
+      }
+      localHits += 1;
+      localStorage.setItem("local-visit-count", String(localHits));
+      setTotalViews(localHits);
+
+      const isPlaceholder =
+        !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+        process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder-project");
+      if (isPlaceholder) return;
+
+      try {
+        const { count, error } = await supabase
+          .schema("SyePhasuk")
+          .from("VisitorAnalytics")
+          .select("*", { count: "exact", head: true });
+
+        if (count !== null && !error) {
+          setTotalViews(count);
+        }
+      } catch (err) {
+        console.error("Failed to load visitor counter:", err);
+      }
+    };
+
+    fetchVisitorCount();
+  }, []);
+
   return (
     <div className="min-h-screen max-w-3xl mx-auto px-4 flex flex-col items-center pb-20 pt-28">
-      <SectionHeading subtitle="my digital personality card — books, beats, anime, and the little things that make me me">
+      <SectionHeading subtitle="my digital personality card — books, beats, analytics, and the little things that make me me">
         Dashboard
       </SectionHeading>
 
@@ -66,20 +103,25 @@ const Dashboard = () => {
                 </h2>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {["India", "Nagpur", "Student", "Data Analyst"].map((s) => (
+                  {["Nagpur, India", "B.Tech CS Student", "Data Analyst"].map((s) => (
                     <span
                       key={s}
-                      className="text-text-base text-xs px-3 py-1 tracking-wide bg-cream/80 dark:bg-bg-base border-2 border-border-accent shadow-[1px_1px_0_var(--shadow-color)] inline-flex items-center gap-1.5"
+                      className="text-xs px-3 py-1 rounded-full border border-border-accent/40 bg-peach/25 dark:bg-peach/10 text-highlight-color font-semibold tracking-wide backdrop-blur-sm shadow-sm inline-flex items-center gap-1.5"
                     >
-                      <PixelIcon name="sparkles" size={10} className="text-highlight-color" />
+                      <PixelIcon name="sparkles" size={10} />
                       {s}
                     </span>
                   ))}
                 </div>
 
-                <div className="inline-flex items-center gap-2 bg-highlight-color border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] px-3 py-1.5">
-                  <span className="w-2 h-2 bg-green-300 border border-white/40 animate-pulse" />
-                  <span className="text-cream text-xs tracking-widest">online</span>
+                <div className="flex flex-wrap gap-2.5 items-center mb-1">
+                  {/* Real-time Hit Counter */}
+                  <div className="inline-flex items-center gap-2 bg-highlight-color border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] px-3 py-1">
+                    <PixelIcon name="heart" solid size={11} className="text-cream animate-heart-beat" />
+                    <span className="text-cream text-xs tracking-widest font-bold font-mono">
+                      visitor: {totalViews.toString().padStart(6, "0")}
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -87,15 +129,16 @@ const Dashboard = () => {
                 {INTERESTS.map(({ icon, label }) => (
                   <span
                     key={label}
-                    className="text-xs text-text-base bg-peach/40 dark:bg-card-bg border-2 border-border-accent/70 px-3 py-1.5 tracking-wide inline-flex items-center gap-1.5"
+                    className="text-xs px-3 py-1.5 rounded-full border border-border-accent/40 bg-highlight-color/10 dark:bg-highlight-color/5 text-highlight-color font-semibold tracking-wide hover:bg-highlight-color/20 transition-all duration-300 backdrop-blur-sm shadow-sm inline-flex items-center gap-1.5"
                   >
-                    <PixelIcon name={icon} solid size={14} className="text-highlight-color" />
+                    <PixelIcon name={icon} solid size={12} />
                     {label}
                   </span>
                 ))}
               </div>
 
-              <div className="flex flex-col md:flex-row gap-3">
+              <div className="flex flex-col md:flex-row gap-3 mt-1">
+                {/* Shortened Likes */}
                 <div className="flex-1 bg-cream/70 dark:bg-bg-base border-2 border-border-accent p-3 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-0.5 opacity-40 retro-scanline" />
                   <p className="text-highlight-color tracking-widest mb-3 flex items-center gap-2 text-sm font-semibold">
@@ -105,13 +148,13 @@ const Dashboard = () => {
                   </p>
                   <ul className="flex flex-col gap-2">
                     {[
-                      "Clean, well-documented code",
-                      "Python notebooks that just work",
-                      "When the IoT sensor connects first try",
-                      "Good mentors & study groups",
-                      "That feeling when the forecast model converges",
+                      "Time-series data pipelines",
+                      "Responsive dashboard layouts",
+                      "IoT cloud integrations",
+                      "Collaborative study circles",
+                      "Actionable data patterns",
                     ].map((item) => (
-                      <li key={item} className="text-sm text-text-base flex gap-2 items-start">
+                      <li key={item} className="text-xs text-text-base flex gap-2 items-start">
                         <PixelIcon name="star" solid size={12} className="text-highlight-color mt-0.5 shrink-0" />
                         <span>{item}</span>
                       </li>
@@ -119,6 +162,7 @@ const Dashboard = () => {
                   </ul>
                 </div>
 
+                {/* Shortened Dislikes */}
                 <div className="flex-1 bg-cream/70 dark:bg-bg-base border-2 border-border-accent p-3 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-0.5 opacity-40 retro-scanline" />
                   <p className="text-highlight-color tracking-widest mb-3 flex items-center gap-2 text-sm font-semibold">
@@ -128,12 +172,12 @@ const Dashboard = () => {
                   </p>
                   <ul className="flex flex-col gap-2">
                     {[
-                      "Debugging at 3am with no stack trace",
-                      "Messy datasets with no documentation",
-                      "WiFi dropping during a live demo",
-                      "When the event portal crashes on registration day",
+                      "Undocumented datasets",
+                      "System network timeouts",
+                      "Debugging without logs",
+                      "Conflicting project specs",
                     ].map((item) => (
-                      <li key={item} className="text-sm text-text-base flex gap-2 items-start">
+                      <li key={item} className="text-xs text-text-base flex gap-2 items-start">
                         <PixelIcon name="times" size={12} className="text-text-muted mt-0.5 shrink-0" />
                         <span>{item}</span>
                       </li>
@@ -143,58 +187,15 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
-          <div className="bg-peach/30 dark:bg-card-bg border-2 border-border-accent shadow-[3px_3px_0_var(--shadow-color)] p-5 relative">
-            <span className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-blush" />
-            <span className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-blush" />
-            <span className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-blush" />
-            <span className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-blush" />
-
-            <p className="pixel-heading font-jersey text-highlight-color tracking-widest mb-4 flex items-center gap-2 text-2xl uppercase">
-              <PixelIcon name="bolt" solid size={16} />
-              current goals
-              <span className="flex-1 h-px bg-border-accent opacity-40" />
-            </p>
-
-            <div className="flex flex-col gap-4">
-              {[
-                { label: "B.Tech in Computer Science — almost there!", pct: 90 },
-                { label: "Level up Prophet & advanced forecasting", pct: 65 },
-                { label: "Build a full-stack IoT dashboard from scratch", pct: 40 },
-                { label: "Contribute to an open-source data project", pct: 25 },
-              ].map(({ label, pct }) => (
-                <div key={label}>
-                  <div className="flex justify-between items-center mb-1.5 gap-3">
-                    <p className="text-sm text-text-base inline-flex items-center gap-2">
-                      <PixelIcon name="check" solid size={12} className="text-highlight-color shrink-0" />
-                      {label}
-                    </p>
-                    <p className="text-xs text-highlight-color font-semibold shrink-0">{pct}%</p>
-                  </div>
-                  <div className="h-2.5 border-2 border-border-accent bg-cream/60 dark:bg-bg-base overflow-hidden">
-                    <div
-                      className="h-full"
-                      style={{
-                        width: `${pct}%`,
-                        background:
-                          "repeating-linear-gradient(90deg, var(--highlight-color) 0px, var(--highlight-color) 4px, var(--blush) 4px, var(--blush) 8px)",
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-8 w-full mt-10">
         <BookBoard />
+        <MovieBoard />
         <MusicPlayer />
-        {/* TODO: re-enable anime watch list later
-        <AnimeCard />
-        */}
         <Recommend />
+        <MiniGame />
       </div>
     </div>
   );

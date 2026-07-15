@@ -6,6 +6,9 @@ import NavButton from "../components/NavButton";
 import Link from "next/link";
 import PixelIcon from "../components/PixelIcon";
 
+// Config: Easily change this path to replace the navigation logo image file.
+const LOGO_IMAGE_PATH = "/logoo.png";
+
 const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#projects", label: "Projects" },
@@ -134,7 +137,7 @@ export default function Navbar() {
             className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 overflow-hidden shrink-0 group-hover:-translate-y-0.5 transition-all"
           >
             <img
-              src="/logoo.png"
+              src={LOGO_IMAGE_PATH}
               alt="Manna logo"
               className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
               suppressHydrationWarning

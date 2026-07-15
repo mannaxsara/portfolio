@@ -55,6 +55,9 @@ export const viewport = {
   themeColor: "#db6b8f",
 };
 
+import CustomCursor from "./components/CustomCursor";
+import VisitorTracker from "./components/VisitorTracker";
+
 export default function RootLayout({
   children,
 }: {
@@ -90,6 +93,8 @@ export default function RootLayout({
         <a href="#main-content" className="skip-nav">
           Skip to main content
         </a>
+        <CustomCursor />
+        <VisitorTracker />
         <SmoothScroll>
           <NavBar />
           <div id="main-content" className="flex-grow">{children}</div>

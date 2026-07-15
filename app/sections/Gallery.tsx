@@ -6,25 +6,11 @@ import GalleryCard from "../components/GalleryCard";
 import ScrollReveal from "../components/ScrollReveal";
 import SectionHeading from "../components/SectionHeading";
 
+import certificationsData from "../data/certifications.json";
+
 const Gallery = () => {
     const router = useRouter();
-    const featuredCertifications = [
-        {
-          src: "/cert-data-analytics.png",
-          caption: "Google Data Analytics Professional Certificate",
-          titlebar: "google_data_analytics.sys"
-        },
-        {
-          src: "/cert-advanced-analytics.png",
-          caption: "Google Advanced Data Analytics Certificate",
-          titlebar: "google_advanced_analytics.sys"
-        },
-        {
-          src: "/cert-acm-w.png",
-          caption: "ACM-W Coding Contest Achievement",
-          titlebar: "acm_w_contest.sys"
-        }
-    ];
+    const featuredCertifications = certificationsData.slice(0, 3);
 
     return (  
         <div className="min-h-screen max-w-5xl mx-auto px-4 flex flex-col items-center pt-10 pb-16">
