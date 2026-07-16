@@ -187,7 +187,7 @@ const MovieBoard = () => {
         ) : (
           <>
             {/* Coverflow Stage Container */}
-            <div className="relative bg-cream/20 dark:bg-bg-base/10 border-2 border-border-accent p-2" style={{ perspective: "600px", height: 260 }}>
+            <div className="relative overflow-hidden bg-cream/20 dark:bg-bg-base/10 border-2 border-border-accent p-2" style={{ perspective: "600px", height: 260 }}>
               
               {/* Left Arrow (High zIndex to overlay) */}
               <button

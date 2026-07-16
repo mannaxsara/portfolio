@@ -166,7 +166,10 @@ const Recommend = () => {
               </div>
             ) : (
               // Fixed height container with vertical scrolling
-              <div className="flex flex-col gap-2.5 max-h-64 overflow-y-auto pr-1 scrollbar-thin">
+              <div 
+                className="flex flex-col gap-2.5 max-h-64 overflow-y-auto pr-1 scrollbar-thin"
+                data-lenis-prevent
+              >
                 {recommendList.map((rec) => {
                   const tag = rec.tag || "REC";
                   return (

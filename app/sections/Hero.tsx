@@ -20,17 +20,21 @@ const Hero = () => {
 
   const handleMouseEnter = () => {
     if (!headingRef.current) return;
-    headingRef.current.style.webkitBackgroundClip = "text";
-    headingRef.current.style.webkitTextFillColor = "transparent";
-    headingRef.current.style.backgroundClip = "text";
+    headingRef.current.style.setProperty("animation", "none");
+    headingRef.current.style.setProperty("background-position", "center");
+    headingRef.current.style.setProperty("-webkit-background-clip", "text");
+    headingRef.current.style.setProperty("-webkit-text-fill-color", "transparent");
+    headingRef.current.style.setProperty("background-clip", "text");
   };
 
   const handleMouseLeave = () => {
     if (!headingRef.current) return;
-    headingRef.current.style.backgroundImage = "";
-    headingRef.current.style.webkitBackgroundClip = "";
-    headingRef.current.style.webkitTextFillColor = "";
-    headingRef.current.style.backgroundClip = "";
+    headingRef.current.style.removeProperty("background-image");
+    headingRef.current.style.removeProperty("animation");
+    headingRef.current.style.removeProperty("background-position");
+    headingRef.current.style.removeProperty("-webkit-background-clip");
+    headingRef.current.style.removeProperty("-webkit-text-fill-color");
+    headingRef.current.style.removeProperty("background-clip");
   };
 
   return (
