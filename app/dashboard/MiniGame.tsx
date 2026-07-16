@@ -3,22 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 import PixelIcon from "../components/PixelIcon";
 
-interface TrafficCar {
-  x: number; // coordinate [80, 220]
-  y: number; // pixels [-60, 300]
-  speed: number;
-  color: string;
+interface Pipe {
+  id: string;
+  x: number; // percentage [0, 100]
+  topHeight: number;
+  bottomHeight: number;
+  passed: boolean;
 }
 
-interface GoldCoin {
-  x: number;
-  y: number;
-  spinFrame: number;
-}
-
-interface GameParticle {
-  x: number;
-  y: number;
+interface JumpParticle {
+  id: string;
+  x: number; // percentage
+  y: number; // pixels
   vx: number;
   vy: number;
   life: number;
@@ -29,39 +25,31 @@ export default function MiniGame() {
   const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">("idle");
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
-  const [lives, setLives] = useState(3);
-  const [combo, setCombo] = useState(0);
   
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const telemetryRef = useRef<HTMLDivElement | null>(null);
-  const loopRef = useRef<number | null>(null);
+  const [nekoY, setNekoY] = useState(110);
+  const [pipes, setPipes] = useState<Pipe[]>([]);
+  const [particles, setParticles] = useState<JumpParticle[]>([]);
 
-  // Game coordinates inside mutable refs for the 60fps canvas loop
-  const playerX = useRef(150); // range [75, 225]
-  const roadOffset = useRef(0);
-  const traffic = useRef<TrafficCar[]>([]);
-  const coins = useRef<GoldCoin[]>([]);
-  const particles = useRef<GameParticle[]>([]);
-  const frameCount = useRef(0);
-  const currentScore = useRef(0);
-  const hasSteered = useRef(false);
-  const localGameState = useRef<"idle" | "playing" | "gameover">("idle");
+  const nekoYRef = useRef(110);
+  const nekoVelocity = useRef(0);
+  const tickCount = useRef(0);
+  const pipesRef = useRef<Pipe[]>([]);
 
-  // Keep ref synced with react state
+  // Sync ref for tick intervals
   useEffect(() => {
-    localGameState.current = gameState;
-  }, [gameState]);
+    nekoYRef.current = nekoY;
+  }, [nekoY]);
 
-  // Load High Score from localStorage on mount
+  // Load High Score from sessionStorage on mount (Session-based)
   useEffect(() => {
-    const saved = localStorage.getItem("neko_rider_canvas_highscore");
+    const saved = sessionStorage.getItem("neko_flap_cyber_highscore");
     if (saved) {
       setHighScore(parseInt(saved, 10));
     }
   }, []);
 
-  // Web Audio API Synth Sounds
-  const playSound = (type: "hit" | "miss" | "spawn" | "gameover" | "coin") => {
+  // Web Audio API Retro Sound Effects Synth
+  const playSound = (type: "jump" | "point" | "crash" | "gameover") => {
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioContext) return;
@@ -74,403 +62,320 @@ export default function MiniGame() {
       
       const now = ctx.currentTime;
       
-      if (type === "coin") {
+      if (type === "jump") {
         osc.type = "sine";
-        osc.frequency.setValueAtTime(523.25, now); // C5
-        osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
-        gain.gain.setValueAtTime(0.12, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
-        osc.start(now);
-        osc.stop(now + 0.22);
-      } else if (type === "spawn") {
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(220, now);
-        gain.gain.setValueAtTime(0.04, now);
+        osc.frequency.setValueAtTime(420, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.08);
+        gain.gain.setValueAtTime(0.06, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
         osc.start(now);
         osc.stop(now + 0.08);
-      } else if (type === "hit") {
-        osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(120, now);
-        osc.frequency.linearRampToValueAtTime(40, now + 0.3);
-        gain.gain.setValueAtTime(0.2, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+      } else if (type === "point") {
+        osc.type = "square";
+        osc.frequency.setValueAtTime(587.33, now); // D5
+        osc.frequency.setValueAtTime(880, now + 0.07); // A5
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.16);
         osc.start(now);
-        osc.stop(now + 0.3);
-      } else if (type === "gameover") {
+        osc.stop(now + 0.16);
+      } else if (type === "crash") {
         osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.setValueAtTime(180, now + 0.15);
-        osc.frequency.setValueAtTime(130, now + 0.3);
+        osc.frequency.setValueAtTime(90, now);
+        osc.frequency.linearRampToValueAtTime(20, now + 0.2);
         gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.65);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
         osc.start(now);
-        osc.stop(now + 0.7);
+        osc.stop(now + 0.2);
+      } else if (type === "gameover") {
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(293.66, now); // D4
+        osc.frequency.setValueAtTime(220, now + 0.12); // A3
+        osc.frequency.setValueAtTime(146.83, now + 0.24); // D3
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        osc.start(now);
+        osc.stop(now + 0.5);
       }
     } catch (e) {
       // Audio context blocked
     }
   };
 
-  // Keyboard driving controls
+  // Keyboard Space/Jump listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (localGameState.current !== "playing") return;
-      if (e.key === "ArrowLeft" || e.key === "KeyA" || e.code === "ArrowLeft" || e.code === "KeyA") {
+      if (gameState !== "playing") return;
+      if (e.repeat) return; // Prevent key hold repeat flying
+      if (e.key === "Space" || e.key === " " || e.key === "ArrowUp" || e.key === "KeyW" || e.code === "Space" || e.code === "ArrowUp") {
         e.preventDefault();
-        steerLeft();
-      } else if (e.key === "ArrowRight" || e.key === "KeyD" || e.code === "ArrowRight" || e.code === "KeyD") {
-        e.preventDefault();
-        steerRight();
+        jump();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
-  // Mount canvas game loop when state is playing
-  useEffect(() => {
-    if (gameState === "playing") {
-      if (loopRef.current !== null) {
-        cancelAnimationFrame(loopRef.current);
-      }
-      loopRef.current = requestAnimationFrame(gameLoop);
-    }
-    return () => {
-      if (loopRef.current !== null) {
-        cancelAnimationFrame(loopRef.current);
-        loopRef.current = null;
-      }
-    };
   }, [gameState]);
 
-  const steerLeft = () => {
-    if (!hasSteered.current) hasSteered.current = true;
-    playerX.current = Math.max(78, playerX.current - 12);
-  };
+  // Main game tick loop
+  useEffect(() => {
+    if (gameState !== "playing") return;
 
-  const steerRight = () => {
-    if (!hasSteered.current) hasSteered.current = true;
-    playerX.current = Math.min(222, playerX.current + 12);
-  };
+    const gameInterval = setInterval(() => {
+      tickCount.current++;
+      let scoreGained = 0;
+      let crashed = false;
 
-  const startGame = () => {
-    setScore(0);
-    setLives(3);
-    setCombo(0);
-    currentScore.current = 0;
-    playerX.current = 150;
-    roadOffset.current = 0;
-    traffic.current = [];
-    coins.current = [];
-    particles.current = [];
-    frameCount.current = 0;
-    hasSteered.current = false;
-    setGameState("playing");
-  };
+      // 1. UPDATE PHYSICS
+      nekoVelocity.current += 0.50; // Gravity
+      const nextY = nekoYRef.current + nekoVelocity.current;
 
-  const gameOver = () => {
-    setGameState("gameover");
-    playSound("gameover");
-    if (loopRef.current !== null) {
-      cancelAnimationFrame(loopRef.current);
-      loopRef.current = null;
+      // Ground Check (Floor limit is 256px minus 32px height = 224px)
+      if (nextY >= 224) {
+        crashed = true;
+        setNekoY(224);
+      } else if (nextY <= 0) {
+        setNekoY(0);
+        nekoVelocity.current = 0.5;
+      } else {
+        setNekoY(nextY);
+      }
+
+      // 2. PIPES PHYSICS (Read & Mutate ref directly to avoid stale react closures)
+      const nextPipes = pipesRef.current.map((pipe) => ({
+        ...pipe,
+        x: pipe.x - 0.8, // Scroll speed percentage (slower for better control)
+      }));
+
+      const remaining: Pipe[] = [];
+
+      nextPipes.forEach((pipe) => {
+        // Check Score passing point (Neko is at left: 25%)
+        if (!pipe.passed && pipe.x < 25) {
+          pipe.passed = true;
+          scoreGained++;
+        }
+
+        // Strict percentage-based horizontal box overlap check
+        // Neko occupies range: [25%, 32%] (7% width)
+        // Pipe occupies range: [pipe.x, pipe.x + 13.5%] (13.5% width)
+        const xOverlap = pipe.x < 32 && pipe.x + 13.5 > 25;
+        if (xOverlap) {
+          const hitTop = nekoYRef.current < pipe.topHeight;
+          const hitBottom = nekoYRef.current + 30 > 256 - pipe.bottomHeight;
+          if (hitTop || hitBottom) {
+            crashed = true;
+          }
+        }
+
+        if (pipe.x > -20) {
+          remaining.push(pipe);
+        }
+      });
+
+      pipesRef.current = remaining;
+      setPipes(remaining); // Sync to react state for rendering
+
+      // Spawn pipes every 80 ticks
+      if (tickCount.current % 80 === 0) {
+        spawnPipe();
+      }
+
+      // 3. COLLISION RESPONSE
+      if (crashed) {
+        playSound("crash");
+        spawnExplosion(28, nekoYRef.current + 16, "#ff548f"); // 28% left
+        setGameState("gameover");
+        playSound("gameover");
+      }
+
+      if (scoreGained > 0) {
+        playSound("point");
+        setScore((s) => s + scoreGained);
+      }
+
+      // 4. PARTICLES PHYSICS
+      setParticles((prev) =>
+        prev
+          .map((p) => ({
+            ...p,
+            x: p.x + p.vx,
+            y: p.y + p.vy,
+            life: p.life - 0.08,
+          }))
+          .filter((p) => p.life > 0)
+      );
+
+    }, 30);
+
+    return () => clearInterval(gameInterval);
+  }, [gameState]);
+
+  // Save score on Game Over (Session-based)
+  useEffect(() => {
+    if (gameState === "gameover") {
+      if (score > highScore) {
+        setHighScore(score);
+        sessionStorage.setItem("neko_flap_cyber_highscore", score.toString());
+      }
     }
-    // Save high score
-    if (currentScore.current > highScore) {
-      setHighScore(currentScore.current);
-      localStorage.setItem("neko_rider_canvas_highscore", currentScore.current.toString());
-    }
+  }, [gameState, score, highScore]);
+
+  const jump = () => {
+    nekoVelocity.current = -6.2; // Tighter jump height
+    playSound("jump");
+    spawnJumpParticles(25, nekoYRef.current + 16); // 25% left
   };
 
-  const spawnTraffic = () => {
-    const lanes = [95, 150, 205];
-    const targetLane = lanes[Math.floor(Math.random() * lanes.length)];
-    const colors = ["#ff548f", "#a050ff", "#00ffff", "#ffff50"];
+  const spawnPipe = () => {
+    const gapSize = 95;
+    const minHeight = 40;
+    const maxHeight = 256 - gapSize - minHeight;
     
-    traffic.current.push({
-      x: targetLane,
-      y: -60,
-      speed: 3.5 + Math.random() * 2,
-      color: colors[Math.floor(Math.random() * colors.length)],
-    });
+    const topHeight = minHeight + Math.floor(Math.random() * (maxHeight - minHeight));
+    const bottomHeight = 280 - 24 - gapSize - topHeight;
+
+    const newPipe: Pipe = {
+      id: Math.random().toString(),
+      x: 100, // Starts at the far right edge (100%)
+      topHeight,
+      bottomHeight,
+      passed: false,
+    };
+
+    pipesRef.current.push(newPipe);
+    setPipes([...pipesRef.current]);
   };
 
-  const spawnCoin = () => {
-    const lanes = [95, 150, 205];
-    coins.current.push({
-      x: lanes[Math.floor(Math.random() * lanes.length)],
-      y: -20,
-      spinFrame: 0,
-    });
+  const spawnJumpParticles = (x: number, y: number) => {
+    const newParticles: JumpParticle[] = [];
+    for (let i = 0; i < 3; i++) {
+      newParticles.push({
+        id: Math.random().toString(),
+        x,
+        y,
+        vx: -0.5 - Math.random() * 0.5,
+        vy: -0.5 + Math.random() * 1.0,
+        life: 0.8,
+        color: "rgba(255, 125, 167, 0.7)",
+      });
+    }
+    setParticles((prev) => [...prev, ...newParticles]);
   };
 
   const spawnExplosion = (x: number, y: number, color: string) => {
+    const newParticles: JumpParticle[] = [];
     for (let i = 0; i < 8; i++) {
-      particles.current.push({
+      newParticles.push({
+        id: Math.random().toString(),
         x,
         y,
-        vx: (Math.random() - 0.5) * 4,
-        vy: (Math.random() - 0.5) * 4 - 1.5,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 4 - 1,
         life: 1.0,
         color,
       });
     }
+    setParticles((prev) => [...prev, ...newParticles]);
   };
 
-  const gameLoop = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      loopRef.current = requestAnimationFrame(gameLoop);
-      return;
-    }
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  const startGame = () => {
+    setScore(0);
+    setNekoY(110);
+    nekoYRef.current = 110; // Synchronize ref to prevent immediate collision tick on restart
+    nekoVelocity.current = -2; // Softer launch velocity
+    pipesRef.current = []; // Clear game ref synchronously!
+    setPipes([]);
+    setParticles([]);
+    tickCount.current = 0;
+    setGameState("playing");
+  };
 
-    const width = canvas.width;
-    const height = canvas.height;
+  // Draw properly pixelated, NES-style arcade pipes in SVG
+  const drawRetroPipe = (height: number, isTop: boolean) => {
+    const lipHeight = 22;
+    const shaftHeight = Math.max(0, height - lipHeight);
+    
+    return (
+      <svg width="100%" height={height} viewBox={`0 0 52 ${height}`} preserveAspectRatio="none" style={{ shapeRendering: "crispEdges", overflow: "visible" }}>
+        {/* Shaft outline & textures */}
+        {isTop ? (
+          <>
+            {/* Shaft Base fill */}
+            <rect x="4" y="0" width="44" height={shaftHeight} fill="#3ca35d" />
+            {/* Light Green highlight stripe */}
+            <rect x="8" y="0" width="6" height={shaftHeight} fill="#72d67a" />
+            {/* Dark green shadow stripe */}
+            <rect x="36" y="0" width="8" height={shaftHeight} fill="#1c6b32" />
+            {/* Black borders */}
+            <rect x="4" y="0" width="4" height={shaftHeight} fill="#120716" />
+            <rect x="44" y="0" width="4" height={shaftHeight} fill="#120716" />
+          </>
+        ) : (
+          <>
+            {/* Shaft Base fill */}
+            <rect x="4" y={lipHeight} width="44" height={shaftHeight} fill="#3ca35d" />
+            {/* Light Green highlight stripe */}
+            <rect x="8" y={lipHeight} width="6" height={shaftHeight} fill="#72d67a" />
+            {/* Dark green shadow stripe */}
+            <rect x="36" y={lipHeight} width="8" height={shaftHeight} fill="#1c6b32" />
+            {/* Black borders */}
+            <rect x="4" y={lipHeight} width="4" height={shaftHeight} fill="#120716" />
+            <rect x="44" y={lipHeight} width="4" height={shaftHeight} fill="#120716" />
+          </>
+        )}
 
-    // 1. UPDATE GAME PHYSICS
-    frameCount.current++;
-
-    if (hasSteered.current) {
-      // Increment base driving score
-      currentScore.current += 1;
-      if (frameCount.current % 15 === 0) {
-        setScore(currentScore.current);
-      }
-
-      // Scroll Road
-      roadOffset.current += 5.5;
-
-      // Spawn traffic and coins
-      if (frameCount.current % 50 === 0) {
-        spawnTraffic();
-      }
-      if (frameCount.current % 80 === 0) {
-        spawnCoin();
-      }
-    }
-
-    // Move traffic
-    for (let i = traffic.current.length - 1; i >= 0; i--) {
-      const car = traffic.current[i];
-      if (hasSteered.current) {
-        car.y += car.speed;
-      }
-
-      // Collision checks with Player Car (Player is at x=playerX, y=220, w=24, h=45)
-      const pLeft = playerX.current - 12;
-      const pRight = playerX.current + 12;
-      const pTop = 220;
-      const pBottom = 265;
-
-      const cLeft = car.x - 12;
-      const cRight = car.x + 12;
-      const cTop = car.y - 20;
-      const cBottom = car.y + 20;
-
-      const collided = (
-        pLeft < cRight &&
-        pRight > cLeft &&
-        pTop < cBottom &&
-        pBottom > cTop
-      );
-
-      if (collided) {
-        playSound("hit");
-        spawnExplosion(car.x, car.y, "#ff548f");
-        traffic.current.splice(i, 1);
-
-        setLives((l) => {
-          const next = Math.max(0, l - 1);
-          if (next <= 0) {
-            gameOver();
-          }
-          return next;
-        });
-        continue;
-      }
-
-      if (car.y > height + 40) {
-        traffic.current.splice(i, 1);
-      }
-    }
-
-    // Move coins
-    for (let i = coins.current.length - 1; i >= 0; i--) {
-      const coin = coins.current[i];
-      if (hasSteered.current) {
-        coin.y += 4.5;
-        coin.spinFrame += 0.25;
-      }
-
-      // Collision checks
-      const dist = Math.sqrt(Math.pow(coin.x - playerX.current, 2) + Math.pow(coin.y - 235, 2));
-      if (dist < 18) {
-        playSound("coin");
-        currentScore.current += 150;
-        setScore(currentScore.current);
-        spawnExplosion(coin.x, coin.y, "#ffff00");
-        coins.current.splice(i, 1);
-        continue;
-      }
-
-      if (coin.y > height + 20) {
-        coins.current.splice(i, 1);
-      }
-    }
-
-    // Move particles
-    for (let i = particles.current.length - 1; i >= 0; i--) {
-      const p = particles.current[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life -= 0.06;
-      if (p.life <= 0) {
-        particles.current.splice(i, 1);
-      }
-    }
-
-    // Update telemetry output directly in DOM
-    if (telemetryRef.current && frameCount.current % 4 === 0) {
-      const roadSpeed = hasSteered.current ? "180 km/h" : "0 km/h";
-      const statusText = hasSteered.current ? "ACTIVE" : "READY (STEER TO GO)";
-      telemetryRef.current.innerHTML = `
-        <div>// TELEMETRY:</div>
-        <div>CAR_X: <span class="text-highlight-color font-bold">${Math.round(playerX.current)} px</span></div>
-        <div>ROAD_SPEED: <span class="font-bold">${roadSpeed}</span></div>
-        <div>TRAFFIC_COUNT: <span class="font-bold">${traffic.current.length} units</span></div>
-        <div>STATUS: <span class="text-highlight-color font-bold">${statusText}</span></div>
-      `;
-    }
-
-    // 2. RENDER THE GAME SCENE
-    ctx.clearRect(0, 0, width, height);
-
-    // Draw grass shoulder base
-    ctx.fillStyle = "#110b15";
-    ctx.fillRect(0, 0, width, height);
-
-    // Draw road asphalt (centered, 180px width: from x = 60 to x = 240)
-    ctx.fillStyle = "#1e1322";
-    ctx.fillRect(60, 0, 180, height);
-
-    // Draw road shoulder markings
-    ctx.strokeStyle = "#5e3046";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(60, 0);
-    ctx.lineTo(60, height);
-    ctx.moveTo(240, 0);
-    ctx.lineTo(240, height);
-    ctx.stroke();
-
-    // Draw dashed lane markings (two columns: at x = 120 and x = 180)
-    ctx.strokeStyle = "rgba(255, 125, 167, 0.25)";
-    ctx.lineWidth = 2.5;
-    ctx.setLineDash([8, 22]);
-    ctx.lineDashOffset = -roadOffset.current;
-
-    ctx.beginPath();
-    ctx.moveTo(120, 0);
-    ctx.lineTo(120, height);
-    ctx.moveTo(180, 0);
-    ctx.lineTo(180, height);
-    ctx.stroke();
-    ctx.setLineDash([]); // Reset line dash
-
-    // Draw coins
-    coins.current.forEach((coin) => {
-      ctx.save();
-      ctx.translate(coin.x, coin.y);
-      const scaleX = Math.abs(Math.sin(coin.spinFrame));
-      ctx.scale(scaleX, 1);
-
-      ctx.fillStyle = "#e2b13c";
-      ctx.strokeStyle = "#ff7da7";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.arc(0, 0, 7, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 8px monospace";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("$", 0, 0);
-      ctx.restore();
-    });
-
-    // Draw traffic cars
-    traffic.current.forEach((car) => {
-      ctx.fillStyle = car.color;
-      ctx.strokeStyle = "#5e3046";
-      ctx.lineWidth = 2;
-      
-      // Car chassis body
-      ctx.fillRect(car.x - 11, car.y - 18, 22, 36);
-      ctx.strokeRect(car.x - 11, car.y - 18, 22, 36);
-
-      // Windshield glass
-      ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
-      ctx.fillRect(car.x - 8, car.y - 8, 16, 6);
-
-      // Headlights (Facing down)
-      ctx.fillStyle = "#ffffaa";
-      ctx.fillRect(car.x - 9, car.y + 15, 3, 2);
-      ctx.fillRect(car.x + 6, car.y + 15, 3, 2);
-    });
-
-    // Draw explosion sparks
-    particles.current.forEach((p) => {
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.life;
-      ctx.fillRect(p.x - 1.5, p.y - 1.5, 3, 3);
-    });
-    ctx.globalAlpha = 1.0;
-
-    // Draw Player Sports Car (Neko Pink Rider)
-    ctx.save();
-    ctx.translate(playerX.current, 240);
-
-    ctx.fillStyle = "#ff548f";
-    ctx.strokeStyle = "#5e3046";
-    ctx.lineWidth = 2.5;
-
-    // Sports car body
-    ctx.fillRect(-11, -18, 22, 36);
-    ctx.strokeRect(-11, -18, 22, 36);
-
-    // Spoiler wing
-    ctx.fillStyle = "#ff7da7";
-    ctx.fillRect(-13, 14, 26, 4);
-
-    // Front windshield
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(-8, -10, 16, 7);
-
-    // Back taillights (Crimson red glow)
-    ctx.fillStyle = "#ff2d55";
-    ctx.fillRect(-9, 17, 3, 1.5);
-    ctx.fillRect(6, 17, 3, 1.5);
-
-    ctx.restore();
-
-    // Loop Frame
-    if (localGameState.current === "playing") {
-      loopRef.current = requestAnimationFrame(gameLoop);
-    }
+        {/* Flange Lip */}
+        {isTop ? (
+          <g transform={`translate(0, ${shaftHeight})`}>
+            {/* Lip Base fill */}
+            <rect x="0" y="0" width="52" height={lipHeight} fill="#3ca35d" />
+            {/* Light Green highlight */}
+            <rect x="4" y="0" width="6" height={lipHeight} fill="#72d67a" />
+            {/* Dark green shadow */}
+            <rect x="40" y="0" width="8" height={lipHeight} fill="#1c6b32" />
+            {/* Black borders */}
+            <rect x="0" y="0" width="52" height="4" fill="#120716" />
+            <rect x="0" y={lipHeight - 4} width="52" height="4" fill="#120716" />
+            <rect x="0" y="0" width="4" height={lipHeight} fill="#120716" />
+            <rect x="48" y="0" width="4" height={lipHeight} fill="#120716" />
+          </g>
+        ) : (
+          <g transform="translate(0, 0)">
+            {/* Lip Base fill */}
+            <rect x="0" y="0" width="52" height={lipHeight} fill="#3ca35d" />
+            {/* Light Green highlight */}
+            <rect x="4" y="0" width="6" height={lipHeight} fill="#72d67a" />
+            {/* Dark green shadow */}
+            <rect x="40" y="0" width="8" height={lipHeight} fill="#1c6b32" />
+            {/* Black borders */}
+            <rect x="0" y="0" width="52" height="4" fill="#120716" />
+            <rect x="0" y={lipHeight - 4} width="52" height="4" fill="#120716" />
+            <rect x="0" y="0" width="4" height={lipHeight} fill="#120716" />
+            <rect x="48" y="0" width="4" height={lipHeight} fill="#120716" />
+          </g>
+        )}
+      </svg>
+    );
   };
 
   return (
     <div className="w-full font-body cute-card overflow-hidden shadow-[4px_4px_0_var(--shadow-color)]">
+      {/* CSS Scrolling Checker Floor */}
+      <style>{`
+        @keyframes scroll-floor {
+          0% { background-position-x: 0px; }
+          100% { background-position-x: -24px; }
+        }
+        .scrolling-floor {
+          background-image: repeating-linear-gradient(45deg, var(--border-accent) 0px, var(--border-accent) 4px, transparent 4px, transparent 8px);
+          animation: scroll-floor 0.4s linear infinite;
+        }
+      `}</style>
+
       {/* Title Bar */}
       <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
         <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5 select-none">
           <PixelIcon name="laptop-code" solid size={11} />
-          neko_rider.exe
+          neko_flap.exe
         </span>
         <div className="flex gap-1.5">
           <span className="w-3 h-3 bg-cream border border-white/30" />
@@ -479,65 +384,152 @@ export default function MiniGame() {
         </div>
       </div>
 
-      {/* Split-Screen Arcade Layout */}
-      <div className="p-4 flex flex-col lg:flex-row gap-4 items-stretch">
+      {/* Redesigned Compact UI (Stretched full width container) */}
+      <div className="p-4 flex flex-col items-center justify-center gap-4">
         
-        {/* Left Column: Responsive Canvas Screen */}
+        {/* Core Game CRT Screen Viewport (Stretched to fill the entire card width) */}
         <div 
-          className="w-full lg:flex-1 relative overflow-hidden bg-[#110b15] border-2 border-border-accent flex items-center justify-center min-w-0"
-          style={{ height: "300px" }}
+          className="w-full relative overflow-hidden bg-[#120716] border-2 border-border-accent flex items-center justify-center rounded-md select-none animate-fade-in"
+          style={{ height: "280px" }}
         >
-          {/* CRT scanlines overlay */}
-          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,10,18,0)_50%,rgba(0,0,0,0.18)_50%)] bg-[length:100%_4px] z-10 opacity-30" />
+          {/* CRT Glare Overlays */}
+          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,10,18,0)_50%,rgba(0,0,0,0.18)_50%)] bg-[length:100%_4px] z-30 opacity-20" />
+
+          {/* Static Star Floaters */}
+          <div className="absolute top-8 left-[15%] w-1 h-1 bg-cream/15 rounded-full" />
+          <div className="absolute top-20 right-[25%] w-1 h-1 bg-cream/15 rounded-full" />
+          <div className="absolute top-28 left-[45%] w-1 h-1 bg-cream/15 rounded-full" />
+          <div className="absolute top-12 right-[10%] w-1 h-1 bg-cream/15 rounded-full" />
 
           {gameState === "idle" && (
             <div className="flex flex-col items-center text-center p-6 z-20">
-              <div className="text-highlight-color animate-pixel-float mb-3 flex gap-2">
-                <PixelIcon name="bolt" solid size={40} />
+              <div className="text-highlight-color animate-pixel-float mb-3">
+                <PixelIcon name="bolt" solid size={36} />
               </div>
               
               <h3 className="pixel-heading font-jersey text-3xl text-highlight-color uppercase tracking-widest leading-none">
-                NEKO RIDER
+                FLAPPY NEKO
               </h3>
               
-              <p className="text-[10px] text-text-muted mt-2 max-w-xs leading-relaxed uppercase font-bold font-mono">
-                [ Dodge traffic cars. Collect Gold Coins ]
+              <p className="text-[9px] text-text-muted mt-2 max-w-xs leading-relaxed uppercase font-bold font-mono">
+                [ Tap screen or Spacebar to flap wings ]
                 <br />
-                Steer: A/D keys, Arrows, or UI buttons
+                HIGH SCORE: <span className="text-highlight-color">{highScore} PTS</span>
               </p>
 
               <button
                 onClick={startGame}
                 className="mt-5 px-5 py-2.5 bg-highlight-color text-cream font-jersey text-base uppercase tracking-widest border-2 border-border-accent shadow-[3px_3px_0_var(--shadow-color)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--shadow-color)] active:translate-y-0 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer"
               >
-                Launch Drive
+                Launch Game
               </button>
             </div>
           )}
 
           {gameState === "playing" && (
-            <canvas
-              ref={canvasRef}
-              width={300}
-              height={300}
-              onClick={(e) => {
-                const rect = canvasRef.current?.getBoundingClientRect();
-                if (!rect) return;
-                const clickX = e.clientX - rect.left;
-                if (clickX < rect.width / 2) {
-                  steerLeft();
-                } else {
-                  steerRight();
-                }
+            <div 
+              className="absolute inset-0 w-full h-full cursor-pointer select-none touch-none"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                jump();
               }}
-              className="absolute inset-0 w-full h-full block cursor-pointer"
-            />
+            >
+              {/* Retro Green Pixel Pipes (Positioned via percentage widths & lefts) */}
+              {pipes.map((pipe) => (
+                <div 
+                  key={pipe.id} 
+                  className="absolute inset-y-0 pointer-events-none" 
+                  style={{ left: `${pipe.x}%`, width: "13.5%" }}
+                >
+                  
+                  {/* Top Pipe */}
+                  <div className="absolute top-0 w-full" style={{ height: `${pipe.topHeight}px` }}>
+                    {drawRetroPipe(pipe.topHeight, true)}
+                  </div>
+
+                  {/* Bottom Pipe */}
+                  <div className="absolute bottom-[24px] w-full" style={{ height: `${pipe.bottomHeight}px` }}>
+                    {drawRetroPipe(pipe.bottomHeight, false)}
+                  </div>
+
+                </div>
+              ))}
+
+              {/* Sparks Particles */}
+              {particles.map((p) => (
+                <div
+                  key={p.id}
+                  className="absolute pointer-events-none rounded-full z-20 animate-pulse"
+                  style={{
+                    left: `${p.x}%`,
+                    top: `${p.y}px`,
+                    width: "4px",
+                    height: "4px",
+                    backgroundColor: p.color,
+                    opacity: p.life,
+                  }}
+                />
+              ))}
+
+              {/* Player Neko (Pixel Art Flying Cat SVG) */}
+              <div 
+                className="absolute w-8 h-8 z-25 transition-transform duration-75"
+                style={{ 
+                  left: "25%", 
+                  top: `${nekoY}px`,
+                  transform: `rotate(${Math.min(45, Math.max(-25, nekoVelocity.current * 4.5))}deg)`,
+                }}
+              >
+                <svg viewBox="0 0 16 16" width="32" height="32" style={{ shapeRendering: "crispEdges" }}>
+                  {/* Outer border outline */}
+                  <rect x="2" y="3" width="12" height="11" fill="#150b18" />
+                  <rect x="3" y="1" width="3" height="4" fill="#150b18" />
+                  <rect x="10" y="1" width="3" height="4" fill="#150b18" />
+                  
+                  {/* Ears */}
+                  <rect x="4" y="2" width="1" height="2" fill="#ff548f" />
+                  <rect x="11" y="2" width="1" height="2" fill="#ff548f" />
+                  
+                  {/* Pink body */}
+                  <rect x="3" y="4" width="10" height="9" fill="#ff548f" />
+                  
+                  {/* Ear blush */}
+                  <rect x="4" y="3" width="1" height="1" fill="#ff7da7" />
+                  <rect x="11" y="3" width="1" height="1" fill="#ff7da7" />
+
+                  {/* Cheeks */}
+                  <rect x="4" y="9" width="1.5" height="1.5" fill="#ff7da7" />
+                  <rect x="10.5" y="9" width="1.5" height="1.5" fill="#ff7da7" />
+
+                  {/* Eyes */}
+                  <rect x="5" y="6" width="2" height="2" fill="#150b18" />
+                  <rect x="9" y="6" width="2" height="2" fill="#150b18" />
+                  <rect x="6" y="6" width="1" height="1" fill="#ffffff" />
+                  <rect x="10" y="6" width="1" height="1" fill="#ffffff" />
+
+                  {/* Muzzle */}
+                  <rect x="7" y="8" width="2" height="1" fill="#150b18" />
+
+                  {/* Glowing angel wing (Bounce flaps wing) */}
+                  <g className="animate-bounce" style={{ transformOrigin: "4px 8px" }}>
+                    <rect x="0" y="5" width="3" height="3" fill="#150b18" />
+                    <rect x="0" y="6" width="2" height="2" fill="#ffff80" />
+                    <rect x="1" y="6" width="1" height="1" fill="#ffffff" />
+                  </g>
+                </svg>
+              </div>
+
+              {/* Retro Checkered floor border line */}
+              <div 
+                className="absolute bottom-0 inset-x-0 h-6 border-t-2 border-border-accent z-20 scrolling-floor"
+              />
+            </div>
           )}
 
           {gameState === "gameover" && (
             <div className="flex flex-col items-center text-center p-6 z-20">
-              <h3 className="pixel-heading font-jersey text-4xl text-raspberry dark:text-highlight-color uppercase tracking-widest leading-none animate-pulse">
-                CRASH OUT
+              <h3 className="pixel-heading font-jersey text-3.5xl text-raspberry dark:text-highlight-color uppercase tracking-widest leading-none animate-pulse">
+                GAME OVER
               </h3>
               
               <div className="flex gap-4 mt-4 font-mono font-bold text-xs text-text-base uppercase bg-cream dark:bg-bg-base border-2 border-border-accent p-3.5 shadow-[2px_2px_0_var(--shadow-color)]">
@@ -546,7 +538,7 @@ export default function MiniGame() {
                 </div>
                 <div className="w-px bg-border-accent/30 self-stretch" />
                 <div>
-                  High Score: <span className="text-highlight-color font-black">{highScore}</span>
+                  High: <span className="text-highlight-color font-black">{highScore}</span>
                 </div>
               </div>
 
@@ -555,7 +547,7 @@ export default function MiniGame() {
                   onClick={startGame}
                   className="px-4 py-2 bg-highlight-color text-cream font-jersey text-sm uppercase tracking-widest border-2 border-border-accent shadow-[3px_3px_0_var(--shadow-color)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--shadow-color)] active:translate-y-0 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer"
                 >
-                  Restart
+                  Play Again
                 </button>
                 <button
                   onClick={() => setGameState("idle")}
@@ -567,7 +559,7 @@ export default function MiniGame() {
             </div>
           )}
 
-          {/* Running Score HUD */}
+          {/* Score counter overlay */}
           {gameState === "playing" && (
             <div className="absolute top-3 left-3 bg-cream/90 dark:bg-bg-base/90 border-2 border-border-accent px-2.5 py-1 font-mono text-xs font-bold text-highlight-color tracking-wide z-20 pointer-events-none select-none">
               SCORE: {score}
@@ -575,90 +567,21 @@ export default function MiniGame() {
           )}
         </div>
 
-        {/* Right Column: Arcade Controller & Diagnostics deck */}
-        <div className="w-full lg:w-72 flex flex-col gap-3 bg-peach/15 dark:bg-card-bg border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] p-4 relative justify-between">
-          <span className="absolute top-1.5 left-1.5 w-2 h-2 border-t-2 border-l-2 border-blush" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 border-t-2 border-r-2 border-blush" />
-          <span className="absolute bottom-1.5 left-1.5 w-2 h-2 border-b-2 border-l-2 border-blush" />
-          <span className="absolute bottom-1.5 right-1.5 w-2 h-2 border-b-2 border-r-2 border-blush" />
-
-          {/* Header */}
-          <div className="flex items-center justify-between border-b border-border-accent/30 pb-2">
-            <span className="text-[10px] font-mono font-bold text-highlight-color uppercase tracking-wider flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 bg-[#52ff7d] rounded-full animate-pulse shadow-[0_0_6px_#52ff7d]" />
-              [ diagnostic_deck ]
-            </span>
-            <span className="text-[9px] font-mono text-text-muted">
-              v2.5.0-canvas
-            </span>
-          </div>
-
-          {/* Lives Indicator & Stats */}
-          <div className="bg-cream dark:bg-bg-base border border-border-accent p-2.5 font-mono flex flex-col gap-1.5 shadow-inner">
-            <div className="flex justify-between items-center text-xs font-bold">
-              <span className="text-text-muted uppercase">ARMOR:</span>
-              <div className="flex gap-1">
-                {[1, 2, 3].map((heartIndex) => (
-                  <PixelIcon 
-                    key={heartIndex} 
-                    name="heart" 
-                    solid={heartIndex <= lives} 
-                    size={11} 
-                    className={heartIndex <= lives ? "text-raspberry animate-heart-beat" : "text-border-accent/30"} 
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="flex justify-between text-xs font-bold border-t border-border-accent/15 pt-1.5 mt-1.5">
-              <span className="text-text-muted uppercase">High Score:</span>
-              <span className="text-highlight-color font-black">{highScore} pts</span>
-            </div>
-          </div>
-
-          {/* D-Pad Steering Controls */}
-          <div className="flex flex-col gap-2">
-            {gameState === "playing" ? (
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={steerLeft}
-                  className="flex-1 py-3 bg-cream dark:bg-bg-base text-text-base border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer font-bold text-xs uppercase select-none"
-                >
-                  ◀ Steer Left
-                </button>
-                <button
-                  type="button"
-                  onClick={steerRight}
-                  className="flex-1 py-3 bg-cream dark:bg-bg-base text-text-base border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer font-bold text-xs uppercase select-none"
-                >
-                  Steer Right ▶
-                </button>
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={startGame}
-                className="w-full py-3.5 bg-highlight-color text-cream font-jersey text-lg uppercase tracking-widest border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] hover:shadow-[3px_3px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer flex items-center justify-center gap-2"
-              >
-                <PixelIcon name="star" solid size={14} />
-                {gameState === "gameover" ? "REPLAY" : "LAUNCH"}
-              </button>
-            )}
-          </div>
-
-          {/* Diagnostics logs */}
-          <div 
-            ref={telemetryRef}
-            className="border border-border-accent/30 bg-cream/40 dark:bg-bg-alt/30 p-2.5 rounded-sm text-[9px] font-mono text-text-muted leading-normal flex flex-col gap-0.5 select-none"
+        {/* Sleek Action Deck (JUMP! Trigger only) */}
+        {gameState === "playing" && (
+          <button
+            type="button"
+            onPointerDown={(e) => {
+              e.preventDefault();
+              jump();
+            }}
+            className="w-full py-3.5 bg-highlight-color text-cream font-jersey text-base uppercase tracking-widest border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer flex items-center justify-center gap-2 select-none"
           >
-            <div>// TELEMETRY:</div>
-            <div>CAR_X: <span className="text-highlight-color font-bold">150 px</span></div>
-            <div>ROAD_SPEED: <span className="font-bold">0 km/h</span></div>
-            <div>TRAFFIC_DENSITY: <span className="font-bold">0 units</span></div>
-            <div>STATUS: <span className="text-highlight-color font-bold">{gameState.toUpperCase()}</span></div>
-          </div>
+            <PixelIcon name="star" solid size={12} />
+            JUMP! [SPACE]
+          </button>
+        )}
 
-        </div>
       </div>
     </div>
   );
