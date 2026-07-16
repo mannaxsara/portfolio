@@ -416,7 +416,10 @@ export default function MiniGame() {
       <div className="p-4 flex flex-col lg:flex-row gap-4 items-stretch">
         
         {/* Left Column: The CRT Arcade Screen (Responsive Full-Width Viewer) */}
-        <div className="w-full lg:flex-1 relative overflow-hidden bg-cream/20 dark:bg-bg-alt/10 border-2 border-border-accent flex items-center justify-center h-[300px] min-w-0">
+        <div 
+          className="w-full lg:flex-1 relative overflow-hidden bg-cream/20 dark:bg-bg-alt/10 border-2 border-border-accent flex items-center justify-center min-w-0"
+          style={{ height: "300px" }}
+        >
           {/* CRT scanlines effect */}
           <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,10,18,0)_50%,rgba(0,0,0,0.15)_50%)] bg-[length:100%_4px] z-10 opacity-40" />
 
@@ -451,7 +454,8 @@ export default function MiniGame() {
               width={500}
               height={300}
               onClick={triggerJump}
-              className="w-full h-full block cursor-pointer"
+              className="block cursor-pointer"
+              style={{ width: "100%", height: "100%" }}
             />
           )}
 
