@@ -530,8 +530,7 @@ export default function MiniGame() {
                   steerRight();
                 }
               }}
-              className="block cursor-pointer"
-              style={{ width: "100%", height: "100%" }}
+              className="absolute inset-0 w-full h-full block cursor-pointer"
             />
           )}
 
