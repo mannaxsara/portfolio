@@ -5,7 +5,6 @@ import MusicPlayer from "./MusicPlayer";
 import BookBoard from "./BookBoard";
 import MovieBoard from "./MovieBoard";
 import Recommend from "./Recommend";
-import MiniGame from "./MiniGame";
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
 import SectionHeading from "../components/SectionHeading";
@@ -195,7 +194,6 @@ const Dashboard = () => {
         <MovieBoard />
         <MusicPlayer />
         <Recommend />
-        <MiniGame />
       </div>
     </div>
   );
