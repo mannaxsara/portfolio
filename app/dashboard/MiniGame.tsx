@@ -1,54 +1,67 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import PixelIcon from "../components/PixelIcon";
 
-interface HitParticle {
-  id: string;
-  x: number; // offset X
-  y: number; // offset Y
-  life: number;
+interface TrafficCar {
+  x: number; // coordinate [80, 220]
+  y: number; // pixels [-60, 300]
+  speed: number;
+  color: string;
 }
 
-const KEY_MAP: Record<string, number> = {
-  KeyQ: 0, KeyW: 1, KeyE: 2,
-  KeyA: 3, KeyS: 4, KeyD: 5,
-  KeyZ: 6, KeyX: 7, KeyC: 8,
-};
+interface GoldCoin {
+  x: number;
+  y: number;
+  spinFrame: number;
+}
 
-const KEY_LABELS = ["Q", "W", "E", "A", "S", "D", "Z", "X", "C"];
+interface GameParticle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  color: string;
+}
 
 export default function MiniGame() {
   const [gameState, setGameState] = useState<"idle" | "playing" | "gameover">("idle");
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [lives, setLives] = useState(3);
-  const [activeCell, setActiveCell] = useState<number | null>(null);
-  const [isTurbo, setIsTurbo] = useState(false);
   const [combo, setCombo] = useState(0);
-  const [particles, setParticles] = useState<HitParticle[]>([]);
-  const [shake, setShake] = useState(false);
-  const [flash, setFlash] = useState(false);
+  
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const telemetryRef = useRef<HTMLDivElement | null>(null);
+  const loopRef = useRef<number | null>(null);
 
-  // Keep state refs in sync for keydown closure listeners
-  const gameStateRef = useRef(gameState);
-  const activeCellRef = useRef(activeCell);
+  // Game coordinates inside mutable refs for the 60fps canvas loop
+  const playerX = useRef(150); // range [75, 225]
+  const roadOffset = useRef(0);
+  const traffic = useRef<TrafficCar[]>([]);
+  const coins = useRef<GoldCoin[]>([]);
+  const particles = useRef<GameParticle[]>([]);
+  const frameCount = useRef(0);
+  const currentScore = useRef(0);
+  const hasSteered = useRef(false);
+  const localGameState = useRef<"idle" | "playing" | "gameover">("idle");
 
+  // Keep ref synced with react state
   useEffect(() => {
-    gameStateRef.current = gameState;
-    activeCellRef.current = activeCell;
-  }, [gameState, activeCell]);
+    localGameState.current = gameState;
+  }, [gameState]);
 
   // Load High Score from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem("bug_whack_v2_highscore");
+    const saved = localStorage.getItem("neko_rider_canvas_highscore");
     if (saved) {
       setHighScore(parseInt(saved, 10));
     }
   }, []);
 
-  // Web Audio API Retro Sound Effects Synth
-  const playSound = (type: "hit" | "miss" | "spawn" | "gameover" | "turbo") => {
+  // Web Audio API Synth Sounds
+  const playSound = (type: "hit" | "miss" | "spawn" | "gameover" | "coin") => {
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioContext) return;
@@ -61,240 +74,403 @@ export default function MiniGame() {
       
       const now = ctx.currentTime;
       
-      if (type === "hit") {
-        // High chirp slide up
-        osc.type = "square";
-        osc.frequency.setValueAtTime(320, now);
-        osc.frequency.exponentialRampToValueAtTime(1400, now + 0.12);
-        gain.gain.setValueAtTime(0.12, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-        osc.start(now);
-        osc.stop(now + 0.12);
-      } else if (type === "turbo") {
-        // High double-chirp
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(600, now);
-        osc.frequency.setValueAtTime(1200, now + 0.08);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-        osc.start(now);
-        osc.stop(now + 0.2);
-      } else if (type === "spawn") {
-        // Bubble pop
+      if (type === "coin") {
         osc.type = "sine";
-        osc.frequency.setValueAtTime(550, now);
-        gain.gain.setValueAtTime(0.06, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
         osc.start(now);
-        osc.stop(now + 0.06);
-      } else if (type === "miss") {
-        // Low frequency buzz
+        osc.stop(now + 0.22);
+      } else if (type === "spawn") {
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(220, now);
+        gain.gain.setValueAtTime(0.04, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      } else if (type === "hit") {
         osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(140, now);
-        osc.frequency.linearRampToValueAtTime(50, now + 0.2);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.frequency.setValueAtTime(120, now);
+        osc.frequency.linearRampToValueAtTime(40, now + 0.3);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
         osc.start(now);
-        osc.stop(now + 0.2);
+        osc.stop(now + 0.3);
       } else if (type === "gameover") {
-        // Sad detuned falling notes
         osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(280, now);
-        osc.frequency.setValueAtTime(220, now + 0.15);
-        osc.frequency.setValueAtTime(170, now + 0.3);
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.setValueAtTime(180, now + 0.15);
+        osc.frequency.setValueAtTime(130, now + 0.3);
         gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.65);
         osc.start(now);
-        osc.stop(now + 0.6);
+        osc.stop(now + 0.7);
       }
     } catch (e) {
-      // Browser audio context blocked/unsupported
+      // Audio context blocked
     }
   };
 
-  // Keyboard binder listeners
+  // Keyboard driving controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (gameStateRef.current !== "playing") return;
-      
-      const targetIndex = KEY_MAP[e.code];
-      if (targetIndex !== undefined) {
+      if (localGameState.current !== "playing") return;
+      if (e.key === "ArrowLeft" || e.key === "KeyA" || e.code === "ArrowLeft" || e.code === "KeyA") {
         e.preventDefault();
-        handleCellClick(targetIndex);
+        steerLeft();
+      } else if (e.key === "ArrowRight" || e.key === "KeyD" || e.code === "ArrowRight" || e.code === "KeyD") {
+        e.preventDefault();
+        steerRight();
       }
     };
-    
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Bug spawning and escape loop
+  // Mount canvas game loop when state is playing
   useEffect(() => {
-    if (gameState !== "playing") return;
-
-    let escapeTimeout: NodeJS.Timeout;
-
-    const gameInterval = setInterval(() => {
-      // Pick random grid cell
-      const nextCell = Math.floor(Math.random() * 9);
-      
-      // 15% chance to spawn a Golden Turbo Bug
-      const turboChance = Math.random() < 0.15;
-      setIsTurbo(turboChance);
-      setActiveCell(nextCell);
-      playSound("spawn");
-
-      // Golden bug escapes faster (550ms vs 800ms)
-      const duration = turboChance ? 550 : 800;
-
-      escapeTimeout = setTimeout(() => {
-        setActiveCell((current) => {
-          if (current === nextCell) {
-            // Bug escaped! Lose combo & life
-            setCombo(0);
-            playSound("miss");
-            setFlash(true);
-            setTimeout(() => setFlash(false), 120);
-
-            setLives((l) => {
-              const next = Math.max(0, l - 1);
-              if (next <= 0) {
-                setGameState("gameover");
-                playSound("gameover");
-              }
-              return next;
-            });
-            return null;
-          }
-          return current;
-        });
-      }, duration);
-
-    }, 1250); // Spawns a bug every 1.25 seconds
-
+    if (gameState === "playing") {
+      if (loopRef.current !== null) {
+        cancelAnimationFrame(loopRef.current);
+      }
+      loopRef.current = requestAnimationFrame(gameLoop);
+    }
     return () => {
-      clearInterval(gameInterval);
-      clearTimeout(escapeTimeout);
+      if (loopRef.current !== null) {
+        cancelAnimationFrame(loopRef.current);
+        loopRef.current = null;
+      }
     };
   }, [gameState]);
 
-  // Sparkles particle fade
-  useEffect(() => {
-    if (particles.length === 0) return;
-    const interval = setInterval(() => {
-      setParticles((prev) =>
-        prev
-          .map((p) => ({ ...p, life: p.life - 0.18 }))
-          .filter((p) => p.life > 0)
-      );
-    }, 40);
-    return () => clearInterval(interval);
-  }, [particles]);
+  const steerLeft = () => {
+    if (!hasSteered.current) hasSteered.current = true;
+    playerX.current = Math.max(78, playerX.current - 12);
+  };
 
-  // Update highscore
-  useEffect(() => {
-    if (gameState === "gameover") {
-      if (score > highScore) {
-        setHighScore(score);
-        localStorage.setItem("bug_whack_v2_highscore", score.toString());
-      }
-    }
-  }, [gameState, score, highScore]);
+  const steerRight = () => {
+    if (!hasSteered.current) hasSteered.current = true;
+    playerX.current = Math.min(222, playerX.current + 12);
+  };
 
   const startGame = () => {
     setScore(0);
     setLives(3);
     setCombo(0);
-    setActiveCell(null);
-    setParticles([]);
+    currentScore.current = 0;
+    playerX.current = 150;
+    roadOffset.current = 0;
+    traffic.current = [];
+    coins.current = [];
+    particles.current = [];
+    frameCount.current = 0;
+    hasSteered.current = false;
     setGameState("playing");
   };
 
-  // Combo calculation
-  const getMultiplier = (currCombo: number) => {
-    if (currCombo >= 10) return 3;
-    if (currCombo >= 5) return 2;
-    return 1;
+  const gameOver = () => {
+    setGameState("gameover");
+    playSound("gameover");
+    if (loopRef.current !== null) {
+      cancelAnimationFrame(loopRef.current);
+      loopRef.current = null;
+    }
+    // Save high score
+    if (currentScore.current > highScore) {
+      setHighScore(currentScore.current);
+      localStorage.setItem("neko_rider_canvas_highscore", currentScore.current.toString());
+    }
   };
 
-  const handleCellClick = (index: number) => {
-    if (gameState !== "playing") return;
+  const spawnTraffic = () => {
+    const lanes = [95, 150, 205];
+    const targetLane = lanes[Math.floor(Math.random() * lanes.length)];
+    const colors = ["#ff548f", "#a050ff", "#00ffff", "#ffff50"];
+    
+    traffic.current.push({
+      x: targetLane,
+      y: -60,
+      speed: 3.5 + Math.random() * 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+    });
+  };
 
-    if (index === activeCellRef.current) {
-      // Hit!
-      const currentCombo = combo + 1;
-      setCombo(currentCombo);
-      
-      const mult = getMultiplier(currentCombo);
-      const points = (isTurbo ? 25 : 10) * mult;
-      
-      setScore((s) => s + points);
+  const spawnCoin = () => {
+    const lanes = [95, 150, 205];
+    coins.current.push({
+      x: lanes[Math.floor(Math.random() * lanes.length)],
+      y: -20,
+      spinFrame: 0,
+    });
+  };
 
-      // Restore life if golden bug caught
-      if (isTurbo) {
-        playSound("turbo");
-        setLives((l) => Math.min(3, l + 1));
-      } else {
-        playSound("hit");
+  const spawnExplosion = (x: number, y: number, color: string) => {
+    for (let i = 0; i < 8; i++) {
+      particles.current.push({
+        x,
+        y,
+        vx: (Math.random() - 0.5) * 4,
+        vy: (Math.random() - 0.5) * 4 - 1.5,
+        life: 1.0,
+        color,
+      });
+    }
+  };
+
+  const gameLoop = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      loopRef.current = requestAnimationFrame(gameLoop);
+      return;
+    }
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // 1. UPDATE GAME PHYSICS
+    frameCount.current++;
+
+    if (hasSteered.current) {
+      // Increment base driving score
+      currentScore.current += 1;
+      if (frameCount.current % 15 === 0) {
+        setScore(currentScore.current);
       }
 
-      setShake(true);
-      setTimeout(() => setShake(false), 150);
+      // Scroll Road
+      roadOffset.current += 5.5;
 
-      spawnHitParticles(isTurbo ? "#ffff00" : "#52ff7d");
-      setActiveCell(null);
-    } else {
-      // Missed / clicked empty terminal cell!
-      setCombo(0);
-      playSound("miss");
-      setFlash(true);
-      setTimeout(() => setFlash(false), 120);
+      // Spawn traffic and coins
+      if (frameCount.current % 50 === 0) {
+        spawnTraffic();
+      }
+      if (frameCount.current % 80 === 0) {
+        spawnCoin();
+      }
+    }
 
-      setLives((l) => {
-        const next = Math.max(0, l - 1);
-        if (next <= 0) {
-          setGameState("gameover");
-          playSound("gameover");
-        }
-        return next;
-      });
+    // Move traffic
+    for (let i = traffic.current.length - 1; i >= 0; i--) {
+      const car = traffic.current[i];
+      if (hasSteered.current) {
+        car.y += car.speed;
+      }
+
+      // Collision checks with Player Car (Player is at x=playerX, y=220, w=24, h=45)
+      const pLeft = playerX.current - 12;
+      const pRight = playerX.current + 12;
+      const pTop = 220;
+      const pBottom = 265;
+
+      const cLeft = car.x - 12;
+      const cRight = car.x + 12;
+      const cTop = car.y - 20;
+      const cBottom = car.y + 20;
+
+      const collided = (
+        pLeft < cRight &&
+        pRight > cLeft &&
+        pTop < cBottom &&
+        pBottom > cTop
+      );
+
+      if (collided) {
+        playSound("hit");
+        spawnExplosion(car.x, car.y, "#ff548f");
+        traffic.current.splice(i, 1);
+
+        setLives((l) => {
+          const next = Math.max(0, l - 1);
+          if (next <= 0) {
+            gameOver();
+          }
+          return next;
+        });
+        continue;
+      }
+
+      if (car.y > height + 40) {
+        traffic.current.splice(i, 1);
+      }
+    }
+
+    // Move coins
+    for (let i = coins.current.length - 1; i >= 0; i--) {
+      const coin = coins.current[i];
+      if (hasSteered.current) {
+        coin.y += 4.5;
+        coin.spinFrame += 0.25;
+      }
+
+      // Collision checks
+      const dist = Math.sqrt(Math.pow(coin.x - playerX.current, 2) + Math.pow(coin.y - 235, 2));
+      if (dist < 18) {
+        playSound("coin");
+        currentScore.current += 150;
+        setScore(currentScore.current);
+        spawnExplosion(coin.x, coin.y, "#ffff00");
+        coins.current.splice(i, 1);
+        continue;
+      }
+
+      if (coin.y > height + 20) {
+        coins.current.splice(i, 1);
+      }
+    }
+
+    // Move particles
+    for (let i = particles.current.length - 1; i >= 0; i--) {
+      const p = particles.current[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= 0.06;
+      if (p.life <= 0) {
+        particles.current.splice(i, 1);
+      }
+    }
+
+    // Update telemetry output directly in DOM
+    if (telemetryRef.current && frameCount.current % 4 === 0) {
+      const roadSpeed = hasSteered.current ? "180 km/h" : "0 km/h";
+      const statusText = hasSteered.current ? "ACTIVE" : "READY (STEER TO GO)";
+      telemetryRef.current.innerHTML = `
+        <div>// TELEMETRY:</div>
+        <div>CAR_X: <span class="text-highlight-color font-bold">${Math.round(playerX.current)} px</span></div>
+        <div>ROAD_SPEED: <span class="font-bold">${roadSpeed}</span></div>
+        <div>TRAFFIC_COUNT: <span class="font-bold">${traffic.current.length} units</span></div>
+        <div>STATUS: <span class="text-highlight-color font-bold">${statusText}</span></div>
+      `;
+    }
+
+    // 2. RENDER THE GAME SCENE
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw grass shoulder base
+    ctx.fillStyle = "#110b15";
+    ctx.fillRect(0, 0, width, height);
+
+    // Draw road asphalt (centered, 180px width: from x = 60 to x = 240)
+    ctx.fillStyle = "#1e1322";
+    ctx.fillRect(60, 0, 180, height);
+
+    // Draw road shoulder markings
+    ctx.strokeStyle = "#5e3046";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(60, 0);
+    ctx.lineTo(60, height);
+    ctx.moveTo(240, 0);
+    ctx.lineTo(240, height);
+    ctx.stroke();
+
+    // Draw dashed lane markings (two columns: at x = 120 and x = 180)
+    ctx.strokeStyle = "rgba(255, 125, 167, 0.25)";
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([8, 22]);
+    ctx.lineDashOffset = -roadOffset.current;
+
+    ctx.beginPath();
+    ctx.moveTo(120, 0);
+    ctx.lineTo(120, height);
+    ctx.moveTo(180, 0);
+    ctx.lineTo(180, height);
+    ctx.stroke();
+    ctx.setLineDash([]); // Reset line dash
+
+    // Draw coins
+    coins.current.forEach((coin) => {
+      ctx.save();
+      ctx.translate(coin.x, coin.y);
+      const scaleX = Math.abs(Math.sin(coin.spinFrame));
+      ctx.scale(scaleX, 1);
+
+      ctx.fillStyle = "#e2b13c";
+      ctx.strokeStyle = "#ff7da7";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0, 0, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 8px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("$", 0, 0);
+      ctx.restore();
+    });
+
+    // Draw traffic cars
+    traffic.current.forEach((car) => {
+      ctx.fillStyle = car.color;
+      ctx.strokeStyle = "#5e3046";
+      ctx.lineWidth = 2;
+      
+      // Car chassis body
+      ctx.fillRect(car.x - 11, car.y - 18, 22, 36);
+      ctx.strokeRect(car.x - 11, car.y - 18, 22, 36);
+
+      // Windshield glass
+      ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+      ctx.fillRect(car.x - 8, car.y - 8, 16, 6);
+
+      // Headlights (Facing down)
+      ctx.fillStyle = "#ffffaa";
+      ctx.fillRect(car.x - 9, car.y + 15, 3, 2);
+      ctx.fillRect(car.x + 6, car.y + 15, 3, 2);
+    });
+
+    // Draw explosion sparks
+    particles.current.forEach((p) => {
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.life;
+      ctx.fillRect(p.x - 1.5, p.y - 1.5, 3, 3);
+    });
+    ctx.globalAlpha = 1.0;
+
+    // Draw Player Sports Car (Neko Pink Rider)
+    ctx.save();
+    ctx.translate(playerX.current, 240);
+
+    ctx.fillStyle = "#ff548f";
+    ctx.strokeStyle = "#5e3046";
+    ctx.lineWidth = 2.5;
+
+    // Sports car body
+    ctx.fillRect(-11, -18, 22, 36);
+    ctx.strokeRect(-11, -18, 22, 36);
+
+    // Spoiler wing
+    ctx.fillStyle = "#ff7da7";
+    ctx.fillRect(-13, 14, 26, 4);
+
+    // Front windshield
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(-8, -10, 16, 7);
+
+    // Back taillights (Crimson red glow)
+    ctx.fillStyle = "#ff2d55";
+    ctx.fillRect(-9, 17, 3, 1.5);
+    ctx.fillRect(6, 17, 3, 1.5);
+
+    ctx.restore();
+
+    // Loop Frame
+    if (localGameState.current === "playing") {
+      loopRef.current = requestAnimationFrame(gameLoop);
     }
   };
-
-  const spawnHitParticles = (color: string) => {
-    const newParticles: HitParticle[] = [];
-    for (let i = 0; i < 5; i++) {
-      newParticles.push({
-        id: Math.random().toString(),
-        x: (Math.random() - 0.5) * 35,
-        y: (Math.random() - 0.5) * 35,
-        life: 1.0,
-      });
-    }
-    setParticles(newParticles);
-  };
-
-  const mult = getMultiplier(combo);
 
   return (
     <div className="w-full font-body cute-card overflow-hidden shadow-[4px_4px_0_var(--shadow-color)]">
-      {/* Dynamic inline styles for screen shake */}
-      <style>{`
-        @keyframes custom-shake {
-          0%, 100% { transform: translate(0, 0); }
-          20%, 60% { transform: translate(-3px, 2px); }
-          40%, 80% { transform: translate(3px, -2px); }
-        }
-        .board-shake {
-          animation: custom-shake 0.15s ease-in-out;
-        }
-      `}</style>
-
       {/* Title Bar */}
       <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
         <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5 select-none">
-          <PixelIcon name="robot" solid size={11} />
-          bug_whacker.exe
+          <PixelIcon name="laptop-code" solid size={11} />
+          neko_rider.exe
         </span>
         <div className="flex gap-1.5">
           <span className="w-3 h-3 bg-cream border border-white/30" />
@@ -303,125 +479,66 @@ export default function MiniGame() {
         </div>
       </div>
 
-      {/* Main Panel */}
-      <div className="p-5 flex flex-col items-center justify-center bg-cream/10 dark:bg-bg-alt/10">
+      {/* Split-Screen Arcade Layout */}
+      <div className="p-4 flex flex-col lg:flex-row gap-4 items-stretch">
         
-        {/* Combo HUD / Score Info */}
-        <div className="w-full max-w-sm flex items-center justify-between mb-3 px-2 py-1.5 bg-[#ffe8f0]/40 dark:bg-bg-base border-2 border-border-accent/40 font-mono text-xs select-none">
-          <div className="font-bold text-text-base">
-            SCORE: <span className="text-highlight-color font-black">{score}</span>
-            {combo > 2 && (
-              <span className="ml-2 text-highlight-color font-black animate-pulse">
-                ({combo} Combo!)
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="text-text-muted text-[10px] mr-1 uppercase">ARMOR:</span>
-            {[1, 2, 3].map((hIdx) => (
-              <PixelIcon
-                key={hIdx}
-                name="heart"
-                solid={hIdx <= lives}
-                size={11}
-                className={hIdx <= lives ? "text-raspberry animate-heart-beat" : "text-border-accent/30"}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Arcade Board Viewport */}
+        {/* Left Column: Responsive Canvas Screen */}
         <div 
-          className={`w-full max-w-sm border-2 relative flex items-center justify-center transition-all duration-100
-            ${flash ? "border-raspberry shadow-[0_0_15px_#db6b8f]" : "border-border-accent"} 
-            ${shake ? "board-shake" : ""}`}
-          style={{ height: "260px", backgroundColor: "#150b18" }}
+          className="w-full lg:flex-1 relative overflow-hidden bg-[#110b15] border-2 border-border-accent flex items-center justify-center min-w-0"
+          style={{ height: "300px" }}
         >
-          {/* CRT scanline grids */}
+          {/* CRT scanlines overlay */}
           <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,10,18,0)_50%,rgba(0,0,0,0.18)_50%)] bg-[length:100%_4px] z-10 opacity-30" />
-
-          {/* Combo Multiplier Alert Overlay */}
-          {gameState === "playing" && mult > 1 && (
-            <div className="absolute top-2 right-2 bg-highlight-color text-cream font-mono font-bold text-[9px] px-1.5 py-0.5 rounded shadow-[1px_1px_0_var(--shadow-color)] z-30 animate-bounce select-none">
-              x{mult} MULTIPLIER
-            </div>
-          )}
 
           {gameState === "idle" && (
             <div className="flex flex-col items-center text-center p-6 z-20">
-              <div className="text-highlight-color animate-pixel-float mb-3">
-                <PixelIcon name="robot" solid size={42} />
+              <div className="text-highlight-color animate-pixel-float mb-3 flex gap-2">
+                <PixelIcon name="bolt" solid size={40} />
               </div>
-              <h3 className="pixel-heading font-jersey text-3xl text-highlight-color uppercase tracking-widest">
-                BUG WHACKER PRO
+              
+              <h3 className="pixel-heading font-jersey text-3xl text-highlight-color uppercase tracking-widest leading-none">
+                NEKO RIDER
               </h3>
-              <p className="text-[9px] text-text-muted mt-2 max-w-xs uppercase font-bold font-mono leading-relaxed">
-                [ Click or type key bindings to whack bugs ]
+              
+              <p className="text-[10px] text-text-muted mt-2 max-w-xs leading-relaxed uppercase font-bold font-mono">
+                [ Dodge traffic cars. Collect Gold Coins ]
                 <br />
-                shortcuts: Q W E / A S D / Z X C
-                <br />
-                <span className="text-highlight-color">gold bug restores armor</span>
+                Steer: A/D keys, Arrows, or UI buttons
               </p>
+
               <button
                 onClick={startGame}
                 className="mt-5 px-5 py-2.5 bg-highlight-color text-cream font-jersey text-base uppercase tracking-widest border-2 border-border-accent shadow-[3px_3px_0_var(--shadow-color)] hover:-translate-y-0.5 hover:shadow-[4px_4px_0_var(--shadow-color)] active:translate-y-0 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer"
               >
-                Start Game
+                Launch Drive
               </button>
             </div>
           )}
 
           {gameState === "playing" && (
-            <div className="grid grid-cols-3 gap-3.5 p-4 w-full h-full relative z-20">
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((index) => {
-                const isTarget = index === activeCell;
-                return (
-                  <button
-                    key={index}
-                    onClick={() => handleCellClick(index)}
-                    className={`relative rounded-md border-2 transition-all flex items-center justify-center cursor-pointer select-none
-                      ${isTarget 
-                        ? isTurbo
-                          ? "bg-yellow-400/20 border-yellow-400 shadow-[0_0_12px_#fbbf24]"
-                          : "bg-highlight-color/20 border-highlight-color shadow-[0_0_12px_var(--highlight-color)]" 
-                        : "bg-cream/5 border-border-accent/30 hover:border-border-accent/70"
-                      }`}
-                  >
-                    {/* Corner Keyboard Binding Label */}
-                    <span className="absolute top-1 left-1.5 text-[8px] font-mono font-bold text-border-accent/60">
-                      {KEY_LABELS[index]}
-                    </span>
-
-                    {/* Bug Creature Sprite */}
-                    {isTarget && (
-                      <div className={`flex items-center justify-center animate-bounce
-                        ${isTurbo ? "text-yellow-400" : "text-highlight-color"}`}>
-                        <PixelIcon name={isTurbo ? "star" : "robot"} solid size={28} />
-                      </div>
-                    )}
-
-                    {/* Hit Sparkles particles inside the cell */}
-                    {isTarget && particles.map((p) => (
-                      <div
-                        key={p.id}
-                        className="absolute pointer-events-none w-1.5 h-1.5 rounded-full"
-                        style={{
-                          transform: `translate(${p.x}px, ${p.y}px)`,
-                          opacity: p.life,
-                          backgroundColor: isTurbo ? "#ffff00" : "#52ff7d",
-                        }}
-                      />
-                    ))}
-                  </button>
-                );
-              })}
-            </div>
+            <canvas
+              ref={canvasRef}
+              width={300}
+              height={300}
+              onClick={(e) => {
+                const rect = canvasRef.current?.getBoundingClientRect();
+                if (!rect) return;
+                const clickX = e.clientX - rect.left;
+                if (clickX < rect.width / 2) {
+                  steerLeft();
+                } else {
+                  steerRight();
+                }
+              }}
+              className="block cursor-pointer"
+              style={{ width: "100%", height: "100%" }}
+            />
           )}
 
           {gameState === "gameover" && (
             <div className="flex flex-col items-center text-center p-6 z-20">
-              <h3 className="pixel-heading font-jersey text-4xl text-raspberry uppercase tracking-widest animate-pulse">
-                WHACKED OUT
+              <h3 className="pixel-heading font-jersey text-4xl text-raspberry dark:text-highlight-color uppercase tracking-widest leading-none animate-pulse">
+                CRASH OUT
               </h3>
               
               <div className="flex gap-4 mt-4 font-mono font-bold text-xs text-text-base uppercase bg-cream dark:bg-bg-base border-2 border-border-accent p-3.5 shadow-[2px_2px_0_var(--shadow-color)]">
@@ -450,8 +567,99 @@ export default function MiniGame() {
               </div>
             </div>
           )}
+
+          {/* Running Score HUD */}
+          {gameState === "playing" && (
+            <div className="absolute top-3 left-3 bg-cream/90 dark:bg-bg-base/90 border-2 border-border-accent px-2.5 py-1 font-mono text-xs font-bold text-highlight-color tracking-wide z-20 pointer-events-none select-none">
+              SCORE: {score}
+            </div>
+          )}
         </div>
 
+        {/* Right Column: Arcade Controller & Diagnostics deck */}
+        <div className="w-full lg:w-72 flex flex-col gap-3 bg-peach/15 dark:bg-card-bg border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] p-4 relative justify-between">
+          <span className="absolute top-1.5 left-1.5 w-2 h-2 border-t-2 border-l-2 border-blush" />
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 border-t-2 border-r-2 border-blush" />
+          <span className="absolute bottom-1.5 left-1.5 w-2 h-2 border-b-2 border-l-2 border-blush" />
+          <span className="absolute bottom-1.5 right-1.5 w-2 h-2 border-b-2 border-r-2 border-blush" />
+
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-border-accent/30 pb-2">
+            <span className="text-[10px] font-mono font-bold text-highlight-color uppercase tracking-wider flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 bg-[#52ff7d] rounded-full animate-pulse shadow-[0_0_6px_#52ff7d]" />
+              [ diagnostic_deck ]
+            </span>
+            <span className="text-[9px] font-mono text-text-muted">
+              v2.5.0-canvas
+            </span>
+          </div>
+
+          {/* Lives Indicator & Stats */}
+          <div className="bg-cream dark:bg-bg-base border border-border-accent p-2.5 font-mono flex flex-col gap-1.5 shadow-inner">
+            <div className="flex justify-between items-center text-xs font-bold">
+              <span className="text-text-muted uppercase">ARMOR:</span>
+              <div className="flex gap-1">
+                {[1, 2, 3].map((heartIndex) => (
+                  <PixelIcon 
+                    key={heartIndex} 
+                    name="heart" 
+                    solid={heartIndex <= lives} 
+                    size={11} 
+                    className={heartIndex <= lives ? "text-raspberry animate-heart-beat" : "text-border-accent/30"} 
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="flex justify-between text-xs font-bold border-t border-border-accent/15 pt-1.5 mt-1.5">
+              <span className="text-text-muted uppercase">High Score:</span>
+              <span className="text-highlight-color font-black">{highScore} pts</span>
+            </div>
+          </div>
+
+          {/* D-Pad Steering Controls */}
+          <div className="flex flex-col gap-2">
+            {gameState === "playing" ? (
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={steerLeft}
+                  className="flex-1 py-3 bg-cream dark:bg-bg-base text-text-base border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer font-bold text-xs uppercase select-none"
+                >
+                  ◀ Steer Left
+                </button>
+                <button
+                  type="button"
+                  onClick={steerRight}
+                  className="flex-1 py-3 bg-cream dark:bg-bg-base text-text-base border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer font-bold text-xs uppercase select-none"
+                >
+                  Steer Right ▶
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={startGame}
+                className="w-full py-3.5 bg-highlight-color text-cream font-jersey text-lg uppercase tracking-widest border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] hover:shadow-[3px_3px_0_var(--shadow-color)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0_var(--shadow-color)] transition-all cursor-pointer flex items-center justify-center gap-2"
+              >
+                <PixelIcon name="star" solid size={14} />
+                {gameState === "gameover" ? "REPLAY" : "LAUNCH"}
+              </button>
+            )}
+          </div>
+
+          {/* Diagnostics logs */}
+          <div 
+            ref={telemetryRef}
+            className="border border-border-accent/30 bg-cream/40 dark:bg-bg-alt/30 p-2.5 rounded-sm text-[9px] font-mono text-text-muted leading-normal flex flex-col gap-0.5 select-none"
+          >
+            <div>// TELEMETRY:</div>
+            <div>CAR_X: <span className="text-highlight-color font-bold">150 px</span></div>
+            <div>ROAD_SPEED: <span className="font-bold">0 km/h</span></div>
+            <div>TRAFFIC_DENSITY: <span className="font-bold">0 units</span></div>
+            <div>STATUS: <span className="text-highlight-color font-bold">{gameState.toUpperCase()}</span></div>
+          </div>
+
+        </div>
       </div>
     </div>
   );
