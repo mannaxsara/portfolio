@@ -5,8 +5,9 @@
     "skills": ["Python", "Prophet", "Pandas", "Chart.js", "Data Analytics", "Excel"],
     "image": "/projects/proj-bsp-inventory.jpg",
     "git": "https://github.com/mannaxsara/BSP-Inventory-Optimizer",
-    "url": "https://github.com/mannaxsara/BSP-Inventory-Optimizer",
-    "fileLabel": "bsp_inventory_optimizer.exe"
+    "url": "https://mannaxsara.github.io/BSP-Inventory-Optimizer/",
+    "fileLabel": "bsp.exe",
+    "tags": ["Analytics"]
   },
   {
     "title": "DetectiveAI",
@@ -14,7 +15,8 @@
     "skills": ["Next.js", "FastAPI", "Polars", "Scikit-Learn", "Python", "TypeScript", "TailwindCSS"],
     "image": "/projects/proj-detective-ai.jpg",
     "git": "https://github.com/mannaxsara/detective-ai",
-    "url": "https://github.com/mannaxsara/detective-ai",
-    "fileLabel": "detective_ai.exe"
+    "url": "https://projectdetective.vercel.app/",
+    "fileLabel": "detective_ai.exe",
+    "tags": ["ML", "Full-stack"]
   }
 ]

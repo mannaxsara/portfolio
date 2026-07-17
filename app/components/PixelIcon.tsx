@@ -23,7 +23,9 @@ type PixelIconName =
   | "check"
   | "times"
   | "camera"
-  | "bookmark";
+  | "bookmark"
+  | "link"
+  | "external-link";
 
 interface PixelIconProps {
   name: PixelIconName;

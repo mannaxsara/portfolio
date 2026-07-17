@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import PixelIcon from "../components/PixelIcon";
 import filmsData from "../data/films.json";
@@ -52,16 +52,19 @@ const FilmCover = ({ film }: { film: FilmType }) => {
       alt={film.title}
       width={150}
       height={210}
-      className="block object-cover w-full h-full"
+      className="block object-cover w-full h-full pointer-events-none"
       onError={() => setHasError(true)}
       sizes="150px"
     />
   );
 };
-
 const MovieBoard = () => {
   const [activeGenre, setActiveGenre] = useState("all");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMinimized, setIsMinimized] = useState(false);
+
+  const dragStartX = useRef<number | null>(null);
+  const dragEndX = useRef<number | null>(null);
 
   const filtered =
     activeGenre === "all"
@@ -76,6 +79,34 @@ const MovieBoard = () => {
 
   const prev = () => setActiveIndex((i) => Math.max(0, i - 1));
   const next = () => setActiveIndex((i) => Math.min(filtered.length - 1, i + 1));
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    dragStartX.current = e.clientX;
+    dragEndX.current = null;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (dragStartX.current === null) return;
+    dragEndX.current = e.clientX;
+  };
+
+  const handlePointerUp = () => {
+    if (dragStartX.current === null || dragEndX.current === null) {
+      dragStartX.current = null;
+      dragEndX.current = null;
+      return;
+    }
+    const diff = dragStartX.current - dragEndX.current;
+    const threshold = 40; // drag 40px to trigger change
+    if (diff > threshold) {
+      next();
+    } else if (diff < -threshold) {
+      prev();
+    }
+    dragStartX.current = null;
+    dragEndX.current = null;
+  };
 
   const getStyle = (i: number): React.CSSProperties => {
     const offset = i - activeIndex;
@@ -112,19 +143,31 @@ const MovieBoard = () => {
   return (
     <div className="w-full font-body cute-card overflow-hidden shadow-[4px_4px_0_var(--shadow-color)]">
       {/* Title Bar */}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
-        <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5 select-none">
+      <div 
+        onDoubleClick={() => setIsMinimized(!isMinimized)}
+        className="flex items-center justify-between px-3 py-1.5 bg-border-accent cursor-row-resize select-none"
+        title="Double click to shade minimize/expand"
+      >
+        <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5">
           <PixelIcon name="camera" solid size={11} />
           movies.exe
         </span>
-        <div className="flex gap-1.5">
-          <span className="w-3 h-3 bg-cream border border-white/30" />
+        <div className="flex items-center gap-1.5">
+          <span className="text-cream text-[8px] font-bold opacity-75 font-mono mr-1">
+            {isMinimized ? "[+]" : "[-]"}
+          </span>
+          <span 
+            onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }}
+            className="w-3 h-3 bg-cream border border-white/30 cursor-pointer hover:brightness-110 active:scale-95" 
+          />
           <span className="w-3 h-3 bg-blush border border-white/30" />
           <span className="w-3 h-3 bg-raspberry border border-white/30" />
         </div>
       </div>
 
-      <div className="p-5 flex flex-col gap-5">
+      <div className={`transition-all duration-300 ease-in-out origin-top overflow-hidden ${
+        isMinimized ? "max-h-0 opacity-0 scale-y-95 pointer-events-none p-0" : "max-h-[1000px] opacity-100 scale-y-100 p-5 flex flex-col gap-5"
+      }`}>
         {/* Section Label */}
         <p className="pixel-heading font-jersey text-highlight-color tracking-widest flex items-center gap-2 text-2xl uppercase select-none">
           <PixelIcon name="camera" solid size={16} />
@@ -187,7 +230,14 @@ const MovieBoard = () => {
         ) : (
           <>
             {/* Coverflow Stage Container */}
-            <div className="relative overflow-hidden bg-cream/20 dark:bg-bg-base/10 border-2 border-border-accent p-2" style={{ perspective: "600px", height: 260 }}>
+            <div 
+              className="relative overflow-hidden bg-cream/20 dark:bg-bg-base/10 border-2 border-border-accent p-2 touch-pan-y select-none cursor-grab active:cursor-grabbing" 
+              style={{ perspective: "600px", height: 260 }}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerLeave={handlePointerUp}
+            >
               
               {/* Left Arrow (High zIndex to overlay) */}
               <button

@@ -125,18 +125,21 @@ export default function CherryBlossoms() {
         }
 
         const isDarkMode = document.documentElement.classList.contains("dark");
+        const isPaused = document.documentElement.classList.contains("sakura-paused");
         const list = petalsRef.current;
 
         for (let i = 0; i < list.length; i++) {
           const p = list[i];
           
-          p.swayAngle += p.swaySpeed;
-          const currentWind = calculateWindSpeed(windTimer, p.y);
-          
-          // Move coords
-          p.x += currentWind + p.xSpeedVariation + Math.cos(p.swayAngle) * 0.4;
-          p.y += p.ySpeed + Math.sin(p.swayAngle) * 0.15;
-          p.rotation += p.rotationSpeed;
+          if (!isPaused) {
+            p.swayAngle += p.swaySpeed;
+            const currentWind = calculateWindSpeed(windTimer, p.y);
+            
+            // Move coords
+            p.x += currentWind + p.xSpeedVariation + Math.cos(p.swayAngle) * 0.4;
+            p.y += p.ySpeed + Math.sin(p.swayAngle) * 0.15;
+            p.rotation += p.rotationSpeed;
+          }
 
           // Depth mapping z (0..200) to visual sizes
           const depthPercent = p.z / 200;
@@ -168,14 +171,16 @@ export default function CherryBlossoms() {
 
           ctx.restore();
 
-          // Reset if flows off bounds
-          if (p.y > height + 40 || p.x < -60 || p.x > width + 60) {
+          // Reset if flows off bounds (only update if not paused to avoid shifting resets)
+          if (!isPaused && (p.y > height + 40 || p.x < -60 || p.x > width + 60)) {
             resetPetal(p, false);
             p.y = -30;
           }
         }
 
-        windTimer++;
+        if (!isPaused) {
+          windTimer++;
+        }
         animFrameIdRef.current = requestAnimationFrame(updateFrame);
       };
 

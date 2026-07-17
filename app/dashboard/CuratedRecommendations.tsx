@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import PixelIcon from "../components/PixelIcon";
+import { motion } from "framer-motion";
 import songData from "../data/music.json";
 import bookData from "../data/bookRecommendations.json";
 import movieData from "../data/movieRecommendations.json";
@@ -43,6 +44,7 @@ export default function CuratedRecommendations() {
   const [books, setBooks] = useState<BookRec[]>([]);
   const [movies, setMovies] = useState<MovieRec[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   useEffect(() => {
     // Simulate database loading state for dynamic ready architecture
@@ -66,19 +68,31 @@ export default function CuratedRecommendations() {
   return (
     <div className="w-full font-body cute-card overflow-hidden transition-all shadow-[4px_4px_0_var(--shadow-color)]">
       {/* Titlebar */}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
-        <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5 select-none">
+      <div 
+        onDoubleClick={() => setIsMinimized(!isMinimized)}
+        className="flex items-center justify-between px-3 py-1.5 bg-border-accent cursor-row-resize select-none"
+        title="Double click to shade minimize/expand"
+      >
+        <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5">
           <PixelIcon name="bookmark" solid size={11} />
           curated_recs.exe
         </span>
-        <div className="flex gap-1.5">
-          <span className="w-3 h-3 bg-cream border border-white/30" />
+        <div className="flex items-center gap-1.5">
+          <span className="text-cream text-[8px] font-bold opacity-75 font-mono mr-1">
+            {isMinimized ? "[+]" : "[-]"}
+          </span>
+          <span 
+            onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }}
+            className="w-3 h-3 bg-cream border border-white/30 cursor-pointer hover:brightness-110 active:scale-95" 
+          />
           <span className="w-3 h-3 bg-blush border border-white/30" />
           <span className="w-3 h-3 bg-raspberry border border-white/30" />
         </div>
       </div>
 
-      <div className="p-5 flex flex-col gap-5">
+      <div className={`transition-all duration-300 ease-in-out origin-top overflow-hidden ${
+        isMinimized ? "max-h-0 opacity-0 scale-y-95 pointer-events-none p-0" : "max-h-[1200px] opacity-100 scale-y-100 p-5 flex flex-col gap-5"
+      }`}>
         {/* Header section */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <p className="pixel-heading font-jersey text-highlight-color tracking-widest flex items-center gap-2 text-2xl uppercase">
@@ -88,7 +102,7 @@ export default function CuratedRecommendations() {
           </p>
 
           {/* Navigation Tabs */}
-          <div className="flex bg-cream/70 dark:bg-bg-base border-2 border-border-accent p-0.5 self-start sm:self-auto">
+          <div className="relative flex bg-cream/70 dark:bg-bg-base border-2 border-border-accent p-0.5 self-start sm:self-auto select-none">
             {(
               [
                 { key: "songs", label: "Music", icon: "music" },
@@ -101,14 +115,25 @@ export default function CuratedRecommendations() {
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`px-3 py-1.5 font-jersey text-sm uppercase tracking-wider flex items-center gap-1.5 border-2 transition-all focus:outline-none cursor-pointer ${
-                    isActive
-                      ? "bg-peach/60 dark:bg-highlight-color/25 border-border-accent text-highlight-color font-semibold shadow-[1px_1px_0_var(--shadow-color)]"
-                      : "bg-transparent border-transparent text-text-muted/80 hover:text-text-base hover:bg-cream/40"
-                  }`}
+                  className="relative px-3 py-1.5 font-jersey text-sm uppercase tracking-wider flex items-center gap-1.5 focus:outline-none cursor-pointer z-10"
                 >
-                  <PixelIcon name={tab.icon} solid size={12} />
-                  {tab.label}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeRecTabHighlight"
+                      className="absolute inset-0 bg-peach/60 dark:bg-highlight-color/20 border-2 border-border-accent shadow-[1px_1px_0_var(--shadow-color)] z-0"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 28,
+                      }}
+                    />
+                  )}
+                  <span className={`relative z-10 flex items-center gap-1.5 ${
+                    isActive ? "text-highlight-color font-semibold" : "text-text-muted"
+                  }`}>
+                    <PixelIcon name={tab.icon} solid size={12} />
+                    {tab.label}
+                  </span>
                 </button>
               );
             })}

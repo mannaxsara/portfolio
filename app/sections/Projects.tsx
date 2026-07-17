@@ -20,12 +20,12 @@ const Projects = () => {
         </SectionHeading>
       </ScrollReveal>
 
-      <div className="mt-8 flex flex-wrap gap-10 justify-center">
+      <div className="mt-8 flex flex-wrap gap-10 justify-center items-stretch">
         {projectsData.slice(0, 2).map((project, idx) => (
-          <ScrollReveal key={project.title} delay={0.15 + idx * 0.1}>
+          <ScrollReveal key={project.title} delay={0.15 + idx * 0.1} className="flex">
             <div
               onClick={() => window.open(project.url, "_blank")}
-              className="cursor-pointer"
+              className="cursor-pointer flex flex-col h-full"
             >
               <ProjectCard
                 title={project.title}
@@ -33,6 +33,7 @@ const Projects = () => {
                 skills={[...project.skills]}
                 image={project.image}
                 git={project.git}
+                live={project.url}
                 fileLabel={project.fileLabel}
               />
             </div>

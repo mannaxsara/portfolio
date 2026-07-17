@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Github from "../components/icons/Github";
 import Linkedin from "../components/icons/Linkedin";
 import Insta from "../components/icons/Insta";
@@ -8,35 +8,6 @@ import Email from "../components/icons/Email";
 import PixelIcon from "../components/PixelIcon";
 
 const Hero = () => {
-  const headingRef = useRef<HTMLHeadingElement>(null);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLHeadingElement>) => {
-    if (!headingRef.current) return;
-    const rect = headingRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    headingRef.current.style.backgroundImage = `radial-gradient(circle 120px at ${x}% ${y}%, var(--blush) 0%, var(--highlight-color) 45%, var(--text-base) 90%)`;
-  };
-
-  const handleMouseEnter = () => {
-    if (!headingRef.current) return;
-    headingRef.current.style.setProperty("animation", "none");
-    headingRef.current.style.setProperty("background-position", "center");
-    headingRef.current.style.setProperty("-webkit-background-clip", "text");
-    headingRef.current.style.setProperty("-webkit-text-fill-color", "transparent");
-    headingRef.current.style.setProperty("background-clip", "text");
-  };
-
-  const handleMouseLeave = () => {
-    if (!headingRef.current) return;
-    headingRef.current.style.removeProperty("background-image");
-    headingRef.current.style.removeProperty("animation");
-    headingRef.current.style.removeProperty("background-position");
-    headingRef.current.style.removeProperty("-webkit-background-clip");
-    headingRef.current.style.removeProperty("-webkit-text-fill-color");
-    headingRef.current.style.removeProperty("background-clip");
-  };
-
   return (
     <div className="w-full min-h-screen flex items-center justify-center px-3 sm:px-4 py-20 relative bg-transparent overflow-hidden">
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
@@ -76,15 +47,13 @@ const Hero = () => {
           <span className="flex-1 h-px bg-gradient-to-r from-transparent via-border-accent to-transparent" />
         </div>
  
-        <p className="text-sm sm:text-base text-text-base font-semibold tracking-[0.25em] mb-3 uppercase opacity-90">
+        <p className="font-jersey text-xl sm:text-2xl text-text-base tracking-[0.15em] mb-4 opacity-90 select-none">
           hello, i&apos;m
         </p>
  
         <h1
-          ref={headingRef}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => document.documentElement.classList.add("sakura-paused")}
+          onMouseLeave={() => document.documentElement.classList.remove("sakura-paused")}
           className="pixel-heading font-jersey leading-none mb-3 text-shimmer whitespace-nowrap select-none cursor-pointer"
           style={{
             fontSize: "clamp(26px, 7.2vw, 110px)",

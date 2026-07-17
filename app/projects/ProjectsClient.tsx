@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import ProjectCard from "../components/ProjectCard";
 // import EssayCard from "../components/EssayCard"; // TODO: re-enable writeups later
@@ -30,6 +31,12 @@ const PROJECTS = projectsData;
 // ] as const;
 
 const ProjectsFull = () => {
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filteredProjects = activeFilter === "All" 
+    ? PROJECTS 
+    : PROJECTS.filter(project => project.tags && project.tags.includes(activeFilter));
+
   return (
     <div className="min-h-screen max-w-6xl mx-auto px-4 flex flex-col items-center pt-28 pb-24">
       <ScrollReveal>
@@ -38,23 +45,32 @@ const ProjectsFull = () => {
         </SectionHeading>
       </ScrollReveal>
 
-      <ScrollReveal delay={0.1} className="w-full max-w-2xl">
+      <ScrollReveal delay={0.1} className="w-full max-w-3xl">
         <div className="cute-panel p-4 sm:p-5 mb-4 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
           {[
+            { icon: "star" as const, label: "All" },
             { icon: "wifi" as const, label: "IoT" },
             { icon: "chart-line" as const, label: "Analytics" },
             { icon: "robot" as const, label: "ML" },
             { icon: "laptop-code" as const, label: "Full-stack" },
             { icon: "calendar-alt" as const, label: "Event Tech" },
-          ].map(({ icon, label }) => (
-            <span
-              key={label}
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 bg-cream/80 dark:bg-card-bg border-2 border-border-accent shadow-[2px_2px_0_var(--shadow-color)] text-text-base"
-            >
-              <PixelIcon name={icon} solid size={13} className="text-highlight-color" />
-              {label}
-            </span>
-          ))}
+          ].map(({ icon, label }) => {
+            const isActive = activeFilter === label;
+            return (
+              <button
+                key={label}
+                onClick={() => setActiveFilter(label)}
+                className={`inline-flex items-center gap-1.5 text-xs sm:text-sm px-3.5 py-1.5 border-2 transition-all cursor-pointer outline-none ${
+                  isActive
+                    ? "bg-peach/60 dark:bg-highlight-color/25 border-border-accent text-highlight-color font-semibold shadow-[1px_1px_0_var(--shadow-color)] translate-y-0.5"
+                    : "bg-cream/80 dark:bg-card-bg border-border-accent/80 hover:border-border-accent shadow-[2px_2px_0_var(--shadow-color)] text-text-base hover:bg-cream/40"
+                }`}
+              >
+                <PixelIcon name={icon} solid size={13} className={isActive ? "text-highlight-color animate-pulse" : "text-text-muted"} />
+                {label}
+              </button>
+            );
+          })}
         </div>
       </ScrollReveal>
 
@@ -66,33 +82,43 @@ const ProjectsFull = () => {
             <span className="flex-1 max-w-xs h-px bg-border-accent opacity-40 hidden sm:block" />
           </p>
         </ScrollReveal>
-
-        <div className="flex flex-wrap gap-8 sm:gap-10 justify-center">
-          {PROJECTS.map((project, i) => (
-            <ScrollReveal key={project.title} delay={0.15 + i * 0.08}>
-              <div
-                onClick={() => window.open(project.url, "_blank")}
-                className="cursor-pointer"
-                role="link"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    window.open(project.url, "_blank");
-                  }
-                }}
-              >
-                <ProjectCard
-                  title={project.title}
-                  description={project.description}
-                  skills={[...project.skills]}
-                  image={project.image}
-                  git={project.git}
-                  fileLabel={project.fileLabel}
-                />
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
+        {filteredProjects.length === 0 ? (
+          <ScrollReveal delay={0.15}>
+            <div className="bg-cream/40 dark:bg-bg-base/30 border-2 border-border-accent p-8 text-center mt-6 w-full">
+              <p className="text-xs text-text-muted tracking-widest font-bold uppercase select-none">
+                ♡ no matching projects found for category &ldquo;{activeFilter}&rdquo; ♡
+              </p>
+            </div>
+          </ScrollReveal>
+        ) : (
+          <div className="flex flex-wrap gap-8 sm:gap-10 justify-center items-stretch">
+            {filteredProjects.map((project, i) => (
+              <ScrollReveal key={project.title} delay={0.15 + i * 0.08} className="flex">
+                <div
+                  onClick={() => window.open(project.url, "_blank")}
+                  className="cursor-pointer flex flex-col h-full"
+                  role="link"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      window.open(project.url, "_blank");
+                    }
+                  }}
+                >
+                  <ProjectCard
+                    title={project.title}
+                    description={project.description}
+                    skills={[...project.skills]}
+                    image={project.image}
+                    git={project.git}
+                    live={project.url}
+                    fileLabel={project.fileLabel}
+                  />
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* TODO: re-enable writeups later

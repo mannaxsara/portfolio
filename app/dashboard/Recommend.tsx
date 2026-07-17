@@ -19,6 +19,7 @@ const Recommend = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -82,6 +83,29 @@ const Recommend = () => {
     if (!newTitle.trim()) return;
     setSubmitting(true);
 
+    // Send email notification to Formspree if configured
+    const formId = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
+    if (formId) {
+      try {
+        await fetch(`https://formspree.io/f/${formId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+          body: JSON.stringify({
+            subject: `New Recommendation Suggested: ${newTitle}`,
+            title: newTitle.trim(),
+            comment: newComment.trim(),
+            category: category,
+            message: `User suggested: "${newTitle}" (${category}). Why: "${newComment}"`
+          }),
+        });
+      } catch (err) {
+        console.error("Failed to send recommendation notification to Formspree:", err);
+      }
+    }
+
     const isPlaceholder =
       !process.env.NEXT_PUBLIC_SUPABASE_URL ||
       process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder-project");
@@ -128,21 +152,33 @@ const Recommend = () => {
   };
 
   return (
-    <div className="w-full font-body cute-card overflow-hidden">
+    <div className="w-full font-body cute-card overflow-hidden shadow-[4px_4px_0_var(--shadow-color)]">
       {/* Title bar */}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent select-none">
+      <div 
+        onDoubleClick={() => setIsMinimized(!isMinimized)}
+        className="flex items-center justify-between px-3 py-1.5 bg-border-accent cursor-row-resize select-none"
+        title="Double click to shade minimize/expand"
+      >
         <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5">
           <PixelIcon name="bookmark" solid size={11} />
           tbr.exe
         </span>
-        <div className="flex gap-1.5">
-          <span className="w-3 h-3 bg-cream border border-white/30" />
+        <div className="flex items-center gap-1.5">
+          <span className="text-cream text-[8px] font-bold opacity-75 font-mono mr-1">
+            {isMinimized ? "[+]" : "[-]"}
+          </span>
+          <span 
+            onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }}
+            className="w-3 h-3 bg-cream border border-white/30 cursor-pointer hover:brightness-110 active:scale-95" 
+          />
           <span className="w-3 h-3 bg-blush border border-white/30" />
           <span className="w-3 h-3 bg-raspberry border border-white/30" />
         </div>
       </div>
 
-      <div className="p-4 flex flex-col gap-4">
+      <div className={`transition-all duration-300 ease-in-out origin-top overflow-hidden ${
+        isMinimized ? "max-h-0 opacity-0 scale-y-95 pointer-events-none p-0" : "max-h-[1000px] opacity-100 scale-y-100 p-4"
+      }`}>
         <div className="flex flex-col md:flex-row gap-5 items-stretch">
           
           {/* Left Column: Compact scrollable recommendations list */}

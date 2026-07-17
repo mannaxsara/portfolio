@@ -242,8 +242,6 @@ export default function CustomCursor() {
         style={{
           width: "28px",
           height: "28px",
-          marginTop: "-14px",
-          marginLeft: "-14px",
           willChange: "transform",
         }}
       >
@@ -279,8 +277,8 @@ export default function CustomCursor() {
             </div>
           </div>
 
-          {/* Hover visual */}
-          <div className="hover-visual hidden">
+          {/* Hover visual (Translated to center heart over the click coordinate) */}
+          <div className="hover-visual hidden" style={{ transform: "translate(-15px, -15px)" }}>
             <svg
               width="30"
               height="30"
@@ -300,7 +298,11 @@ export default function CustomCursor() {
 
       <style dangerouslySetInnerHTML={{ __html: `
         /* Interactive morph display states */
-        .custom-cursor-active * {
+        .custom-cursor-active,
+        .custom-cursor-active *,
+        .custom-cursor-active *::selection,
+        .custom-cursor-active *:active,
+        .custom-cursor-active *:focus {
           cursor: none !important;
         }
         .hovered .arrow-visual {

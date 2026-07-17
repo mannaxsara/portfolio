@@ -29,6 +29,7 @@ export default function MiniGame() {
   const [nekoY, setNekoY] = useState(110);
   const [pipes, setPipes] = useState<Pipe[]>([]);
   const [particles, setParticles] = useState<JumpParticle[]>([]);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   const nekoYRef = useRef(110);
   const nekoVelocity = useRef(0);
@@ -372,20 +373,32 @@ export default function MiniGame() {
       `}</style>
 
       {/* Title Bar */}
-      <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
-        <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5 select-none">
+      <div 
+        onDoubleClick={() => setIsMinimized(!isMinimized)}
+        className="flex items-center justify-between px-3 py-1.5 bg-border-accent cursor-row-resize select-none"
+        title="Double click to shade minimize/expand"
+      >
+        <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5">
           <PixelIcon name="laptop-code" solid size={11} />
           neko_flap.exe
         </span>
-        <div className="flex gap-1.5">
-          <span className="w-3 h-3 bg-cream border border-white/30" />
+        <div className="flex items-center gap-1.5">
+          <span className="text-cream text-[8px] font-bold opacity-75 font-mono mr-1">
+            {isMinimized ? "[+]" : "[-]"}
+          </span>
+          <span 
+            onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }}
+            className="w-3 h-3 bg-cream border border-white/30 cursor-pointer hover:brightness-110 active:scale-95" 
+          />
           <span className="w-3 h-3 bg-blush border border-white/30" />
           <span className="w-3 h-3 bg-raspberry border border-white/30" />
         </div>
       </div>
 
       {/* Redesigned Compact UI (Stretched full width container) */}
-      <div className="p-4 flex flex-col items-center justify-center gap-4">
+      <div className={`transition-all duration-300 ease-in-out origin-top overflow-hidden ${
+        isMinimized ? "max-h-0 opacity-0 scale-y-95 pointer-events-none p-0" : "max-h-[1000px] opacity-100 scale-y-100 p-4 flex flex-col items-center justify-center gap-4"
+      }`}>
         
         {/* Core Game CRT Screen Viewport (Stretched to fill the entire card width) */}
         <div 

@@ -47,6 +47,7 @@ const MusicPlayer = () => {
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.7);
     const [isLooping, setIsLooping] = useState(false);
+    const [isMinimized, setIsMinimized] = useState(false);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const progressBarRef = useRef<HTMLDivElement | null>(null);
@@ -332,20 +333,33 @@ const MusicPlayer = () => {
             `}} />
 
             {/* Titlebar */}
-            <div className="flex items-center justify-between px-3 py-1.5 bg-border-accent">
+            <div 
+                onDoubleClick={() => setIsMinimized(!isMinimized)}
+                className="flex items-center justify-between px-3 py-1.5 bg-border-accent cursor-row-resize select-none"
+                title="Double click to shade minimize/expand"
+            >
                 <span className="text-cream text-[11px] tracking-widest inline-flex items-center gap-1.5">
                     <i className="hn hn-music-solid" style={{ fontSize: 11 }} aria-hidden="true" />
                     music.exe
                 </span>
-                <div className="flex gap-1.5">
-                    <span className="w-3 h-3 bg-cream border border-white/30"></span>
+                <div className="flex items-center gap-1.5">
+                    <span className="text-cream text-[8px] font-bold opacity-75 font-mono mr-1">
+                        {isMinimized ? "[+]" : "[-]"}
+                    </span>
+                    <span 
+                        onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }}
+                        className="w-3 h-3 bg-cream border border-white/30 cursor-pointer hover:brightness-110 active:scale-95" 
+                    />
                     <span className="w-3 h-3 bg-blush border border-white/30"></span>
                     <span className="w-3 h-3 bg-raspberry border border-white/30"></span>
                 </div>
             </div>
 
             {/* Main content grid */}
-            <div className="flex flex-col md:flex-row">
+            <div className={`transition-all duration-300 ease-in-out origin-top overflow-hidden ${
+                isMinimized ? "max-h-0 opacity-0 scale-y-95 pointer-events-none p-0" : "max-h-[800px] opacity-100 scale-y-100"
+            }`}>
+                <div className="flex flex-col md:flex-row">
                 
                 {/* ── Player panel ── */}
                 <div className="flex-1 p-5 flex flex-col gap-4 min-w-0">
@@ -598,6 +612,7 @@ const MusicPlayer = () => {
                             );
                         })}
                     </div>
+                </div>
                 </div>
             </div>
         </div>

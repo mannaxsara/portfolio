@@ -2,26 +2,31 @@
   {
     "src": "/cert-data-analytics.png",
     "caption": "Google Data Analytics Professional Certificate",
-    "titlebar": "google_data_analytics.sys"
+    "titlebar": "google_data_analytics.sys",
+    "tags": ["Analytics"]
   },
   {
     "src": "/cert-advanced-analytics.png",
     "caption": "Google Advanced Data Analytics Certificate",
-    "titlebar": "google_advanced_analytics.sys"
+    "titlebar": "google_advanced_analytics.sys",
+    "tags": ["Analytics"]
   },
   {
     "src": "/cert-acm-w.png",
     "caption": "ACM-W Coding Contest Achievement",
-    "titlebar": "acm_w_contest.sys"
+    "titlebar": "acm_w_contest.sys",
+    "tags": ["Competitions"]
   },
   {
     "src": "/cert-iot-affiliate.png",
     "caption": "College Research Affiliate - IOT",
-    "titlebar": "college_iot_research.sys"
+    "titlebar": "college_iot_research.sys",
+    "tags": ["IoT"]
   },
   {
     "src": "/cert-sail-internship.png",
     "caption": "One-Month Industrial Training Certificate (SAIL)",
-    "titlebar": "sail_internship.sys"
+    "titlebar": "sail_internship.sys",
+    "tags": ["Training"]
   }
 ]

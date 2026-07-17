@@ -48,10 +48,10 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
       {/* Card */}
       <div
         onClick={() => setIsOpen(true)}
-        className={`group cursor-pointer font-body cute-card ${className}`}
+        className={`group cursor-pointer font-body cute-card flex flex-col h-[270px] ${className}`}
       >
         {/* Titlebar */}
-        <div className="bg-border-accent text-cream px-3 py-1.5 flex items-center justify-between">
+        <div className="bg-border-accent text-cream px-3 py-1.5 flex items-center justify-between flex-shrink-0">
           <span className="text-[10px] tracking-widest opacity-90">♡ {titlebar || "certificate.sys"}</span>
           <div className="flex gap-1.5">
             <span className="w-2.5 h-2.5 bg-raspberry border border-white/30"></span>
@@ -60,21 +60,21 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
           </div>
         </div>
 
-        {/* Image */}
-        <div className="border-b-[3px] border-border-accent overflow-hidden">
+        {/* Image (Cropped thumbnail preview for grid alignment) */}
+        <div className="border-b-[3px] border-border-accent overflow-hidden h-40 flex-shrink-0 relative">
           <img
             src={image}
             alt={caption || "Artwork"}
             width={400}
             height={500}
-            className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             suppressHydrationWarning
           />
         </div>
 
         {/* Caption */}
         {caption && (
-          <div className="px-3 py-2 relative overflow-hidden">
+          <div className="px-3 py-2.5 flex-grow relative overflow-hidden">
             <div
               className="absolute top-0 left-0 right-0 h-0.5 opacity-40"
               style={{
@@ -82,7 +82,7 @@ const GalleryCard: React.FC<GalleryCardProps> = ({ image, caption, titlebar, cla
                   "repeating-linear-gradient(90deg, var(--border-accent) 0px, var(--border-accent) 4px, transparent 4px, transparent 8px)",
               }}
             />
-            <p className="text-xs text-text-base tracking-wide opacity-90">♡ {caption}</p>
+            <p className="text-xs text-text-base tracking-wide opacity-90 line-clamp-3">♡ {caption}</p>
           </div>
         )}
       </div>

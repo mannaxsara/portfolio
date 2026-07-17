@@ -36,6 +36,40 @@ const Contact = () => {
 
         setSubmitting(true);
 
+        const formId = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
+        if (formId) {
+            try {
+                const response = await fetch(`https://formspree.io/f/${formId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                    },
+                    body: JSON.stringify({
+                        name: name.trim(),
+                        email: email.trim(),
+                        message: message.trim(),
+                    }),
+                });
+
+                if (response.ok) {
+                    setSent(true);
+                    setName("");
+                    setEmail("");
+                    setMessage("");
+                    setTimeout(() => setSent(false), 4000);
+                } else {
+                    setErrorMsg("✕ Failed to send message. Please check Formspree ID.");
+                }
+            } catch (err) {
+                console.error("Formspree submission error:", err);
+                setErrorMsg("✕ A network error occurred. Please try again.");
+            } finally {
+                setSubmitting(false);
+            }
+            return;
+        }
+
         const isPlaceholder =
             !process.env.NEXT_PUBLIC_SUPABASE_URL ||
             process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder-project");

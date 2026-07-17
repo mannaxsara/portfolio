@@ -10,6 +10,7 @@ interface ProjectCardProps {
   image: string;
   git?: string;
   yt?: string;
+  live?: string;
   className?: string;
   fileLabel?: string;
 }
@@ -21,6 +22,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   image,
   git,
   yt,
+  live,
   className = "",
   fileLabel = "project.exe",
 }) => {
@@ -30,7 +32,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       : git;
 
   return (
-    <div className="group w-full max-w-72 font-body cute-card flex flex-col overflow-hidden">
+    <div className="group w-full max-w-72 font-body cute-card flex flex-col overflow-hidden h-full pb-3.5">
       <div className="px-3 py-1.5 flex items-center justify-between text-cream bg-border-accent">
         <span className="text-[10px] tracking-widest opacity-90 uppercase inline-flex items-center gap-1.5">
           <PixelIcon name="laptop-code" solid size={10} />
@@ -88,9 +90,20 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </p>
           </div>
 
-          <div className="flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+          <div className="flex gap-3 items-center" onClick={(e) => e.stopPropagation()}>
             {finalGit && <ProjectGithub url={finalGit} />}
             {yt && <Youtube url={yt} />}
+            {live && (
+              <a
+                href={live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full border-[3px] border-border-accent bg-[#fff5f8] dark:bg-bg-base hover:bg-highlight-color/20 text-border-accent flex items-center justify-center shadow-[2px_2px_0px_var(--shadow-color)] hover:translate-y-[-1px] transition-all cursor-pointer"
+                title="Live Demo"
+              >
+                <PixelIcon name="external-link" solid size={12} className="text-[#db6b8f] dark:text-[#ff9ebd]" />
+              </a>
+            )}
           </div>
         </div>
       </div>
